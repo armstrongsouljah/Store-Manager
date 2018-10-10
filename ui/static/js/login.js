@@ -1,15 +1,22 @@
 const form = document.querySelector("form");
-const username = document.querySelector("#username");
-const password = document.querySelector("password")
+const username = document.querySelector("input#username");
+const password = document.querySelector("input#password")
+const error_msg = document.querySelector("span.errors")
 
 form.addEventListener("submit", (e)=>{
     e.preventDefault()
-    // check entered user and send them to respective dashboard
-    if(username.value !== "admin" && password!=="password"){
-        window.location = "./user_dash.html";
+    error_msg.style.color = "red";
+    
+    if(username.value ==="" && password.value ===""){
+        error_msg.innerText = "empty credentials not allowed";
+    }
+    else if(username.value ===" " && password.value ===" "){
+        error_msg.innerText = "Spaces can't be credentials!";
+    }
+    else if(username.value ==="admin" && password.value ==="password"){
+        window.location = "./admin_dash.html";
     }
     else{
-        window.location = "./admin_dash.html";
-
+        window.location = "./user_dash.html";
     }
 });
