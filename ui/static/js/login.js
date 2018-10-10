@@ -9,5 +9,6 @@ form.addEventListener("submit", (e)=>{
     }
     else{
         window.location = "./admin_dash.html";
+        
     }
 });
