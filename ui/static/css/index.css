@@ -1,0 +1,93 @@
+*{
+    margin:0;
+    padding:0;
+    font-family: 'Tangarine', Arial, Helvetica, sans-serif;
+}
+body{
+   background-image: url('/ui/static/img/login.jpg');
+   background-size: cover;
+   width: 100%;
+   filter:opacity(.7);
+   filter: blur(.2);
+}
+#app-name{
+    text-align: center;
+}
+.login-box{
+    background: #42a5f5 ;
+    color: #e3f2fd;
+    width:40%;
+    margin:0 auto;
+    margin-top: 124px;
+    padding: 54px;
+    opacity: .7;
+}
+.login-form{
+   padding: 15px;
+}
+.input-field input{
+    width:100%;
+    outline: none;
+    border:none;
+    padding: 6px;
+    background: transparent;
+    border-bottom: 1px solid #0d47a1 ;
+    margin-bottom: 4px;
+}
+.input-field input:focus{
+    border-bottom: 1px solid #f2f2f2;
+}
+label{
+    padding: 4px;
+    font-size: 1.2em;
+}
+.login-btn{
+    background: #e3f2fd;
+    border:none;
+    width:125px;
+    height:34px;
+    background: #0d47a1 ;
+    color:#e3f2fd;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+.login-btn:hover{
+    transition-delay:  .5s;
+    background: #f2f2f2;
+    color:#0d47a1;
+}
+#_login{
+    text-align: center;
+}
+
+/* responsive login form  phones*/
+@media(max-width:480px){
+    .login-box{
+        height:100vh;
+        padding: 0;
+        width:100vw;
+        margin: 0;
+    }
+    .login-form, #app-name{
+        padding-top: 55px;
+    }
+    body{
+        margin: 0;
+    }
+}
+
+/* responsive tablets */
+@media(max-width:680px){
+    .login-box{
+        height:100vh;
+        padding: 0;
+        width:100vw;
+        margin: 0;
+    }
+    .login-form, #app-name{
+        padding-top: 55px;
+    }
+    body{
+        margin: 0;
+    }
+}
