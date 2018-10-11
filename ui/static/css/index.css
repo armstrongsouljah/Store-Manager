@@ -7,7 +7,7 @@
     font-family: 'Nanum Gothic', sans-serif;
 }
 body{
-   background-image: url('/ui/static/img/login.jpg');
+   background-image: url('../img/login.jpg');
    background-size: cover;
    width: 100%;
    filter:opacity(.7);
