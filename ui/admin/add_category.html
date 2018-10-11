@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Category &raquo; Admin-Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admin_dash.css">
+</head>
+<body>
+    <div class="main-container">
+        <div id="side-menu">
+                <ul>
+                        <li><a href="./index.html">Shop Attendants</a></li>    
+                        <li><a href="#">Add Product</a></li>
+                        <li><a href="./categories.html">Product Categories</a></li>
+                        <li><a href="#">View Sales</a></li>
+                        <li><a href="../index.html">Logout</a></li>
+                    </ul>
+        </div>
+        <div id="main-content">
+            <h3 id="header">Product Category Form</h3>
+            <form action="." class="category" method="POST">
+                <div class="input-field">
+                        <label for="category_name">Category name</label>
+                        <input type="text" name="category_name" id="category_name" >
+                </div>
+
+                <div class="input-field">
+                        <label for="first_name">Added on</label>
+                        <input type="date" name="added_on" id="added_on" >
+                </div>
+
+                <div class="input-field">
+                        <label for="instock">In Stock</label>
+                        <input type="checkbox" name="instock" id="instock" >
+                </div>
+                
+                <span id="signup-btn"><input id="category_add" type="submit" value="Save"></span>
+            </form>
+        </div>
+    </div>
+    <script src="../static/js/category_form.js"></script>
+</body>
+</html>

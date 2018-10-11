@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin &raquo; Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admin_dash.css">
+</head>
+<body>
+     <div class="main-container">
+         <div id="side-menu">
+             <ul>
+                 <li><a href="./index.html">Shop Attendants</a></li>
+                 <li><a href="#">Add Product</a></li>
+                 <li><a href="./categories.html">Product categories</a></li>
+                 <li><a href="#">View Sales</a></li>
+                 <li><a href="../index.html">Logout</a></li>
+             </ul>
+         </div>
+         <div id="main-content">
+             <table id="attendants">
+                 <caption>LISTING OF SHOP ATTENDANTS </caption>
+                 <thead>
+                     <tr>
+                         <th scope="col">attendant_id</th>
+                         <th scope="col">first_name</th>
+                         <th scope="col">last_name</th> 
+                         <th scope="col">No. Of Sales</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <th scope="row">
+                             1.
+                         </th>
+                         <td>Ainembabazi</td>
+                         <td>Sylvia</td>
+                         <td>122</td>
+                     </tr>
+                     <tr>
+                            <th scope="row">
+                                2.
+                            </th>
+                            <td>Nakawuka</td>
+                            <td>Joseline</td>
+                            <td>242</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">
+                                    3.
+                                </th>
+                                <td>Johnny</td>
+                                <td>Walker</td>
+                                <td>064</td>
+                            </tr>
+
+                          <tr>
+                            <th scope="row">
+                                    4.
+                                </th>
+                                <td>Andrew</td>
+                                <td>Bight</td>
+                                <td>037</td>
+                            </tr>
+                            <tr scope="row" id="last">
+                                <td colspan="1">
+                                    <a class="btn_link" href="./add_attendant.html">Add New</a>
+                                </td>
+                            </tr>
+                 </tbody>
+             </table>
+         </div>
+     </div>
+</body>
+</html>
