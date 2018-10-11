@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Store Manager</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+    <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2 id="app-name">Store-Manager &raquo; Login</h2>
+        <form action="." class="login-form" method="post">
+            <div class="input-field">
+                <label for="username">Username</label>
+                <input type="text" class="form-input" placeholder="Username" id="username"  name="username">
+            </div>
+            <div class="input-field">
+                <label for="password">Password</label>
+                <input type="password" placeholder="password" id="password" name="password">
+            </div>
+            <span class="errors"></span>
+            <div id="_login">
+                <input type="submit" class="login-btn blue" value="Login">
+            </div>
+        </form>
+    </div>
+    <!-- javascript-->
+    <script src="./static/js/login.js"></script>
+</body>
+</html>
