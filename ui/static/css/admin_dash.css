@@ -17,6 +17,9 @@ li:hover{
     color: #f2f2f2;
     
 }
+li:active{
+    background: #ffffff;
+}
 body{
     background: #fff;
     overflow-y: hidden;
