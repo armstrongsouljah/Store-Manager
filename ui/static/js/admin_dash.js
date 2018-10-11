@@ -12,3 +12,5 @@ form.addEventListener("submit", (e)=>{
     window.location = "./admin_dash.html"
 
 })
+
+

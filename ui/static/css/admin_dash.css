@@ -39,6 +39,7 @@ body{
     height:100vh;
     flex:8;
     padding-top: 65px;
+    background: #a7ffeb;
 }
 table{
     table-layout: fixed;
@@ -58,16 +59,17 @@ thead th:nth-child(1){
     width:35%;
 }
 tbody tr:nth-child(even){
-    background: #90caf9 ;
-    color:#f2f2f2;
+    background: #fff;
 }
 tbody tr:nth-child(odd){
     background: #c5cae9 ;
-    color:#f2f2f2;
+}
+tbody td{
+    text-align: center;
 }
 tbody td a{
     background: #0d47a1;
-    color:#f2f2f2;
+    color:#777;
     width:100%;
     height:100%;
     padding: 12px;
@@ -83,21 +85,21 @@ tbody tr:hover{
 #header{
     text-align: center;
     font-size: 1.2em;
+    margin-bottom: 9px;
 }
 
 /* form related styles */
 .attendant-form{
-    padding: 19px;
+    padding: 23px;
     overflow-x: hidden;
-    background: #84ffff;
-    filter:opacity(.6);
-    color:#01579b;
-    margin-top: 6px;
+    background: #f2f2f2;
+    filter:opacity(.7);
+    color:#333;
     width:50vw;
     margin:0 auto;
 }
 .input-field input{
-    width:100%;
+    width:90%;
     outline: none;
     border:none;
     border-bottom: 1px solid #006064 ;
@@ -106,14 +108,26 @@ tbody tr:hover{
     background: transparent;
 }
 .input-field input:focus{
-    border-bottom: 1px solid #f2f2f2 ;
+    border-bottom: 1px solid #fff; ;
 }
 #signup-btn input{
     width:125px;
     height:34px;
     border:none;
     border-radius: 4px;
+    background: #0d47a1;
+    color:#fff;
+}
+#signup-btn input#category_add{
+    margin-top: 9px;
 }
 label{
     padding: 9px;
+}
+#last{
+    background: transparent;
+    
+}
+#last a{
+    color:#fff;
 }

@@ -14,9 +14,9 @@ form.addEventListener("submit", (e)=>{
         error_msg.innerText = "Spaces can't be credentials!";
     }
     else if(username.value ==="admin" && password.value ==="password"){
-        window.location = "./admin_dash.html";
+        window.location = "./admin/";
     }
     else{
-        window.location = "./user_dash.html";
+        window.location = "./attendant/";
     }
 });
