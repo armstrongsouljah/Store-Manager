@@ -1,0 +1,89 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Kodchasan', sans-serif;
+    font-family: 'Lora', serif;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+ul{
+list-style-type: none;
+}
+li, a{
+text-decoration: none;
+width: 80%;
+padding: 19px;
+}
+li:hover{
+background: #64b5f6 ;
+color: #f2f2f2;
+
+}
+li:active{
+background: #ffffff;
+}
+
+#header{
+    height:10vh;
+    padding:18;
+    background: #000;
+    color:#fff;
+}
+#header h3{
+    padding: 19px;
+}
+.main-container{
+    display: flex;
+    height: 90vh;
+}
+
+#side-menu{
+    
+    flex:2;
+    background: #1e88e5;
+    padding-top: 65px;
+}
+#side-menu li {
+    padding: 15px;
+    
+}
+#main-content{
+    flex:8;
+    padding-top: 65px;
+    padding-right: 19px;
+    padding-left: 19px;
+    background: #42a5f5;
+    
+}
+#main-header{
+    text-align: center;
+}
+table{
+    margin-top: 9px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    width:100%;
+}
+thead th:nth-child(1){
+    width: 30%;    
+}
+thead th:nth-child(2){
+    width: 30%;    
+}
+ thead th:nth-child(3){
+    width: 40%;    
+}
+tbody tr{
+    padding: 18px;
+    height:33px;
+    text-align: center;
+}
+ tbody tr:nth-child(odd){
+    background: #82b1ff;
+}
+tbody tr:nth-child(even){
+    background: #8c9eff  ;
+}
+tbody tr:hover{
+    background: #f2f2f2;
+}
