@@ -5,6 +5,13 @@
     font-family: 'Lora', serif;
     font-family: 'Nanum Gothic', sans-serif;
 }
+
+/* styles google icons */
+    .material-icons.md-18 { font-size: 18px;} 
+    .material-icons.md-24 { font-size: 24px; } /* Default */
+    .material-icons.md-36 { font-size: 36px; }
+    .material-icons.md-48 { font-size: 48px; }
+
 ul{
   list-style-type: none;
 }
@@ -48,6 +55,7 @@ table{
     table-layout: fixed;
     width:100%;
     border-collapse: collapse;
+    white-space:nowrap;
 }
 thead th:nth-child(1){
     width:30%;
@@ -147,4 +155,23 @@ select{
 }
 option{
     padding: 12px;
+}
+
+/* responsive small screen */
+@media(max-width:680px){
+    body{
+        width:100%;
+        overflow-x: hidden;
+    }
+    .main-container{
+        flex-flow: column wrap;
+    }
+    #main-content{
+       order:1;
+       flex-grow: 12;
+    }
+    #side-menu{
+        order:2;
+        flex-grow: 12;
+    }
 }
