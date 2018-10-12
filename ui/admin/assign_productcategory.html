@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Product Edit &raquo; Admin-Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admin_dash.css">
+</head>
+<body>
+    <div class="main-container">
+        <div id="side-menu">
+                <ul>
+                        <li><a href="./index.html">Shop Attendants</a></li>    
+                        <li><a href="./add_product.html">Add Product</a></li>
+                        <li><a href="./categories.html">Product Categories</a></li>
+                        <li><a href="./products.html">Available Products</a></li>
+                        <li><a href="./sales.html">View Sales</a></li>
+                        <li><a href="../index.html">Logout</a></li>
+                    </ul>
+        </div>
+        <div id="main-content">
+            <h3 id="header">Product Modify Details Form</h3>
+            <form action="." class="category" method="POST">
+                    <div class="input-field">
+                            <label for="product_name">Product Name</label>
+                            <input type="text" name="product_name" id="product_name" value="Baking Flour" >
+                    </div>
+                    <div class="input-field">
+                            <label for="quantitiy">Quantity</label>
+                            <input type="text" name="quantity" id="quantity" value="1800kg" >
+                    </div>
+                    <div class="input-field">
+                            <label for="min-qty">Min Quantity</label>
+                            <input type="text" name="min-qty" id="min-qty" value="76kg" >
+                    </div>
+                <div class="input-field">
+                        <select name="category_name" id="category_name">
+                            <option value="Confectionery">Confectionery</option>
+                        </select>
+                </div>
+
+                <div class="input-field">
+                        <label for="first_name">Added on</label>
+                        <input type="date" name="added_on" id="added_on" value="09/29/2018" >
+                </div>
+                
+                <span id="signup-btn"><input id="category_add" type="submit" value="Save"></span>
+            </form>
+        </div>
+    </div>
+    <script src="../static/js/category_form.js"></script>
+</body>
+</html>
