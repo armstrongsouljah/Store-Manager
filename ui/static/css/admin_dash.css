@@ -134,3 +134,17 @@ label{
 #last a{
     color:#fff;
 }
+
+/* product specific */
+select{
+    width:90%;
+    padding: 12px;
+    text-align: center;
+    border:none;
+    outline: none;
+    background:transparent;
+    border-bottom: 1px solid #000;
+}
+option{
+    padding: 12px;
+}
