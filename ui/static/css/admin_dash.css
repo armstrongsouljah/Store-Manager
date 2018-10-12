@@ -48,6 +48,7 @@ table{
     table-layout: fixed;
     width:100%;
     border-collapse: collapse;
+    white-space:nowrap;
 }
 thead th:nth-child(1){
     width:30%;
@@ -147,4 +148,23 @@ select{
 }
 option{
     padding: 12px;
+}
+
+/* responsive small screen */
+@media(max-width:680px){
+    body{
+        width:100%;
+        overflow-x: hidden;
+    }
+    .main-container{
+        flex-flow: column wrap;
+    }
+    #main-content{
+       order:1;
+       flex-grow: 12;
+    }
+    #side-menu{
+        order:2;
+        flex-grow: 12;
+    }
 }
