@@ -19,6 +19,9 @@ form.addEventListener("submit", (e)=>{
     else if(username.value ==="admin" && password.value ==="password"){
         window.location = "./admin/";
     }
+    else if(username.value !=="admin" && password.value ===""){
+        error_msg.innerText = "Password can't be empty!"
+    }
     else{
         window.location = "./attendant/";
     }
