@@ -87,3 +87,32 @@ tbody tr:nth-child(even){
 tbody tr:hover{
     background: #f2f2f2;
 }
+
+.user-info{
+    width:100%;
+    padding: 12px;
+}
+
+table.sales{
+    table-layout: fixed;
+    width:100%;
+}
+table.sales thead th:nth-child(1){
+    width:25%;
+}
+.sales thead th:nth-child(2){
+    width:25%;
+}
+.sales thead th:nth-child(3){
+    width:25%;
+}
+.sales thead th:nth-child(4){
+    width:25%;
+}
+
+table.products{
+    table-layout: fixed;
+}
+.products thead tr th{
+    width:20%;
+}
