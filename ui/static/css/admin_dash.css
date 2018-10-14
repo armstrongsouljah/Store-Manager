@@ -12,12 +12,24 @@
     .material-icons.md-36 { font-size: 36px; }
     .material-icons.md-48 { font-size: 48px; }
 
-ul{
-  list-style-type: none;
+body{
+    width:100vw;
+    font-size:12pt;
 }
-li, a{
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+li a{
+    display: block;
     text-decoration: none;
-    width: 80%;
+    padding: 7px;
+    width: 100%;
+}
+a{
+    text-decoration: none;
 }
 li:hover{
     background: #64b5f6 ;
@@ -57,8 +69,13 @@ table{
     border-collapse: collapse;
     white-space:nowrap;
 }
+table#attendants thead tr th{
+    width:25%;
+}
+
+
 thead th:nth-child(1){
-    width:30%;
+    width:25%;
 }
 thead th:nth-child(2){
     width:20%;
@@ -69,6 +86,7 @@ thead th:nth-child(1){
 thead th:nth-child(1){
     width:35%;
 }
+
 tbody tr:nth-child(even){
     background: #fff;
 }
@@ -93,6 +111,15 @@ tbody tr:hover{
     background: #bbdefb ;
 }
 
+table#sales{
+    font-size: 10px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+table#sales thead tr th {
+    width: 20%;
+}
 #header{
     text-align: center;
     font-size: 1.2em;
@@ -160,18 +187,33 @@ option{
 /* responsive small screen */
 @media(max-width:680px){
     body{
-        width:100%;
+        width: 90vw;
         overflow-x: hidden;
+        font-size: 12px;
     }
     .main-container{
         flex-flow: column wrap;
+        width:100vw;
     }
     #main-content{
        order:1;
-       flex-grow: 12;
+       
     }
     #side-menu{
         order:2;
-        flex-grow: 12;
+        
     }
+    table{
+        font-size:12px;
+    }
+    tr{
+        height:18px;
+        padding:8px;
+    }
+
+    table#categories thead tr th{
+        width:25%;
+    }
+
+    
 }
