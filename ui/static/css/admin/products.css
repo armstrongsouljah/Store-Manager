@@ -64,6 +64,9 @@ tbody tr:nth-child(even){
 tbody tr:nth-child(odd){
     background: #c5cae9 ;
 }
+tbody tr{
+    height: 34px;
+}
 tbody td{
     text-align: center;
 }
