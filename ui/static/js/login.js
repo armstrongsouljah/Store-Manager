@@ -13,9 +13,12 @@ form.addEventListener("submit", (e)=>{
     else if(username.value ===" " && password.value ===" "){
         error_msg.innerText = "Spaces can't be credentials!";
     }
+    else if(username.value ==="admin" && password.value ===""){
+        error_msg.innerText = "Password can't be empty!"
+    }
     else if(username.value ==="admin" && password.value !=="password"){
         error_msg.innerText = "Invalid username/password."
-    }
+    }    
     else if(username.value ==="admin" && password.value ==="password"){
         window.location = "./admin/";
     }

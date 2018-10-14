@@ -21,22 +21,10 @@
              </ul>
          </div>
          <div id="main-content">
-             <form action="#" id="sale-form" method="POST">
-                 <label for="products">Products</label>
-                 <select name="products" id="products">
-                     <option value="Omo">Omo</option>
-                     <option value="Cooking Oil">Cooking oil</option>
-                     <option value="Table Napkins">Table Napkins</option>
-                     <option value="Wine">Wine</option>
-                 </select>
-                 <label for="quantiy">Quantity</label>
-                 <input type="number" placeholder="Quantity">
-                 <input type="submit" value="Add to Cart">
-             </form>
              <table class="products">
                  <thead>
-                     <caption>
-                         <input type="search" placeholder="search products">
+                     <caption align="bottom">
+                         <input type="search" placeholder="search products" id="product-search">
                      </caption>
                      <tr scope="row">
                          <th scope="col">Product Id</th>
@@ -72,6 +60,20 @@
                     </tr>
                  </tbody>
              </table>
+
+             <h4 id="cart-header">Add items to cart</h4>
+             <form action="#" id="cart-form" method="POST">
+                <label for="products">Products</label>
+                <select name="products" id="products">
+                    <option value="Omo">Omo</option>
+                    <option value="Cooking Oil">Cooking oil</option>
+                    <option value="Table Napkins">Table Napkins</option>
+                    <option value="Wine">Wine</option>
+                </select>
+                <label for="quantiy">Quantity</label>
+                <input type="number" placeholder="Quantity" id="quantity">
+                <input type="submit" value="Add to Cart">
+            </form>
          </div>
     </div>
 </body>
