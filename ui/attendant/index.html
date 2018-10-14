@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Attendant-Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/attendant_dash.css">
+</head>
+<body>
+    <div id="header">
+        <h3>[Muhwezi Armstrong]</h3>
+    </div>
+    <div class="main-container">
+         <div id="side-menu">
+             <ul>
+                 <li><a href="./attendantsales.html">My Sales</a></li>
+                 <li><a href="./userprofile.html">My Profile</a></li>
+                 <li><a href="../index.html">Logout</a></li>
+             </ul>
+         </div>
+         <div id="main-content">
+             <form action="#" id="sale-form" method="POST">
+                 <label for="products">Products</label>
+                 <select name="products" id="products">
+                     <option value="Omo">Omo</option>
+                     <option value="Cooking Oil">Cooking oil</option>
+                     <option value="Table Napkins">Table Napkins</option>
+                     <option value="Wine">Wine</option>
+                 </select>
+                 <label for="quantiy">Quantity</label>
+                 <input type="number" placeholder="Quantity">
+                 <input type="submit" value="Add to Cart">
+             </form>
+             <table class="products">
+                 <thead>
+                     <caption>
+                         <input type="search" placeholder="search products">
+                     </caption>
+                     <tr scope="row">
+                         <th scope="col">Product Id</th>
+                         <th scope="col">Product Name</th>
+                         <th scope="col">Qty In Stock</th>
+                         <th scope="col">Unit Cost</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr scope="row">
+                         <td scope="col">1</td>
+                         <td scope="col">Omo</td>
+                         <td scope="col">340 kg</td>
+                         <td scope="col">2500 ugx</td>
+                     </tr>
+                     <tr scope="row">
+                        <td scope="col">2</td>
+                        <td scope="col">Cooking Oil</td>
+                        <td scope="col">798 ltrs.</td>
+                        <td scope="col">5000 ugx</td>
+                    </tr>
+                    <tr scope="row">
+                        <td scope="col">3</td>
+                        <td scope="col">Table Napkins</td>
+                        <td scope="col">700 pcs</td>
+                        <td scope="col">3200 ugx</td>
+                    </tr>
+                    <tr scope="row">
+                        <td scope="col">4</td>
+                        <td scope="col">Four Cousins Wine</td>
+                        <td scope="col">340 bottles</td>
+                        <td scope="col">35000 ugx</td>
+                    </tr>
+                 </tbody>
+             </table>
+         </div>
+    </div>
+</body>
+</html>

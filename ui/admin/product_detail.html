@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Product-Categories &raquo; Admin</title>
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/admin_dash.css">
+</head>
+<body>
+    <div class="main-container">
+        <div id="side-menu">
+            <ul>
+                <li><a href="./index.html">Shop Attendants</a></li>
+                <li><a href="./add_product.html">Add Product</a></li>
+                <li><a href="./categories.html">Product categories</a></li>
+                <li><a href="./products.html">Available Porducts</a></li>
+                <li><a href="./sales.html">View Sales</a></li>
+                <li><a href="../index.html">Logout</a></li>
+            </ul>
+        </div>
+
+        <div id="main-content">
+            
+            <table id="attendants">
+                <caption><h3 id="header">Product Details</h3></caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Product ID</th>
+                        <th scope="row">Product Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Min-Qty</th>
+                        <th scope="col">Added on</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            1.
+                        </th>
+                        <td>Baking powder</td>
+                        <td>Confectionery</td>
+                        <td>1200kg</td>
+                        <td>130kg</td>
+                        <td>23rd, Jun,17</td>
+                    </tr>
+                    <tr scope="row" id="last">
+                        <td colspan="1">
+                            <a class="btn_link" href="./assign_productcategory.html">Modify</a>
+                        </td>
+                        <td colspan="1">
+                                <a class="btn_link" href="./assign_productcategory.html">Delete</a>
+                            </td>
+                    </tr>
+                       
+                          
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
