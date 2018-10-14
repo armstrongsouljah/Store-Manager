@@ -1,0 +1,115 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Kodchasan', sans-serif;
+    font-family: 'Lora', serif;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+body{
+    width:100%;
+    overflow-x: hidden;
+}
+.main-container{
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100vh;
+}
+
+#side-menu{
+    flex-basis:30vw;
+    background: #1de9b6 ;
+}
+#main-content{
+    flex-basis: 70vw;
+    background: #a7ffeb;
+    padding: 12px;
+
+}
+ul{
+    list-style-type: none;
+}
+li a {
+    display: block;
+    text-decoration: none;
+    padding: 12px;
+}
+li:hover{
+    background: #64b5f6 ;
+    color: #f2f2f2;
+}
+
+#header{
+    text-align: center;
+    margin: 0;
+    font-size: 1.2em;
+    color:#fff;
+    padding: 10px;
+    background:#00bfa5;
+}
+
+table{
+    table-layout: fixed;
+    width:100%;
+    border-collapse: collapse;
+    white-space:nowrap;
+}
+thead tr{
+    background: #f2f2f2;
+}
+tbody tr:nth-child(even){
+    background: #fff;
+}
+tbody tr:nth-child(odd){
+    background: #c5cae9 ;
+}
+#cart-header{
+   margin-top: 5px;
+   margin-bottom: 5px;
+   columns: #f2f2f2;
+}
+input, select{
+    width:100%;
+    margin-bottom: 3px;
+    height:21px;
+}
+form{
+    background: #00bcd4;
+    opacity: .6;
+    padding: 7px;
+}
+caption input{
+    height: 32px;
+}
+
+/* small screens display */
+@media(max-width:680px){
+    body{
+        width:100%;
+        height:80%;
+        font-size: 10pt;
+    }
+    #header{
+        margin-top: 14px;
+    }
+    .main-container{
+        flex-flow: column wrap;
+        justify-content: space-evenly;
+        font-size:11pt;
+    }
+    
+    #main-content{
+        flex:1;
+        height:70vh;
+        order:1;
+    }
+    #side-menu{
+        flex:1;
+        order:2;
+        height:30vh;
+    }
+    li a{
+        padding: 5px;
+    }
+
+}

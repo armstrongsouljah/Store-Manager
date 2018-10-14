@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Attendant-Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Kodchasan|Lora|Nanum+Gothic" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/attendant_dash.css">
+    <link rel="stylesheet" href="../static/css/attendant/make_sale.css">
 </head>
 <body>
     <div id="header">
@@ -62,7 +62,7 @@
              </table>
 
              <h4 id="cart-header">Add items to cart</h4>
-             <form action="#" id="cart-form" method="POST">
+             <form action="." id="cart-form" method="POST">
                 <label for="products">Products</label>
                 <select name="products" id="products">
                     <option value="Omo">Omo</option>
@@ -76,5 +76,12 @@
             </form>
          </div>
     </div>
+    <script>
+        const form = document.querySelector("form");
+        form.addEventListener("submit", (e)=>{
+            e.preventDefault()
+            alert("Item added.")
+        })
+    </script>
 </body>
 </html>
