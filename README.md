@@ -1,7 +1,7 @@
-# Store-Manager [![Build Status](https://travis-ci.org/armstrongsouljah/Store-Manager.svg?branch=161211560-admin%2Fattendant-get-products)](https://travis-ci.org/armstrongsouljah/Store-Manager)
-Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
-[github pages](https://armstrongsouljah.github.io/Store-Manager/ui/) [![Maintainability](https://api.codeclimate.com/v1/badges/de3d25a8dafaada7833c/maintainability)](https://codeclimate.com/github/armstrongsouljah/Store-Manager/maintainability)[![Coverage Status](https://coveralls.io/repos/github/armstrongsouljah/Store-Manager/badge.svg?branch=161211560-admin/attendant-get-products)](https://coveralls.io/github/armstrongsouljah/Store-Manager?branch=161211560-admin/attendant-get-products)
+# Store-Manager [![Build Status](https://travis-ci.org/armstrongsouljah/Store-Manager.svg?branch=161211560-admin%2Fattendant-get-products)](https://travis-ci.org/armstrongsouljah/Store-Manager)[github pages](https://armstrongsouljah.github.io/Store-Manager/ui/) [![Maintainability](https://api.codeclimate.com/v1/badges/de3d25a8dafaada7833c/maintainability)](https://codeclimate.com/github/armstrongsouljah/Store-Manager/maintainability) [![Coverage Status](https://coveralls.io/repos/github/armstrongsouljah/Store-Manager/badge.svg?branch=161211560-admin/attendant-get-products)](https://coveralls.io/github/armstrongsouljah/Store-Manager?branch=161211560-admin/attendant-get-products)
 
+
+Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
 
 
 ## Features
@@ -31,8 +31,11 @@ Store Manager is a web application that helps store owners manage sales and prod
 
 ### Prerequisites 
 `$ cd Store-Manager `
+
 `$ virtualenv venv -p python3`
+
 `$ source venv/bin/activate`
+
 `$ pip install -r requirements.txt`
 
 ### Testing
