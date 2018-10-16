@@ -1,4 +1,4 @@
-from app.api import bp
+from app.utils import bp
 from flask import request, jsonify
 
 

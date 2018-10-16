@@ -1,15 +1,16 @@
 from flask import request
 import unittest
 from app.models.products import Product
-from app import create_app, app
-from app import bp
+from app import create_app_environment, app
+from app.utils import bp
+
 
 
 class TestProducts(unittest.TestCase):
     
     def setUp(self):
         self.app = app
-        self.app = create_app('testing')
+        self.app = create_app_environment('testing')
         self.app.register_blueprint(bp, url_prefix='/api/v1')
 
         self.client = self.app.test_client

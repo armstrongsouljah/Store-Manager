@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
 
 
 class Product:
@@ -29,6 +29,8 @@ class Product:
     
     def get_products(self):
         if len(self.products) == 0:
-            return jsonify({"message": "no products added yet."}), 404
+            # return jsonify({"message": "no products added yet."}), 404
+            return "No products in store!"
         else:
-            return jsonify(self.products), 200
+            # return jsonify(self.products), 200
+            return self.products
