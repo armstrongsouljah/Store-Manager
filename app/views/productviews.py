@@ -1,9 +1,14 @@
-from app.utils import bp
+from app.utils import bp, welcome_message
 from app.models.products import Product
 from flask import jsonify
 
 
 obj = Product()
+
+
+@bp.route("/", methods=["GET"])
+def index():
+    return welcome_message
     
 @bp.route('/products', methods=['GET'])    
 def get_products():        
