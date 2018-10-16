@@ -1,41 +1,30 @@
-from flask import Flask, jsonify
-from app.api import bp
-from app.models.sales import Sale
+import os
+from flask import Flask
 from app.models.products import Product
+from app.models.sales import Sale
+from app.views.productviews import *
+from app.views.salesviews import *
+from .config import env_config
+from .utils import bp,  welcome_message
 
 
-app = Flask(__name__)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+# bp = Blueprint('api', __name__)
 
 
-@bp.route('/products', methods=['GET'])
-def get_products():
-    return jsonify({"message":"hello products"})
+def create_app_environment(config_name):
+    """ allows one to switch environments """
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(env_config.get(config_name))
+    app.config.from_pyfile(os.path.join(BASE_DIR, 'config.py'))
+    return app
 
 
-@bp.route('/products/<int:product_id>', methods=['GET'])
-def get_product(product_id):
-    pass
-
-
-@bp.route('/sales', methods=['GET'])
-def get_sales():
-    return jsonify({"message":"hello sales"})
-
-
-@bp.route('/sales/<int:sales_id>')
-def get_sale(sales_id):
-    pass
-
-@bp.route('/products/add', methods=['POST'])
-def add_product():
-    pass
-
-
-@bp.route('/sales/add', methods =['POST'])
-def add_sale():
-    pass
-
+app = create_app_environment('development')
+# welcome route
+@app.route("/", methods=["GET"])
+def index():
+    return welcome_message
 
 # register blueprint in the app factory
 app.register_blueprint(bp, url_prefix='/api/v1')
-

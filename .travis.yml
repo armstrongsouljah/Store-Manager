@@ -2,9 +2,6 @@ language: python
 python:
   - "3.6"
 
-services:
-  - postgresql
-
 env:
   global:
     - APP_SETTINGS=testing
@@ -14,8 +11,9 @@ install:
   - "pip install -r requirements.txt"
 
 script:
-  - python3 -m pytest --cov=app tests/
+  - python3 -m pytest --cov=app/tests/
+  - coveralls
+
 
 after_success:
-  - coveralls
   - codecov
