@@ -5,7 +5,7 @@ from app.models.sales import Sale
 from app.views.productviews import *
 from app.views.salesviews import *
 from .config import env_config
-from .utils import bp
+from .utils import bp,  welcome_message
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -20,6 +20,11 @@ def create_app_environment(config_name):
     return app
 
 
-# register blueprint in the app factory
 app = create_app_environment('development')
+# welcome route
+@app.route("/", methods=["GET"])
+def index():
+    return welcome_message
+
+# register blueprint in the app factory
 app.register_blueprint(bp, url_prefix='/api/v1')
