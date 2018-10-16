@@ -40,3 +40,7 @@ Store Manager is a web application that helps store owners manage sales and prod
 
 ### Testing
 `$ pytest --cov app/tests -cov-report term-missing`
+
+### Run the app
+
+`$ python3 run.py`
