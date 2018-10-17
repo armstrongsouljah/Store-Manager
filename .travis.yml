@@ -11,9 +11,11 @@ install:
   - "pip install -r requirements.txt"
 
 script:
-  - python3 -m pytest --cov=app/tests/
-  - coveralls
+  - python3 -m pytest -v --cov app/tests --cov-report term-missing
+
+  
 
 
 after_success:
+  - coveralls
   - codecov

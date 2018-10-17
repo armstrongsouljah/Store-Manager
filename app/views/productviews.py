@@ -18,12 +18,17 @@ def get_products():
     response  = product_model.get_products()
     return jsonify(response)
 
-@bp.route('/admin/products/', methods=['POST'])
+@bp.route('/products', methods=['POST'])
 # @jwt_required
 def products_add():
     # current_user = get_jwt_identity()
     # if current_user:
     response = product_model.add_product()
+    return jsonify(response)
+
+@bp.route('/products/<int:productId>')
+def get_product(productId):
+    response = product_model.get_product(productId)
     return jsonify(response)
 
 # for later

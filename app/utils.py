@@ -4,6 +4,11 @@ from flask import Blueprint
 
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
 
+def validate_id(id):
+      if not isinstance(id, int):
+            raise TypeError("Id should be a number")
+      return id
+
 def validate_product_name(name):
         if not name:
               raise ValueError("Name can't be blank")

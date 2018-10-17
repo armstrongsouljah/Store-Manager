@@ -5,7 +5,8 @@ from app.utils import (
     validate_category,
     validate_product_name,
     validate_quantity,
-    validate_unitcost
+    validate_unitcost,
+    validate_id
 )
 
 
@@ -55,7 +56,15 @@ class Product:
         """ returns all products in store """
         if len(self.products) == 0:
             message = {"mesage": "no products have been added"}
-            return message
-        return self.products
+            return message,  404
+        return self.products, 200
 
-    
+    def get_product(self, id):
+        """ returns a single product based off the supplied id """
+        id = validate_id(id)
+
+        for product in self.products:
+            if product["product_id"] == id:
+                return product, 200
+            return "Product not found", 404
+ 
