@@ -4,9 +4,10 @@
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store. [github pages](https://armstrongsouljah.github.io/Store-Manager/ui/)
 
 ## Heroku Endpoints
-[landing-page](https://my-storemanager.herokuapp.com)
+[landing-page](https://soultech-store.herokuapp.com)
 
-[get-products](https://my-storemanager.herokuapp.com/api/v1/products)
+[get-products](https://soultech-store.herokuapp.com/api/v1/products)
+[add-products](https://soultech-store.herokuapp.com/api/v1/products)
 
 
 
