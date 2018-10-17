@@ -6,6 +6,12 @@ from app.views.productviews import *
 from app.views.salesviews import *
 from .config import env_config
 from .utils import bp,  welcome_message
+from flask_jwt_extended import (
+    JWTManager,
+    jwt_required,
+    create_access_token,
+    get_jwt_identity
+)
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -21,6 +27,7 @@ def create_app_environment(config_name):
 
 
 app = create_app_environment('development')
+jwt = JWTManager(app)
 # welcome route
 @app.route("/", methods=["GET"])
 def index():

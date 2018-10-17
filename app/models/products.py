@@ -1,41 +1,61 @@
 
-from flask import jsonify, request, Blueprint
+from flask import request, jsonify, Blueprint
+from app.utils import (
+    get_id,
+    validate_category,
+    validate_product_name,
+    validate_quantity,
+    validate_unitcost
+)
 
 
 class Product:
     """ stores all the products in the store """
 
-    
     def __init__(self, **kwargs):
-        self.product_name = kwargs.get("product_name")
-        self.product_category = kwargs.get("product_category")
-        self.quantity = kwargs.get("quantity") 
-        self.unit_cost = kwargs.get("unit_cost")
-        self.date_added = kwargs.get("date_added")   
+          
         self.products = [
             {
-                "product_id": 1, 
-                "product_name":"Lg Flat Screen", 
-                "product_category": "Electronics",
-                "quantity":545, 
-                "unit_cost":230000, 
-                "date_added": "23,09.2017"
-            },
-            {
-                "product_id": 2, 
-                "product_name":"Omo", 
-                "product_category": "Detergents",
-                "quantity":120, 
-                "unit_cost":2300, 
-                "date_added": "23,09.2017"
+                "product_id": 1,
+                "product_name":"Iphone",
+                "quantity": 345,
+                "unit_cost":2300000,
+                "category":"Electronics",
             }
         ]
     
+
+    
+    def add_product(self, **items):
+        """ adds products to the store """
+        items = request.get_json()
+        print(items)
+        
+        # validate data
+        valid_name = validate_product_name(items.get("product_name"))
+        valid_category = validate_category(items.get("product_category"))
+        valid_quantity = validate_quantity(items.get("quantity"))
+        valid_unitcost = validate_unitcost(items.get("unit_cost"))
+        # prepare product for addition
+        product = dict(
+            product_id = get_id(self.products),
+            product_name =valid_name,
+            product_category = valid_category,
+            quantity = valid_quantity,
+            unit_cost = valid_unitcost
+        )
+        if product in self.products:
+            message = {"message":"product already added"}
+            self.get_products()
+            return message
+        self.products.append(product)
+        return self.products
+
     def get_products(self):
+        """ returns all products in store """
         if len(self.products) == 0:
-            # return jsonify({"message": "no products added yet."}), 404
             message = {"mesage": "no products have been added"}
             return message
-        else:
-            # return jsonify(self.products), 200
-            return self.products
+        return self.products
+
+    

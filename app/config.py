@@ -1,3 +1,4 @@
+import datetime
 import os
 import secrets
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -8,6 +9,8 @@ class BaseConfig:
     DEBUG = False
     TESTING = False
     SECRET_KEY = secrets.token_hex(45)
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=7)
+    JWT_TOKEN_LOCATION = ['cookies']
 
 
 class DevelopmentConfig(BaseConfig):
