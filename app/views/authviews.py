@@ -20,24 +20,19 @@ def login():
     auth = request.get_json()
     username = auth.get("username")
     password = auth.get("password")
-
-    if not username and not password:
-        return jsonify({"message":"enter your credentials"}), 401
-
     access_token = create_access_token(identity=username)
 
-    if username == admin_user.username and password == admin_user.password:
-        is_admin = admin_user.is_admin        
-        return jsonify({"message":"logged in as admin", "admin":is_admin, "access_token": access_token}), 200
+    if not username and not password:
+        response = {"message":"enter your credentials"}, 401    
 
-    if username == admin_user.username and password != admin_user.password:
-        return jsonify({"message":"Invalid username/password"}), 401
+    if username == admin_user.username  and password == admin_user.password:     
+        response = {"message":"logged in as admin", \
+                        "access_token": access_token}, 200
 
-    # authenticate attendant
-    if username == attendant.username and password == attendant.password:
-        # create a token here
-        is_attendant = attendant.is_admin
-        return jsonify({"message":"logged in as attendant", "admin":is_attendant, "access_token": access_token}), 200
+    elif username == attendant.username and password == attendant.password:
+        response = {"message":"logged in as attendant",\
+                        "access_token": access_token}, 200
+    else:
+        response = ({"message":"Invalid username/password"} , 401)
 
-    if username == attendant.username and password != attendant.password:
-        return jsonify({"message":"Invalid username/password"}), 401
+    return jsonify(response)
