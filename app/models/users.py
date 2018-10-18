@@ -13,6 +13,7 @@ def validate_username(username):
 
         if username.startswith(string.digits):
             raise ValueError("Username cannot start with a number")
+        return username
 
 class User:
     """ stores user details """
