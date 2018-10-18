@@ -12,6 +12,7 @@ install:
 
 script:
   - python3 -m pytest -v --cov app/tests --cov-report term-missing
+  - codeclimate-test-reporter --file .coverage
 
   
 
