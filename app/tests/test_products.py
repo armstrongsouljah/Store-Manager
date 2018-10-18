@@ -2,7 +2,7 @@ import json
 import unittest
 
 from flask import request
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token
 
 from app import app, create_app_environment, jwt
 from app.config import BaseConfig
@@ -15,10 +15,10 @@ class TestProducts(unittest.TestCase):
     def setUp(self):
         self.app = app
         self.app = create_app_environment('testing')
-        # self.app.config['JWT_TOKEN_LOCATION'] = BaseConfig.JWT_TOKEN_LOCATION
+        self.app.config['SECRET_KEY'] = BaseConfig.SECRET_KEY
         self.app.register_blueprint(bp, url_prefix='/api/v1')
         self.product_obj = Product()
-        self.jwt = jwt
+        self.jwt = JWTManager(self.app)
         self.products  = self.product_obj.products
         self.client = self.app.test_client(self)
         self.product_uri = 'api/v1/products'
@@ -63,26 +63,28 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(404, data[-1], msg="Must equal 404")
        
     def test_admin_can_add_product(self): 
-        # token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1Mzk3NzU0OTUsIm5iZiI6MTUzOTc3NTQ5NSwianRpIjoiZTMwNzhhZDItY2YzYy00YTc4LTlhMTAtMWRlODllZjgzZjliIiwiZXhwIjoxNTQwMzgwMjk1LCJpZGVudGl0eSI6ImFybXN0cm9uZyIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.5OnHbfnBe7U7r0j46LC3-1MvitUEbBUHYvfZ_DpqnAg"      
-        res = self.client.post(
-            self.product_uri,
-            content_type='application/json',
-            # headers={'Authorization':f'Bearer {token}'},
-            data=json.dumps(self.sample_product)
-        )
-        # print(res.data)
-        print(res.status_code)
-        self.product_obj.get_products()  
-        self.assertEqual(200, res.status_code)
+        with self.app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+            self.assertEqual(200, res.status_code)
 
-    def test_admin_can_add_valid_category(self):
-        self.sample_product["product_category"] = 23233
-        res = self.client.post(
-            self.product_uri,
-            content_type='application/json',
-            # headers={'Authorization':f'Bearer {token}'},
-            data=json.dumps(self.sample_product)
-        )
+    def test_admin_can_add_valid_category(self):        
+        with self.app.app_context():
+            self.sample_product["product_category"] = 23233
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
         # print(res.data)
         print(res.status_code)
         self.product_obj.get_products()  
@@ -90,12 +92,15 @@ class TestProducts(unittest.TestCase):
 
 
     def test_admin_dont_add_empty_product(self):
-        res = self.client.post(
-            self.product_uri,
-            content_type='application/json',
-            # headers={'Authorization':f'Bearer {token}'},
-            data=json.dumps(self.empty_product)
-        )
+        with self.app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}   
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.empty_product)
+            )
         self.assertEqual(500, res.status_code)
         
         

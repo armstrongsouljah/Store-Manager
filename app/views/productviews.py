@@ -19,9 +19,14 @@ def get_products():
     return jsonify(response)
 
 @bp.route('/products', methods=['POST'])
+@jwt_required
 def products_add():
-    response = product_model.add_product()
-    return jsonify(response)
+    user = get_jwt_identity()
+    if user == 'admin':
+        response = product_model.add_product()
+        return jsonify(response), 200
+    return jsonify(message="Acess denied for non admins"), 401
+
 
 @bp.route('/products/<int:productId>')
 def get_product(productId):
