@@ -19,10 +19,7 @@ def get_products():
     return jsonify(response)
 
 @bp.route('/products', methods=['POST'])
-# @jwt_required
 def products_add():
-    # current_user = get_jwt_identity()
-    # if current_user:
     response = product_model.add_product()
     return jsonify(response)
 
@@ -31,18 +28,3 @@ def get_product(productId):
     response = product_model.get_product(productId)
     return jsonify(response)
 
-# for later
-@bp.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-
-    sample_user = User(1,"armstrong",True, "armstrong")
-    if username !=sample_user.username and password != sample_user.password:
-        return jsonify({"Message": "Bad username or password"})
-        
-    admin = sample_user.admin
-    access_token = {'token':create_access_token(identity=username), 'admin':admin}
-    
-    return jsonify(access_token), 200

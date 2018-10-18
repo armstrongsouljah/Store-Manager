@@ -1,12 +1,14 @@
-from flask import request
 import json
 import unittest
+
+from flask import request
 from flask_jwt_extended import JWTManager
-from app.models.products import Product
-from app import create_app_environment, app
-from app.utils import bp
-from app import jwt
+
+from app import app, create_app_environment, jwt
 from app.config import BaseConfig
+from app.models.products import Product
+from app.utils import bp
+
 
 class TestProducts(unittest.TestCase):
     
@@ -102,8 +104,3 @@ class TestProducts(unittest.TestCase):
         self.app = None
         self.product_obj = None
         self.client = None
-
-
-
-    
-

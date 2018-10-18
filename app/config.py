@@ -9,8 +9,10 @@ class BaseConfig:
     DEBUG = False
     TESTING = False
     SECRET_KEY = secrets.token_hex(45)
-    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=7)
-    JWT_TOKEN_LOCATION = ['cookies']
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=24)
+    JWT_TOKEN_LOCATION = ['headers']
+    JWT_HEADER_NAME = 'Authorization'
+    JWT_HEADER_TYPE = 'Bearer'
 
 
 class DevelopmentConfig(BaseConfig):
