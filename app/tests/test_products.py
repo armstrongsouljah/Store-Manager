@@ -90,6 +90,55 @@ class TestProducts(unittest.TestCase):
         self.product_obj.get_products()  
         self.assertEqual(500, res.status_code)
 
+    def test_admin_can_add_valid_product_name(self):        
+        with self.app.app_context():
+            self.sample_product["product_name"] = 23233
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+        # print(res.data)
+        print(res.status_code)
+        self.product_obj.get_products()  
+        self.assertEqual(500, res.status_code)
+    
+    def test_admin_can_add_valid_unitcost(self):        
+        with self.app.app_context():
+            self.sample_product["unit_cost"] = 0
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+        # print(res.data)
+        print(res.status_code)
+        self.product_obj.get_products()  
+        self.assertEqual(500, res.status_code)
+
+    def test_admin_can_add_valid_quantity(self):        
+        with self.app.app_context():
+            self.sample_product["quantity"] = 0
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+        # print(res.data)
+        print(res.status_code)
+        self.product_obj.get_products()  
+        self.assertEqual(500, res.status_code)
+    
+
 
     def test_admin_dont_add_empty_product(self):
         with self.app.app_context():
