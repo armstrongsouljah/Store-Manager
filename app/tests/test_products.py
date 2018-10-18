@@ -55,7 +55,7 @@ class TestProducts(unittest.TestCase):
 
     def test_cannot_get_non_existent_id(self):
         id = 3
-        self.product_uri = "http://localhost:5400/api/v1/products/%d" %id
+        self.product_uri = "api/v1/products/%d" %id
         res = self.client.get(self.product_uri)
         print(res.data)
         data = json.loads(res.data)
@@ -108,7 +108,7 @@ class TestProducts(unittest.TestCase):
     
     def test_admin_can_add_valid_unitcost(self):        
         with self.app.app_context():
-            self.sample_product["unit_cost"] = 0
+            self.sample_product["unit_cost"] = 'klk'
             token = create_access_token('admin')
             headers = {'Authorization':f'Bearer {token}'}
             res = self.client.post(
@@ -124,7 +124,7 @@ class TestProducts(unittest.TestCase):
 
     def test_admin_can_add_valid_quantity(self):        
         with self.app.app_context():
-            self.sample_product["quantity"] = 0
+            self.sample_product["quantity"] = 'jj'
             token = create_access_token('admin')
             headers = {'Authorization':f'Bearer {token}'}
             res = self.client.post(

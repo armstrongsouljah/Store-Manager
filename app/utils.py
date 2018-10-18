@@ -32,11 +32,13 @@ def validate_id(id):
         raise TypeError("Id should be a number")
     return id
 
+def validate_type(item, type):
+    if not isinstance(item, type):
+        raise TypeError(f"item should be of type {type.__class__}")
+    return True
+
 def validate_product_name(name):
-    if not name:
-        raise ValueError("Name can't be blank")
-    if name and not isinstance(name, str):
-        raise TypeError("Name must be a string")
+    validate_type(name, str)
     if name and name =="" and name ==" ":
         raise ValueError("Name can't be spaces")
     return name
@@ -51,8 +53,6 @@ def validate_category(category):
     return category
     
 def validate_quantity(quantity):
-    if not quantity:
-          raise ValueError("No quantity added")
     if quantity and not isinstance(quantity, int):
           raise TypeError("quntity must be integer")
     if quantity and quantity == 0:
@@ -62,14 +62,9 @@ def validate_quantity(quantity):
     return quantity
 
 def validate_unitcost(unitcost):
-    if not unitcost:
-          raise ValueError("No unitcost added")
-    if unitcost and not isinstance(unitcost, int):
-          raise TypeError("unitcost must be integer")
-    if unitcost and unitcost == 0:
-          raise ValueError("Invalid unitcost entered")
-    if unitcost and unitcost < 0:
-          raise ValueError("unitcost cannot be negative")
+    validate_type(unitcost, int)
+    if unitcost and unitcost <= 0:
+          raise ValueError("Invalid unitcost entered")    
     return unitcost
 
 def get_id(list):
@@ -114,24 +109,19 @@ welcome_message = """
 """
 # sales validations
 def validate_attendant(name):
-    if not name:
-        raise ValueError("Name can't be empty")
-    if not isinstance(name, str):
+    if name and not isinstance(name, str):
         raise TypeError("Name mus be a string")
     return name
 
 def validate_products(products):
-    if not products:
-        raise ValueError("Name can't be empty")
-    if not isinstance(products, list):
+    if products and not isinstance(products, list):
         raise TypeError("Name mus be a list")
     return products
 
 def validate_amount(amount):
-    if not amount:
-        raise ValueError("Name can't be empty")
-    if not isinstance(amount, int):
+    if amount and not isinstance(amount, int):
         raise TypeError("Amount must be numbers")
-    if amount < 0:
+
+    if amount <= 0:
         raise ValueError("Invalid amount")
     return amount
