@@ -2,13 +2,21 @@ import datetime
 
 from flask import request
 
-from app.utils import get_id, validate_amount, validate_products, validate_attendant
+from app.utils import (get_id, validate_amount, validate_attendant,
+                       validate_id, validate_products)
 
 
 class Sale:
     """ stores all the sales made in the store """
     def __init__(self):
-        self.sales = []
+        self.sales = [
+            { 'sale_id':1,
+                'attendant_name':"Mwesigye",
+                'products_sold':[{"milk":12000}, {"chicken":18000}],
+                'amount_made':30000,
+                'time_of_sale':"23, 9, 2018"
+            }
+        ]
     
     def get_all_sales(self):
         if len(self.sales) == 0:
@@ -34,3 +42,13 @@ class Sale:
             return  message, 400
         self.sales.append(sale_record)
         return self.sales
+
+    def get_sale_by_id(self, id):
+        """ gets a sales record if that id exists """
+        # id = validate_id(id)
+
+        for record in self.sales:
+            if record["sale_id"] == id:
+                response = record, 200
+                return response
+            return "Record with that id doesnot exist!", 404

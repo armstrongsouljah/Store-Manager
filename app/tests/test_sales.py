@@ -114,4 +114,13 @@ class TestSales(unittest.TestCase):
             print(res.status)
             self.assertEqual(401, res.status_code)
 
+    def test_admin_attendant_get_sale_by_id(self):
+        id = 7        
+        res  = self.client.get(
+             '/api/v1/sales/%d' %id,
+             content_type='application/json'
+        )
+        print(res.data)
+        data = json.loads(res.data)
+        self.assertEqual(404, data[-1])
     

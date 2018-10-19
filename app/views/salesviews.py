@@ -17,11 +17,6 @@ def get_sales():
     return jsonify(message="Access denied"), 401
 
 
-@bp.route('/sales/<int:sales_id>')
-def get_sale(sales_id):
-    pass
-
-
 @bp.route('/sales', methods =['POST'])
 @jwt_required
 def add_sale():
@@ -30,3 +25,8 @@ def add_sale():
         response = sales_obj.add_sale()
         return jsonify(response), 200
     return jsonify({"message":"Access only for attendants"}), 401
+
+@bp.route('/sales/<int:sale_id>')
+def get_sale(sale_id):
+    response = sales_obj.get_sale_by_id(sale_id)
+    return jsonify(response)
