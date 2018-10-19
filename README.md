@@ -6,12 +6,13 @@ Store Manager is a web application that helps store owners manage sales and prod
 ## Heroku Endpoints
 |Endpoint|Link|
 |:---:|:---|
-|Index Route|[index](https://soultech-store.herokuapp.com)|
+|Index Route|[/](https://soultech-store.herokuapp.com)|
+|`Products`*POST*|[/api/v1/login](https://soultech-store.herokuapp.com/api/v1/login)|
 |`Products`*GET*|[/api/v1/products](https://soultech-store.herokuapp.com/api/v1/products)|
-|`Products`*GET* Item|[/api/v1/products/1](https://soultech-store.herokuapp.com/api/v1/products/1)|
-|`Products` *POST*|[add-products](https://soultech-store.herokuapp.com/api/v1/products)|
+|`Products`*GET* Item|[/api/v1/products/product_id](https://soultech-store.herokuapp.com/api/v1/products/1)|
+|`Products` *POST*|[/api/v1/products](https://soultech-store.herokuapp.com/api/v1/products)|
 |`Sales` *GET* Only Admin|[/api/v1/sales](https://soultech-store.herokuapp.com/api/v1/sales)|
-|`Sales` *GET* Admin/Attendant|[/api/v1/sales/1](https://soultech-store.herokuapp.com/api/v1/1)|
+|`Sales` *GET* Admin/Attendant|[/api/v1/sales/sale_id](https://soultech-store.herokuapp.com/api/v1/sales/1)|
 |`Sales` *POST* Only Attendant|[/api/v1/sales](https://soultech-store.herokuapp.com/api/v1/sales)|
 
 
