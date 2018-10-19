@@ -8,24 +8,6 @@ from app.config import DevelopmentConfig
 dev = DevelopmentConfig()
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
  
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.args.get('token')
-        if not token:
-            return jsonify({'message':'Token is missing'}), 403
-
-        try:
-            data = jwt.decode(token,
-            dev.SECRET_KEY)
-        except Exception  as E:
-            return jsonify({
-            'message':'TOken is missing or invalid',
-      }), 403
-        return f(*args, **kwargs)
-    return decorated
-    
-
 
 def validate_id(id):
     if not isinstance(id, int):
@@ -102,7 +84,8 @@ welcome_message = """
          <div class='main-content'>
            <h2>Store Manager</h2>
               Currently supported endpoints <br>
-              <a href='/api/v1/products'>products</a>
+              <a href='https://soultech-store.herokuapp.com/api/v1/products'>Products</a> <br/>
+              <a href='https://soultech-store.herokuapp.com/api/v1/sales'>Sales</a>
          </div>
        </body>
      </html>
@@ -127,9 +110,10 @@ def validate_amount(amount):
     return amount
 
 def check_exists(item_id, item_list, id):
-        _item = [item for item in item_list if item[item_id]==id]
-        if _item:
-            message = _item
-        else:
-            message = {"msg":"Item not found"}
-        return message 
+    
+    _item = [item for item in item_list if item[item_id]==id]
+    if _item:
+        message = _item
+    else:
+        message = {"msg":"Item not found"}
+    return message 

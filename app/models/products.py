@@ -13,10 +13,10 @@ from app.utils import (
 
 class Product:
     """ stores all the products in the store """
-
+    id = None
     def __init__(self, **kwargs):
           
-        self.products = []  
+        self.products = []
     
     def add_product(self, **items):
         """ adds products to the store """
@@ -50,15 +50,12 @@ class Product:
             return message
         return self.products
 
-             
-
-    def get_product(self, id):
+    def get_product(self, product_id):
         """ returns a single product based off the supplied id """
-        id = validate_id(id)
-        message = None
+        product_id = validate_id(product_id)
         if len(self.products) == 0:
             message = {"msg":"product store is empty"}
         if len(self.products) > 0:
-            message = check_exists("product_id", self.products, id)
+            message = check_exists("product_id", self.products, product_id)
         return message
 
