@@ -30,6 +30,5 @@ def products_add():
 
 @bp.route('/products/<int:productId>')
 def get_product(productId):
-    response = product_model.get_product(productId)
-    return jsonify(response)
+    return jsonify(product_model.get_product(productId))
 
