@@ -15,17 +15,7 @@ class Product:
 
     def __init__(self, **kwargs):
           
-        self.products = [
-            {
-                "product_id": 1,
-                "product_name":"Iphone",
-                "quantity": 345,
-                "unit_cost":2300000,
-                "category":"Electronics",
-            }
-        ]
-    
-
+        self.products = []  
     
     def add_product(self, **items):
         """ adds products to the store """
@@ -56,15 +46,24 @@ class Product:
         """ returns all products in store """
         if len(self.products) == 0:
             message = {"mesage": "no products have been added"}
-            return message,  404
-        return self.products, 200
+            return message
+        return self.products
+
+    def check_exists(self, id):
+        product = [item for item in self.products if item["product_id"]==id]
+        if product:
+            message = product
+        else:
+            message = {"msg":"Product not found"}
+        return message          
 
     def get_product(self, id):
         """ returns a single product based off the supplied id """
         id = validate_id(id)
+        message = None
+        if len(self.products) == 0:
+            message = {"msg":"product store is empty"}
+        if len(self.products) > 0:
+            message = self.check_exists(id)
+        return message
 
-        for product in self.products:
-            if product["product_id"] == id:
-                return product, 200
-            return "Product not found", 404
- 

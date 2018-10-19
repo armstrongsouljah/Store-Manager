@@ -9,20 +9,13 @@ from app.utils import (get_id, validate_amount, validate_attendant,
 class Sale:
     """ stores all the sales made in the store """
     def __init__(self):
-        self.sales = [
-            { 'sale_id':1,
-                'attendant_name':"Mwesigye",
-                'products_sold':[{"milk":12000}, {"chicken":18000}],
-                'amount_made':30000,
-                'time_of_sale':"23, 9, 2018"
-            }
-        ]
+        self.sales = []
     
     def get_all_sales(self):
         if len(self.sales) == 0:
             message = {"message":"No sales records yet"}
-            return message, 404
-        return self.sales, 200
+            return message
+        return self.sales
 
     def add_sale(self):
         data = request.get_json()
@@ -43,12 +36,20 @@ class Sale:
         self.sales.append(sale_record)
         return self.sales
 
-    def get_sale_by_id(self, id):
-        """ gets a sales record if that id exists """
-        # id = validate_id(id)
+    def check_sale_exists(self, id):
+        sale = [item for item in self.sales if item["sale_id"]==id]
+        if sale:
+            message = sale
+        else:
+            message = {"msg":"sale not found"}
+        return message          
 
-        for record in self.sales:
-            if record["sale_id"] == id:
-                response = record, 200
-                return response
-            return "Record with that id doesnot exist!", 404
+    def get_sale_by_id(self, id):
+        """ returns a single product based off the supplied id """
+        id = validate_id(id)
+        message = None
+        if len(self.sales) == 0:
+            message = {"msg":"No sales records"}, 404
+        if len(self.sales) > 0:
+            message = self.check_sale_exists(id)
+        return message

@@ -40,8 +40,7 @@ class TestProducts(unittest.TestCase):
 
     def test_admin_or_attendant_can_get_products(self):
         res = self.client.get(self.product_uri)
-        data = json.loads(res.data)
-        self.assertEqual(200, data[-1], msg="found product")
+        self.assertEqual(200, res.status_code, msg="found product")
 
     def test_can_get_specific_product(self):
         id = 1
@@ -50,8 +49,7 @@ class TestProducts(unittest.TestCase):
             'api/v1/products/%d' %id,
             content_type='application/json'
         )
-        data = json.loads(res.data)
-        self.assertEqual(200, data[-1], msg="found product")
+        self.assertEqual(200, res.status_code, msg="found product")
 
     def test_cannot_get_non_existent_id(self):
         id = 3
@@ -60,7 +58,7 @@ class TestProducts(unittest.TestCase):
         print(res.data)
         data = json.loads(res.data)
         print(data)
-        self.assertEqual(404, data[-1], msg="Must equal 404")
+        self.assertEqual("Product not found", data.get("msg"), msg="product not found")
        
     def test_admin_can_add_product(self): 
         with self.app.app_context():
