@@ -10,9 +10,11 @@ env:
 
 install:
   - "pip install -r requirements.txt"
+  - "pip install coveralls"
 
 script:
   - python3 -m pytest -v --cov app/tests --cov-report term-missing
+  - "coverage report"
 
   
 
