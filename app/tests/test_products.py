@@ -58,7 +58,7 @@ class TestProducts(unittest.TestCase):
         print(res.data)
         data = json.loads(res.data)
         print(data)
-        self.assertEqual("Product not found", data.get("msg"), msg="product not found")
+        self.assertEqual("Item not found", data.get("msg"), msg="product not found")
        
     def test_admin_can_add_product(self): 
         with self.app.app_context():

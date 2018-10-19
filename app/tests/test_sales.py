@@ -122,5 +122,5 @@ class TestSales(unittest.TestCase):
         )
         print(res.data)
         data = json.loads(res.data)
-        self.assertEqual(404, data[-1])
+        self.assertEqual("No sales records", data.get("msg"))
     

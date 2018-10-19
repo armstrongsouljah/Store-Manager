@@ -125,3 +125,11 @@ def validate_amount(amount):
     if amount <= 0:
         raise ValueError("Invalid amount")
     return amount
+
+def check_exists(item_id, item_list, id):
+        _item = [item for item in item_list if item[item_id]==id]
+        if _item:
+            message = _item
+        else:
+            message = {"msg":"Item not found"}
+        return message 

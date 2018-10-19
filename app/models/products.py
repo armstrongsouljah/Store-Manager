@@ -1,6 +1,7 @@
 
 from flask import request, jsonify, Blueprint
 from app.utils import (
+    check_exists,
     get_id,
     validate_category,
     validate_product_name,
@@ -49,13 +50,7 @@ class Product:
             return message
         return self.products
 
-    def check_exists(self, id):
-        product = [item for item in self.products if item["product_id"]==id]
-        if product:
-            message = product
-        else:
-            message = {"msg":"Product not found"}
-        return message          
+             
 
     def get_product(self, id):
         """ returns a single product based off the supplied id """
@@ -64,6 +59,6 @@ class Product:
         if len(self.products) == 0:
             message = {"msg":"product store is empty"}
         if len(self.products) > 0:
-            message = self.check_exists(id)
+            message = check_exists("product_id", self.products, id)
         return message
 
