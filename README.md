@@ -53,3 +53,13 @@ Store Manager is a web application that helps store owners manage sales and prod
 ### Running the app
 
 `$ python3 run.py`
+
+### Documentation
+[view it here](https://documenter.getpostman.com/view/5140285/RWguwbvV)
+
+### CREDITS
+- Much appreciation goes to my fellow bootcamp candidates for your tireless efforts in helping me where I got stuck
+- Lastly, thank you Andela for  the `Levelup35` program.
+## Author
+__Armstrong Souljah__
+
