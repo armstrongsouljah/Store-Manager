@@ -28,5 +28,5 @@ def add_sale():
 
 @bp.route('/sales/<int:sale_id>')
 def get_sale(sale_id):
-    response = sales_obj.get_sale_by_id(sale_id)
-    return jsonify(response)
+    record = sales_obj.get_sale_by_id(sale_id)
+    return jsonify(record)
