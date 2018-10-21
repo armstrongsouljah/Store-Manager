@@ -3,12 +3,14 @@ from flask import request, jsonify, Blueprint
 from app.utils import (
     check_exists,
     get_id,
+    get_collection,
     validate_category,
     validate_product_name,
     validate_quantity,
     validate_unitcost,
     validate_id
 )
+
 
 
 class Product:
@@ -38,17 +40,13 @@ class Product:
         )
         if product in self.products:
             message = {"message":"product already added"}
-            self.get_products()
-            return message
         self.products.append(product)
-        return self.products
+        message = {"msg":"Product was created successfully!"}
+        return message
 
+    @property
     def get_products(self):
-        """ returns all products in store """
-        if len(self.products) == 0:
-            message = {"mesage": "no products have been added"}
-            return message
-        return self.products
+        return get_collection(self.products)
 
     def get_product(self, product_id):
         """ returns a single product based off the supplied id """
@@ -59,3 +57,15 @@ class Product:
             message = check_exists("product_id", self.products, product_id)
         return message
 
+    def update_product_details(self, product_id):
+        """ check for the product in store """
+        data = request.get_json()
+        unit_cost = validate_unitcost(data.get("unit_cost"))
+        
+        if len(self.products) == 0:
+            message = {"msg":"No products to edit"}
+        if len(self.products) > 0:
+            product = [item for item in self.products if item["product_id"] == product_id]
+            product[0]['unit_cost'] = unit_cost
+            message = {"msg":"updated successfully"}
+        return message

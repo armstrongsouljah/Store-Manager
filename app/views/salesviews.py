@@ -12,7 +12,7 @@ sales_obj = Sale()
 def get_sales():
     user = get_jwt_identity()
     if user == 'admin':
-        response = sales_obj.get_all_sales()
+        response = sales_obj.get_all_sales
         return jsonify(response)
     return jsonify(message="Access denied"), 401
 

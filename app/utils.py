@@ -117,3 +117,12 @@ def check_exists(item_id, item_list, id):
     else:
         message = {"msg":"Item not found"}
     return message 
+
+# returns a collection of items
+def get_collection(item_list):
+    """ Returns items to the user based on the list supplied """
+    if len(item_list) == 0:
+        response = {"msg":"No records yet."}
+    else:
+        response = item_list
+    return response

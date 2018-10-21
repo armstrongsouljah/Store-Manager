@@ -2,7 +2,7 @@ import datetime
 
 from flask import request
 
-from app.utils import (check_exists, get_id, validate_amount, validate_attendant,
+from app.utils import (check_exists, get_id, get_collection, validate_amount, validate_attendant,
                        validate_id, validate_products)
 
 
@@ -11,11 +11,9 @@ class Sale:
     def __init__(self):
         self.sales = []
     
+    @property
     def get_all_sales(self):
-        if len(self.sales) == 0:
-            message = {"message":"No sales records yet"}
-            return message
-        return self.sales
+        return get_collection(self.sales)
 
     def add_sale(self):
         data = request.get_json()
@@ -34,7 +32,8 @@ class Sale:
             message = {"msg":"sale record already added"}
             return  message, 400
         self.sales.append(sale_record)
-        return self.sales        
+        message = {"msg":"Sale recorded successfully"}
+        return message       
 
     def get_sale_by_id(self, id):
         """ returns a single product based off the supplied id """

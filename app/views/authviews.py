@@ -13,7 +13,7 @@ from flask_jwt_extended import (
 dev = DevelopmentConfig()
 admin_user = User(1, 'admin', True, 'password')
 attendant = User(2,'attendant', False, 'password')
-token_expire_at = datetime.timedelta(minutes=75)
+token_expire_at = datetime.timedelta(minutes=700)
 
 @bp.route('/login', methods=["POST"])
 def login():

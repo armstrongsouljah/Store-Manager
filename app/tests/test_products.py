@@ -57,7 +57,7 @@ class TestProducts(unittest.TestCase):
         res = self.client.get(self.product_uri)
         print(res.data)
         data = json.loads(res.data)
-        print(data)
+        # print(data)
         self.assertEqual("Item not found", data.get("msg"), msg="product not found")
        
     def test_admin_can_add_product(self): 
@@ -85,7 +85,7 @@ class TestProducts(unittest.TestCase):
             )
         # print(res.data)
         print(res.status_code)
-        self.product_obj.get_products()  
+        # self.product_obj.get_products()  
         self.assertEqual(500, res.status_code)
 
     def test_admin_can_add_valid_product_name(self):        
@@ -101,7 +101,7 @@ class TestProducts(unittest.TestCase):
             )
         # print(res.data)
         print(res.status_code)
-        self.product_obj.get_products()  
+        # self.product_obj.get_products()  
         self.assertEqual(500, res.status_code)
     
     def test_admin_can_add_valid_unitcost(self):        
@@ -116,8 +116,7 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.sample_product)
             )
         # print(res.data)
-        print(res.status_code)
-        self.product_obj.get_products()  
+        print(res.status_code)  
         self.assertEqual(500, res.status_code)
 
     def test_admin_can_add_valid_quantity(self):        
@@ -132,8 +131,7 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.sample_product)
             )
         # print(res.data)
-        print(res.status_code)
-        self.product_obj.get_products()  
+        print(res.status_code) 
         self.assertEqual(500, res.status_code)
     
 
@@ -149,6 +147,27 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.empty_product)
             )
         self.assertEqual(500, res.status_code)
+    
+    def test_admin_can_edit_product(self):
+        with self.app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}   
+            self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+            update = self.client.put(
+                '/api/v1/products/1',
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps({"unit_cost":2500000})
+            )
+            data = json.loads(update.data)
+        self.assertEqual(data.get("msg"), "updated successfully")
+        self.assertEqual(201, update.status_code)
+
         
         
     
