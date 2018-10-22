@@ -39,6 +39,7 @@ class Product:
             quantity = valid_quantity,
             unit_cost = valid_unitcost
         )
+        
         if product in self.products:
             message = {"message":"product already added"}
         self.products.append(product)
