@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:20vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 80vw;
     background: #a7ffeb;
 
 }

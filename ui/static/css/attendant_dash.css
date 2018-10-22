@@ -39,7 +39,7 @@ color: #f2f2f2;
 
 #side-menu{
     
-    flex:2;
+    flex-basis: 20vw;
     background: #90caf9 ;
     padding-top: 65px;
 }
@@ -48,7 +48,7 @@ color: #f2f2f2;
     
 }
 #main-content{
-    flex:8;
+    flex-basis:80vw;
     padding-top: 65px;
     padding-right: 19px;
     padding-left: 19px;

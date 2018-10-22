@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
 
 }
@@ -50,11 +50,11 @@ li:hover{
     background: #f2f2f2;
     filter:opacity(.7);
     color:#333;
-    width:50vw;
+    width:60vw;
     margin:0 auto;
 }
 .input-field input{
-    width:90%;
+    width:100%;
     outline: none;
     border:none;
     border-bottom: 1px solid #006064 ;

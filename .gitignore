@@ -1,2 +1,7 @@
 *.code-workspace
 .vscode
+venv/
+app/
+__pycache__/
+.pytest_cache
+.coverage

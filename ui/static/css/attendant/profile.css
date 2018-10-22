@@ -15,13 +15,16 @@ body{
     flex-flow: row nowrap;
     height: 100vh;
 }
-
+#main-header{
+    margin-top: 9px;
+    text-align: center;
+}
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
 
 }
@@ -77,11 +80,6 @@ tbody tr:last-child a{
     padding: 8px;
     text-decoration: none;
 }
-tbody tr:last-child{
-    background: transparent;
-    height:38px;
-}
-
 
 /* small screens display */
 @media(max-width:680px){

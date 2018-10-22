@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
 
 }
@@ -41,7 +41,9 @@ li:hover{
 #header{
     text-align: center;
     font-size: 1.2em;
+    font-weight:bold;
     margin-bottom: 9px;
+
 }
 
 table{
@@ -70,6 +72,13 @@ tbody tr:last-child a{
 tbody tr:last-child{
     background: transparent;
     height:38px;
+    color:#fff;
+    margin-top: 9px;
+}
+caption{
+    font-weight:bold;
+    margin-bottom: 19px;
+    margin-top: 19px;
 }
 
 

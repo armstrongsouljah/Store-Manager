@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
     padding: 12px;
 
@@ -63,6 +63,9 @@ tbody tr:nth-child(even){
 tbody tr:nth-child(odd){
     background: #c5cae9 ;
 }
+td{
+    text-align: center;
+}
 #cart-header{
    margin-top: 5px;
    margin-bottom: 5px;
@@ -70,16 +73,32 @@ tbody tr:nth-child(odd){
 }
 input, select{
     width:100%;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     height:21px;
 }
 form{
-    background: #00bcd4;
-    opacity: .6;
-    padding: 7px;
+    background: #f2f2f2;
+    opacity: .8;
+    padding: 18px;
+}
+label{
+    font-weight: bold;
+}
+input[type="submit"]{
+    background: #64b5f6;
+    padding: 18px;
+    width:120px;
+    color: #f2f2f2;
+    border:none;
+    outline: none;
 }
 caption input{
-    height: 32px;
+    width:60%;
+    margin: 0 auto;
+    height:19px;
+    padding: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 
 /* small screens display */

@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
 
 }
@@ -77,12 +77,15 @@ tbody tr:last-child a{
     padding: 8px;
     text-decoration: none;
 }
-tbody tr:last-child{
-    background: transparent;
-    height:38px;
+
+caption input{
+    width:60%;
+    margin: 0 auto;
+    height:19px;
+    padding: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
-
-
 /* small screens display */
 @media(max-width:680px){
     body{

@@ -17,11 +17,11 @@ body{
 }
 
 #side-menu{
-    flex-basis:30vw;
+    flex-basis:10vw;
     background: #1de9b6 ;
 }
 #main-content{
-    flex-basis: 70vw;
+    flex-basis: 90vw;
     background: #a7ffeb;
 
 }
@@ -41,7 +41,8 @@ li:hover{
 #header{
     text-align: center;
     font-size: 1.2em;
-    margin-bottom: 9px;
+    margin-bottom: 19px;
+    margin-top: 21px;
 }
 
 table{
