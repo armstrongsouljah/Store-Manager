@@ -42,3 +42,14 @@ def product_modify(productId):
         return jsonify(response),201
     return jsonify(response="Admin access only"), 401
 
+
+@bp.route('/products/<int:productId>', methods=['DELETE'])
+@jwt_required
+def delete_product(productId):
+    user = get_jwt_identity()
+    if user == 'admin':
+        response = product_model.delete_from_store(productId)
+    else:
+        response = {"msg":"Only admins can delete a product"}, 401
+    return jsonify(response)
+

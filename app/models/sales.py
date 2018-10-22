@@ -2,7 +2,7 @@ import datetime
 
 from flask import request
 
-from app.utils import (check_exists, get_id, get_collection, validate_amount, validate_attendant,
+from app.utils import (check_exists, get_item_id, get_collection, is_empty, validate_amount, validate_attendant,
                        validate_id, validate_products)
 
 
@@ -22,7 +22,7 @@ class Sale:
         attendant = validate_attendant(data.get("attendant_name"))
         
         sale_record = dict(
-            sale_id = get_id(self.sales),
+            sale_id = get_item_id('sale_id', self.sales),
             attendant_name = attendant,
             products_sold = products,
             amount_made = amount,
@@ -39,7 +39,7 @@ class Sale:
         """ returns a single product based off the supplied id """
         id = validate_id(id)
         message = None
-        if len(self.sales) == 0:
+        if is_empty(self.sales):
             message = {"msg":"No sales records"}
         if len(self.sales) > 0:
             message = check_exists("sale_id", self.sales, id)

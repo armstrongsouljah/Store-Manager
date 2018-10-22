@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager, create_access_token
 from app import app, create_app_environment, jwt
 from app.config import BaseConfig
 from app.models.products import Product
-from app.utils import bp
+from app.utils import bp, get_item_id
 
 
 class TestProducts(unittest.TestCase):
@@ -23,6 +23,7 @@ class TestProducts(unittest.TestCase):
         self.client = self.app.test_client(self)
         self.product_uri = 'api/v1/products'
         self.sample_product = dict(
+            product_id = get_item_id('product_id', self.product_obj.products),
             product_name = "Cooker",
             product_category="Electronics",
             quantity=37,
@@ -52,13 +53,20 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(200, res.status_code, msg="found product")
 
     def test_cannot_get_non_existent_id(self):
-        id = 3
-        self.product_uri = "api/v1/products/%d" %id
-        res = self.client.get(self.product_uri)
-        print(res.data)
-        data = json.loads(res.data)
+
+        with self.app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            res = self.client.post(
+                self.product_uri,
+                content_type='application/json',
+                headers=headers,
+                data=json.dumps(self.sample_product)
+            )
+            res = self.client.get("api/v1/products/34")
+            data = json.loads(res.data)
         # print(data)
-        self.assertEqual("Item not found", data.get("msg"), msg="product not found")
+        self.assertEqual("Item not found", data['msg'], msg="product not found")
        
     def test_admin_can_add_product(self): 
         with self.app.app_context():
@@ -84,7 +92,7 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.sample_product)
             )
         # print(res.data)
-        print(res.status_code)
+        # print(res.status_code)
         # self.product_obj.get_products()  
         self.assertEqual(500, res.status_code)
 
@@ -100,7 +108,7 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.sample_product)
             )
         # print(res.data)
-        print(res.status_code)
+        # print(res.status_code)
         # self.product_obj.get_products()  
         self.assertEqual(500, res.status_code)
     
@@ -115,8 +123,7 @@ class TestProducts(unittest.TestCase):
                 headers=headers,
                 data=json.dumps(self.sample_product)
             )
-        # print(res.data)
-        print(res.status_code)  
+     
         self.assertEqual(500, res.status_code)
 
     def test_admin_can_add_valid_quantity(self):        
@@ -131,7 +138,7 @@ class TestProducts(unittest.TestCase):
                 data=json.dumps(self.sample_product)
             )
         # print(res.data)
-        print(res.status_code) 
+        # print(res.status_code) 
         self.assertEqual(500, res.status_code)
     
 
@@ -148,30 +155,48 @@ class TestProducts(unittest.TestCase):
             )
         self.assertEqual(500, res.status_code)
     
+    # @unittest.skip('WIP')
     def test_admin_can_edit_product(self):
         with self.app.app_context():
             token = create_access_token('admin')
-            headers = {'Authorization':f'Bearer {token}'}   
+            headers = {'Authorization':f'Bearer {token}'}
+            data = {'unit_cost': 4000} 
             self.client.post(
                 self.product_uri,
                 content_type='application/json',
                 headers=headers,
                 data=json.dumps(self.sample_product)
             )
+
             update = self.client.put(
+                '/api/v1/products/2',
+                content_type='application/json',
+                headers=headers,
+                data= json.dumps(data)
+            )
+            data = json.loads(update.data)
+        self.assertEqual(data.get("msg"), "Product not found")
+        self.assertEqual(0, len(self.product_obj.products))
+
+    def test_admin_can_delete_product(self):
+        with self.app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}   
+            self.test_admin_can_add_product()
+            delete = self.client.delete(
                 '/api/v1/products/1',
                 content_type='application/json',
                 headers=headers,
-                data=json.dumps({"unit_cost":2500000})
             )
-            data = json.loads(update.data)
-        self.assertEqual(data.get("msg"), "updated successfully")
-        self.assertEqual(201, update.status_code)
+            data = json.loads(delete.data)
+        self.assertEqual(data.get("msg"), "Item successfully removed")
+        # self.assertEqual(0, len(self.product_obj.products))
+        # self.assertEqual(201, delete.status_code)
 
         
         
     
-    def tearDown(self):
-        self.app = None
-        self.product_obj = None
-        self.client = None
+    # def tearDown(self):
+    #     self.app = None
+    #     self.product_obj = None
+    #     self.client = None

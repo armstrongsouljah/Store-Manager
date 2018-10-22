@@ -49,9 +49,7 @@ def validate_unitcost(unitcost):
           raise ValueError("Invalid unitcost entered")    
     return unitcost
 
-def get_id(list):
-      length = len(list)
-      return length + 1
+
 
 welcome_message = """
    <!DOCTYPE html>
@@ -118,11 +116,32 @@ def check_exists(item_id, item_list, id):
         message = {"msg":"Item not found"}
     return message 
 
+def is_empty(item_list):
+    if len(item_list) == 0:
+        return True
+    return False
+
+
 # returns a collection of items
 def get_collection(item_list):
     """ Returns items to the user based on the list supplied """
-    if len(item_list) == 0:
+    if is_empty(item_list):
         response = {"msg":"No records yet."}
     else:
         response = item_list
     return response
+
+
+
+def get_id(list):
+      length = len(list)
+      return length + 1
+
+
+def get_item_id(item_id, item_list):
+        if not is_empty(item_list):
+            last_item = item_list[-1]
+            id = last_item.get(item_id) + 1
+        else:
+            id = 1
+        return id
