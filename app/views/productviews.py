@@ -15,7 +15,7 @@ user1 = User(1,"armstrong", True, "hello")
     
 @bp.route('/products', methods=['GET'])    
 def get_products():
-    response  = product_model.get_products()
+    response  = product_model.get_products
     return jsonify(response)
 
 @bp.route('/products', methods=['POST'])
@@ -31,4 +31,25 @@ def products_add():
 @bp.route('/products/<int:productId>')
 def get_product(productId):
     return jsonify(product_model.get_product(productId))
+
+
+@bp.route('/products/<int:productId>', methods=["PUT"])
+@jwt_required
+def product_modify(productId):
+    user = get_jwt_identity()
+    if user == 'admin':
+        response = product_model.update_product_details(productId)
+        return jsonify(response),201
+    return jsonify(response="Admin access only"), 401
+
+
+@bp.route('/products/<int:productId>', methods=['DELETE'])
+@jwt_required
+def delete_product(productId):
+    user = get_jwt_identity()
+    if user == 'admin':
+        response = product_model.delete_from_store(productId)
+    else:
+        response = {"msg":"Only admins can delete a product"}, 401
+    return jsonify(response)
 
