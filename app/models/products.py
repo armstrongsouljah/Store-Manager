@@ -1,17 +1,10 @@
 
-from flask import request, jsonify, Blueprint
-from app.utils import (
-    check_exists,
-    get_id,
-    get_item_id,
-    get_collection,
-    is_empty,
-    validate_category,
-    validate_product_name,
-    validate_quantity,
-    validate_unitcost,
-    validate_id
-)
+from flask import Blueprint, jsonify, request
+
+from app.utils import (check_exists, get_collection, get_id, get_item_id,
+                       is_empty, validate_category, validate_id,
+                       validate_product_name, validate_quantity,
+                       validate_unitcost)
 
 
 class Product:
@@ -68,12 +61,13 @@ class Product:
         if is_empty(self.products):
             message = {"msg": "No products in store"}
         else:
-            for item in self.products:
-                if item['product_id'] != product_id:
-                    message = {'msg': 'Product not found'}
-                else:                    
-                    item.update({'unit_cost': unit_cost})
-                    message = {'msg': 'Updated successfully'}
+            product = [item for item in self.products if item['product_id']==product_id]
+            if is_empty(product):
+                message ={'msg':'Item doesnot exist'}
+        
+            if not is_empty(product):
+                product[0]['unit_cost'] = unit_cost
+                message = {'msg':'Updated successfully'}
         return message
 
     def delete_from_store(self, product_id):
@@ -81,11 +75,12 @@ class Product:
         if is_empty(self.products):
             message = {"msg": "No products in store"}
         else:
-            for item in self.products:
-                if item['product_id'] != product_id:
-                    message = {'msg': 'Item doesnot exist'}                    
-                else:
-                    self.products.remove(item)
-                    message = {'msg':'Item successfully removed'}
-                    
+            item = [product for product in self.products if product['product_id']==product_id]
+
+            if is_empty(item):
+                message ={'msg':'Item doesnot exist'}
+        
+            if not is_empty(item):
+                self.products.remove(item[0])
+                message = {'msg':'Item removed successfully'}                                        
         return message

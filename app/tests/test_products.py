@@ -175,7 +175,7 @@ class TestProducts(unittest.TestCase):
                 data= json.dumps(data)
             )
             data = json.loads(update.data)
-        self.assertEqual(data.get("msg"), "Product not found")
+        self.assertEqual(data.get("msg"), "Updated successfully")
         self.assertEqual(0, len(self.product_obj.products))
 
     def test_admin_can_delete_product(self):
@@ -189,7 +189,7 @@ class TestProducts(unittest.TestCase):
                 headers=headers,
             )
             data = json.loads(delete.data)
-        self.assertEqual(data.get("msg"), "Item successfully removed")
+        self.assertEqual(data.get("msg"), "Item removed successfully")
         # self.assertEqual(0, len(self.product_obj.products))
         # self.assertEqual(201, delete.status_code)
 
