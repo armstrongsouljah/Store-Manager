@@ -56,31 +56,24 @@ class Product:
         """ check for the product in store """
         data = request.get_json()
         unit_cost = validate_unitcost(data.get("unit_cost"))       
-        # item_id = validate_id(product_id)
-        message = None
-        if is_empty(self.products):
-            message = {"msg": "No products in store"}
-        else:
-            product = [item for item in self.products if item['product_id']==product_id]
-            if is_empty(product):
-                message ={'msg':'Item doesnot exist'}
         
-            if not is_empty(product):
-                product[0]['unit_cost'] = unit_cost
-                message = {'msg':'Updated successfully'}
+        product = [item for item in self.products if item['product_id']==product_id]
+        if is_empty(product):
+            message ={'msg':'Item doesnot exist'}
+    
+        if not is_empty(product):
+            product[0]['unit_cost'] = unit_cost
+            message = {'msg':'Updated successfully'}
         return message
 
     def delete_from_store(self, product_id):
 
-        if is_empty(self.products):
-            message = {"msg": "No products in store"}
-        else:
-            item = [product for product in self.products if product['product_id']==product_id]
+        item = [product for product in self.products if product['product_id']==product_id]
 
-            if is_empty(item):
-                message ={'msg':'Item doesnot exist'}
-        
-            if not is_empty(item):
-                self.products.remove(item[0])
-                message = {'msg':'Item removed successfully'}                                        
+        if is_empty(item):
+            message ={'msg':'Item doesnot exist'}
+    
+        if not is_empty(item):
+            self.products.remove(item[0])
+            message = {'msg':'Item removed successfully'}                                        
         return message
