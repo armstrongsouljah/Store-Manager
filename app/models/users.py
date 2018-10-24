@@ -1,19 +1,6 @@
 import string
-
-
-def validate_username(username):
-        if len(username) < 5:
-            raise ValueError("username must be 5 and above characters")
-            
-        if username == " ":
-            raise ValueError("Name cannot be spaces")
-
-        if not isinstance(username, str):
-            raise TypeError("Username must be a string")
-
-        if username.startswith(string.digits):
-            raise ValueError("Username cannot start with a number")
-        return username
+from flask import request
+from app.utils import get_item_id, is_empty, validate_username
 
 class User:
     """ stores user details """
@@ -22,6 +9,10 @@ class User:
         self.username = str(validate_username(username))
         self.admin = bool(admin)
         self.password = str(password)
+
+    def register_user(self, **kwargs):
+        # user_data = request.get_json()
+        pass
 
     
 

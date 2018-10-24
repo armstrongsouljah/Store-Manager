@@ -22,7 +22,9 @@ class DevelopmentConfig(BaseConfig):
 
 class TestingConfig(BaseConfig):
     """ enables testing environment """
+    DEBUG = True
     TESTING = True
+
 
 class ProductionConfig(BaseConfig):
     pass

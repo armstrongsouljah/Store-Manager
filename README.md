@@ -47,6 +47,9 @@ Store Manager is a web application that helps store owners manage sales and prod
 |Activate Environment *Windows*|`c:/ .\venv\Scripts\activate venv/bin/activate`|
 |Install project Dependencies|`$ pip install -r requirements.txt`|
 
+## Python Version Supported
+`Python 3.6 and above`
+
 ### Testing the app
 `$ pytest --cov app/tests -cov-report term-missing`
 

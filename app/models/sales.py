@@ -2,9 +2,8 @@ import datetime
 
 from flask import request
 
-from app.utils import (check_exists, get_item_id, get_collection, is_empty, validate_amount, validate_attendant,
-                       validate_id, validate_products)
-
+from app.utils import (get_collection, get_item_id, is_empty,
+                       validate_entry, validate_sales_data)
 
 class Sale:
     """ stores all the sales made in the store """
@@ -17,9 +16,9 @@ class Sale:
 
     def add_sale(self):
         data = request.get_json()
-        amount = validate_amount(data.get("amount_made"))
-        products = validate_products(data.get("products_sold"))
-        attendant = validate_attendant(data.get("attendant_name"))
+        amount = data.get("amount_made")
+        products = data.get("products_sold")
+        attendant = data.get("attendant_name")
         
         sale_record = dict(
             sale_id = get_item_id('sale_id', self.sales),
@@ -28,19 +27,24 @@ class Sale:
             amount_made = amount,
             time_of_sale = datetime.datetime.utcnow()
         )
-        if sale_record in self.sales:
-            message = {"msg":"sale record already added"}
-            return  message, 400
+
+        sales_errors = validate_sales_data(products, amount, attendant)
+        
+        if sales_errors:
+            return sales_errors
+
         self.sales.append(sale_record)
         message = {"msg":"Sale recorded successfully"}
         return message       
 
-    def get_sale_by_id(self, id):
+    def get_sale_by_id(self, sale_id):
         """ returns a single product based off the supplied id """
-        id = validate_id(id)
+        sale_id = validate_entry(sale_id, int)
         message = None
-        if is_empty(self.sales):
-            message = {"msg":"No sales records"}
-        if len(self.sales) > 0:
-            message = check_exists("sale_id", self.sales, id)
+        selected_sale = [record for record in self.sales if record["sale_id"] == sale_id]
+        if is_empty(selected_sale):
+            message = {"msg":"No record matching selection"}
+            return message
+        else:
+            message = selected_sale[0]
         return message
