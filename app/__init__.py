@@ -35,5 +35,18 @@ jwt = JWTManager(app)
 def index():
     return welcome_message
 
-# register blueprint in the app factory
+# sales views
+sale_view = jwt_optional(Sales.as_view('sales'))
+app.add_url_rule('/api/v1/sales', view_func=sale_view, methods=['GET'])
+app.add_url_rule('/api/v1/sales', view_func=sale_view, methods=['POST'])
+app.add_url_rule('/api/v1/sales/<int:saleId>', \
+                     view_func=sale_view, methods=['GET'])
+
+# products views
+product_view = jwt_optional(ProductsView.as_view('products'))
+app.add_url_rule('/api/v1/products', view_func=product_view, methods=['GET'])
+app.add_url_rule('/api/v1/products', view_func=product_view, methods=['POST'])
+app.add_url_rule('/api/v1/products/<int:productId>', \
+                     view_func=product_view, methods=['GET', 'PUT', 'DELETE'])
+
 app.register_blueprint(bp, url_prefix='/api/v1')

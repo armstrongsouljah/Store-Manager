@@ -1,9 +1,8 @@
 import json
-from flask import Blueprint, request, jsonify
-from functools import wraps
-import jwt
-from app.config import DevelopmentConfig
+import string
+from flask import  Blueprint, jsonify, request
 
+from app.config import DevelopmentConfig
 
 dev = DevelopmentConfig()
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
@@ -14,40 +13,57 @@ def validate_id(id):
         raise TypeError("Id should be a number")
     return id
 
-def validate_type(item, type):
-    if not isinstance(item, type):
-        raise TypeError(f"item should be of type {type.__class__}")
-    return True
 
-def validate_product_name(name):
-    validate_type(name, str)
-    if name and name =="" and name ==" ":
-        raise ValueError("Name can't be spaces")
-    return name
 
-def validate_category(category):
-    if not category:
-              raise ValueError("category can't be blank")
-    if not isinstance(category, str):
-          raise TypeError("Name must be a string")
-    if category and category =="" and category ==" ":
-          raise ValueError("category can't be spaces")
-    return category
+def validate_entry(item, item_type):
+    if not item:
+        raise AssertionError("Empty value is not allowed.")
     
-def validate_quantity(quantity):
-    if quantity and not isinstance(quantity, int):
-          raise TypeError("quntity must be integer")
-    if quantity and quantity == 0:
-          raise ValueError("Invalid quantity entered")
-    if quantity and quantity < 0:
-          raise ValueError("Quantity cannot be negative")
-    return quantity
+    if item and not isinstance(item, item_type):
+        raise TypeError("Invalid data type supplied.")
+    
+    if item and isinstance(item, int) and item == 0:
+        raise ValueError("Invalid data supplied.")
+    return True 
 
-def validate_unitcost(unitcost):
-    validate_type(unitcost, int)
-    if unitcost and unitcost <= 0:
-          raise ValueError("Invalid unitcost entered")    
-    return unitcost
+
+
+def validate_product_entries(product_name, product_category, quantity, unit_cost):
+    
+    if not product_name or not product_category or not quantity or not unit_cost:
+        message = {"message": "Empty records not allowed"}
+        return message, 400
+    
+    if not isinstance(product_name, str):
+        message = {"message":"Product name must be of type string"}
+        return message, 400
+
+    if not isinstance(product_category, str):
+        message = {"mesage":"Category must be of type string"}
+        return message, 400
+
+    if not isinstance(quantity, int):
+        message = {"message":"Quantity must be of type integer"}
+        return message, 400
+
+    if not isinstance(unit_cost, int):
+        message = {"message":"Unit cost must be of type string."}
+        return message, 400
+    return None
+
+
+def validate_sales_data(products,amount, attendant):
+    if not attendant or not amount or not products:
+        response = {'error':'Not allowed to add empty values'}
+        return response
+    if not isinstance(products, list):
+        response = {'error': 'Items must be a collection'}
+        return response
+    if not isinstance(amount, int):
+        response = {'error':'Amount must be in numbers'}
+        return response
+    return None
+
 
 
 
@@ -88,39 +104,23 @@ welcome_message = """
        </body>
      </html>
 """
-# sales validations
-def validate_attendant(name):
-    if name and not isinstance(name, str):
-        raise TypeError("Name mus be a string")
-    return name
 
-def validate_products(products):
-    if products and not isinstance(products, list):
-        raise TypeError("Name mus be a list")
-    return products
 
-def validate_amount(amount):
-    if amount and not isinstance(amount, int):
-        raise TypeError("Amount must be numbers")
 
-    if amount <= 0:
-        raise ValueError("Invalid amount")
-    return amount
-
-def check_exists(item_id, item_list, id):
-    
-    _item = [item for item in item_list if item[item_id]==id]
-    if _item:
-        message = _item
-    else:
-        message = {"msg":"Item not found"}
-    return message 
 
 def is_empty(item_list):
     if len(item_list) == 0:
         return True
     return False
 
+
+def check_exists(entry_name, item_list):
+    item = [entry for entry in item_list if entry.get(entry_name) == entry_name]
+    if is_empty(item):
+        message = False
+    else:
+        message = True
+    return message
 
 # returns a collection of items
 def get_collection(item_list):
@@ -145,3 +145,18 @@ def get_item_id(item_id, item_list):
         else:
             id = 1
         return id
+
+
+def validate_username(username):
+        if len(username) < 5:
+            raise ValueError("username must be 5 and above characters")
+            
+        if username == " ":
+            raise ValueError("Name cannot be spaces")
+
+        if not isinstance(username, str):
+            raise TypeError("Username must be a string")
+
+        if username.startswith(string.digits):
+            raise ValueError("Username cannot start with a number")
+        return username
