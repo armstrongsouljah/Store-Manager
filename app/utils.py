@@ -29,38 +29,46 @@ def validate_entry(item, item_type):
 
 
 def validate_product_entries(product_name, product_category, quantity, unit_cost):
-    
+
+    message = None
+
     if not product_name or not product_category or not quantity or not unit_cost:
         message = {"message": "Empty records not allowed"}
-        return message, 400
+        # return message, 400
     
-    if not isinstance(product_name, str):
+    elif not isinstance(product_name, str):
         message = {"message":"Product name must be of type string"}
-        return message, 400
+        # return message, 400
 
-    if not isinstance(product_category, str):
+    elif not isinstance(product_category, str):
         message = {"mesage":"Category must be of type string"}
-        return message, 400
+        # return message, 400
 
-    if not isinstance(quantity, int):
+    elif not isinstance(quantity, int):
         message = {"message":"Quantity must be of type integer"}
-        return message, 400
+        # return message, 400
 
-    if not isinstance(unit_cost, int):
+    elif not isinstance(unit_cost, int):
         message = {"message":"Unit cost must be of type string."}
-        return message, 400
+        # return message, 400
+    if message:
+        return message
     return None
 
 
 def validate_sales_data(products,amount, attendant):
+    response = None
+
     if not attendant or not amount or not products:
         response = {'error':'Not allowed to add empty values'}
-        return response
-    if not isinstance(products, list):
+        # return response
+    elif not isinstance(products, list):
         response = {'error': 'Items must be a collection'}
-        return response
-    if not isinstance(amount, int):
+        # return response
+    elif not isinstance(amount, int):
         response = {'error':'Amount must be in numbers'}
+        # return response
+    if response:
         return response
     return None
 
