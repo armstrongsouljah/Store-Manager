@@ -40,11 +40,13 @@ class Sale:
     def get_sale_by_id(self, sale_id):
         """ returns a single product based off the supplied id """
         sale_id = validate_entry(sale_id, int)
-        message = None
+        response = None
         selected_sale = [record for record in self.sales if record["sale_id"] == sale_id]
-        if is_empty(selected_sale):
-            message = {"msg":"No record matching selection"}
-            return message
+        does_not_exist = is_empty(selected_sale)
+
+        if does_not_exist:
+            response = {"msg":"No record matching selection"}
+            return response
         else:
-            message = selected_sale[0]
-        return message
+            response = selected_sale[0]
+        return response

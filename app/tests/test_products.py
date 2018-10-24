@@ -96,7 +96,7 @@ class TestProducts(unittest.TestCase):
             )
             data = json.loads(res.data)
             print(data)
-        self.assertEqual('Empty records not allowed', data[0]["message"])
+        self.assertEqual('Empty records not allowed', data["message"])
             
     
     def test_admin_can_only_edit_existing_product(self):
