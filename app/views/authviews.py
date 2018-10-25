@@ -15,14 +15,14 @@ dev = DevelopmentConfig()
 admin_user = User(user_id=1, username='admin', admin=True, password='password')
 attendant = User(user_id=2, username='attendant', admin=False, password='password')
 user_obj = User()
-token_expire_at = datetime.timedelta(minutes=700)
+token_expire_at = datetime.timedelta(days=1)
 
 @bp.route('/login', methods=["POST"])
 def login():
     auth = request.get_json()
     username = auth.get("username")
     password = auth.get("password")
-    access_token = create_access_token(identity=username)
+    access_token = create_access_token(identity=username, expires_delta=token_expire_at)
 
     if not username and not password:
         response = {"message":"enter your credentials"}, 401    
