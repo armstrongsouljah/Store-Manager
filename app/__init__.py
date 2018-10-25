@@ -49,4 +49,8 @@ app.add_url_rule('/api/v1/products', view_func=product_view, methods=['POST'])
 app.add_url_rule('/api/v1/products/<int:productId>', \
                      view_func=product_view, methods=['GET', 'PUT', 'DELETE'])
 
+# user registration and retrieval
+user_view = jwt_required(UserView.as_view('users'))
+app.add_url_rule('/api/v1/users',view_func=user_view, methods=['GET','POST'])
+
 app.register_blueprint(bp, url_prefix='/api/v1')

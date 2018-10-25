@@ -77,13 +77,13 @@ class TestSales(unittest.TestCase):
                 content_type='application/json'
             )
             data = json.loads(res.data)
-            self.assertEqual('Not allowed to add empty values', data['error'])
+            self.assertEqual('Amount must be in numbers', data['error'])
     
     def test_for_invalid_products_sold(self):
         with app.app_context():
             token = create_access_token('attendant')
             headers = {'Authorization': f'Bearer {token}'}
-            self.sale_record['attendant_name'] = 24888888
+            self.sale_record['attendant_name'] = "Anthony"
             self.sale_record['products_sold'] = 24888888
             self.sale_record['amount_made'] = 45660
             res = self.client.post(

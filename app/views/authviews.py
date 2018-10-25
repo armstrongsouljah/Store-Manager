@@ -1,4 +1,5 @@
 from flask import jsonify, request, make_response
+from flask.views import MethodView
 from app.utils import bp
 import datetime
 from app.config import DevelopmentConfig
@@ -11,8 +12,9 @@ from flask_jwt_extended import (
 
 
 dev = DevelopmentConfig()
-admin_user = User(1, 'admin', True, 'password')
-attendant = User(2,'attendant', False, 'password')
+admin_user = User(user_id=1, username='admin', admin=True, password='password')
+attendant = User(user_id=2, username='attendant', admin=False, password='password')
+user_obj = User()
 token_expire_at = datetime.timedelta(minutes=700)
 
 @bp.route('/login', methods=["POST"])
@@ -36,3 +38,23 @@ def login():
         response = ({"message":"Invalid username/password"} , 401)
 
     return jsonify(response)
+
+class UserView(MethodView):
+    """ Handles creation and returnig of available users """
+
+    def get(self):
+        logged_in_user = get_jwt_identity()
+        if logged_in_user != 'admin':
+            response = {'error': 'Access for admins only'}
+        else:
+            response = user_obj.get_users()
+        return jsonify(response)
+
+    def post(self):
+        current_user = get_jwt_identity()
+        response = None
+        if current_user != 'admin':
+            response = {'error': 'Only admins can register new users.'}
+        response = user_obj.register_user()
+        return jsonify(response)
+    
