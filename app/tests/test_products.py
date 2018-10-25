@@ -83,11 +83,12 @@ class TestProducts(unittest.TestCase):
             data = json.loads(res.data)
             self.assertEqual("Acess denied for non admins", data.get("message"))
 
-    def test_prevent_addition_of_empty_product(self):
+    def test_for_invalid_amount_or_unit_cost(self):
         with app.app_context():
             token = create_access_token('admin')
             headers = {'Authorization':f'Bearer {token}'}
-
+            self.invalid_product['product_name'] = "Sauce"
+            self.invalid_product['product_category'] = "Sauce"
             res = self.client.post(
                       self.product_uri,
                       content_type='application/json',
@@ -96,7 +97,24 @@ class TestProducts(unittest.TestCase):
             )
             data = json.loads(res.data)
             print(data)
-        self.assertEqual('Empty records not allowed', data["message"])
+        self.assertEqual('Quantity or unit cost must be of a number', data["message"])
+    
+    def test_for_invalid_product_name_or_category(self):
+        with app.app_context():
+            token = create_access_token('admin')
+            headers = {'Authorization':f'Bearer {token}'}
+            self.invalid_product['unit_cost'] = 34000
+            self.invalid_product['unit_cost'] = 45
+
+            res = self.client.post(
+                      self.product_uri,
+                      content_type='application/json',
+                      headers=headers,
+                      data=json.dumps(self.invalid_product)
+            )
+            data = json.loads(res.data)
+            print(data)
+        self.assertEqual('Product name  or category must be of type string', data["message"])
             
     
     def test_admin_can_only_edit_existing_product(self):
