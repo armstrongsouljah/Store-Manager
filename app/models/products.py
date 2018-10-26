@@ -70,7 +70,7 @@ class Product:
     def update_product_details(self, product_id):
         """ check for the product in store """
         data = request.get_json()
-        unit_cost = validate_entry(data.get("unit_cost"), int)       
+        unit_cost = data.get("unit_cost")       
         
         product = [item for item in self.products if item['product_id']==product_id]
         if is_empty(product):
@@ -79,8 +79,8 @@ class Product:
         if not is_empty(product) and unit_cost:
             product[0]['unit_cost'] = unit_cost
             message = {'msg':'Updated successfully'}
-        else:
-            abort(400, "Invalid data not allowed")
+        # else:
+        #     abort(400, "Invalid data not allowed")
         return message
 
     def delete_from_store(self, product_id):
