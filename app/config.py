@@ -32,6 +32,6 @@ class ProductionConfig(BaseConfig):
 
 env_config = dict(
     development = DevelopmentConfig,
-    tesing = TestingConfig,
+    testing = TestingConfig,
     production = ProductionConfig
 )
