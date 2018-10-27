@@ -8,7 +8,7 @@ class BaseConfig:
     """ Project environment configurations """
     DEBUG = False
     TESTING = False
-    SECRET_KEY = 'df6bbe6c3ada4fbecf320e2315553bb9378e06387f9a1a500cf7d78fb0953b795daa'
+    SECRET_KEY = '2573472ee1d9542f8bcfead459b237746e6ff5c890afa7f566d744c4570ed959cbc3'
     JWT_ACCESS_TOKEN_EXPIRES = False
     JWT_TOKEN_LOCATION = ['headers']
     JWT_HEADER_NAME = 'Authorization'
