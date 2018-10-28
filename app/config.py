@@ -18,7 +18,7 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     """ enables development environment """
     ENV = 'development'
-    DATABASE = 'store_manager'
+    DATABASE = 'storemanager'
     DEBUG = True
     TESTING = False
 
