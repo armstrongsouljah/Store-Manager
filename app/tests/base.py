@@ -9,7 +9,10 @@ class BaseTestCase(unittest.TestCase):
         self.conn = DatabaseConnection()        
         self.client = self.app.test_client(self)
         self.user = dict(
-            username='soultech',
-            password='testing'
+            username='admin',
+            password='testing123'
         )
+    
+    def tearDown(self):
+        self.conn.drop_relation('users')
 

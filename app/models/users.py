@@ -30,7 +30,7 @@ class User:
             message = {"msg":"user does not exist"}
         return message
     
-        
+
     
     def register_user(self, username, password):
         message = None
@@ -38,13 +38,13 @@ class User:
             message = {'msg':'username/password fields not allowed'}
         if username == "" or username ==" " or password == "":
             message = {'msg':'username/password cannot be spaces'}
-        if username[0] in string.digits:
+        if username and username[0] in string.digits:
             message = {'msg':'Username/password cannot startwith a number'}
 
-        if not isinstance(username, username) or not isinstance(password, str):
+        if not isinstance(username, str) or not isinstance(password, str):
             message = {'msg': 'Username/password must be a word'}
 
-        if len(username) < 5 or len(password):
+        if username and len(username) < 5 or password and len(password) < 5:
             message = {'msg': 'Username/password must be 6 characters and above'}
         if message:
             return message
@@ -57,9 +57,11 @@ class User:
         
         try:
             self.cursor.execute(query)
-            
+            message = {'msg':'Successfully registered'}
+
         except Exception as E:
-            print(f"{E}")
+            message = {'msg':f'Query failed due to {E}'}
+        return message
             
 
 

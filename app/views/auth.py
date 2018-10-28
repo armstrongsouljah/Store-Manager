@@ -1,7 +1,7 @@
 import datetime
 from flask import request, jsonify
 from flask.views import MethodView
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt_identity
 from werkzeug.security import check_password_hash
 from app.models.users import User
 
@@ -31,3 +31,19 @@ class UserLoginView(MethodView):
         else:
             message = {'msg': 'invalid username/password try again'}
         return jsonify(message)
+
+
+
+class UserRegisterView(MethodView):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        response = None
+
+        admin_status = get_jwt_identity()
+        if admin_status == True:
+            response = user_obj.register_user(username, password)
+        else:
+            response = {'msg': 'Access only for admins'}
+        return jsonify(response)
