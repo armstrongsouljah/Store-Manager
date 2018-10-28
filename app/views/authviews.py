@@ -42,7 +42,8 @@ def login():
 
 class UserLogin(MethodView):
     def post(self):
-        return jsonify("Logging  in a user")
+        response = user_obj.get_users()
+        return jsonify(response)
 
 class UserView(MethodView):
     """ Handles creation and returnig of available users """
