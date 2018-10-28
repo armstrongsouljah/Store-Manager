@@ -26,13 +26,17 @@ app = create_app_environment('app.config.TestingConfig')
 
 jwt = JWTManager(app)
 
-from app.views.auth import UserLoginView
+from app.views.auth import UserLoginView, UserRegisterView
 # welcome route
 @app.route("/", methods=["GET"])
 def index():
     return welcome_message
 
-app.add_url_rule('/api/v1/auth/login', view_func=UserLoginView.as_view('login'), methods=['POST'] )
+app.add_url_rule('/api/v1/auth/login', view_func=UserLoginView.as_view('login'),\
+                              methods=['POST'] )
+signup_view = jwt_required(UserRegisterView.as_view('register'))
+app.add_url_rule('/api/v1/auth/signup', \
+                view_func=signup_view, methods=['POST'])
 
 # # sales views
 # sale_view = jwt_optional(Sales.as_view('sales'))

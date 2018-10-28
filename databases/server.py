@@ -2,6 +2,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from app.config import env_config
 from app import app as ap
+from werkzeug.security import generate_password_hash as g
 
 class DatabaseConnection:
 
@@ -59,6 +60,10 @@ class DatabaseConnection:
                     category_name VARCHAR(56) UNIQUE NOT NULL,
                     created_at TIMESTAMPTZ DEFAULT NOW()
                 )
+                """,
+                f"""
+                INSERT INTO users(username, password, admin)
+                VALUES('admin','{g("testing123")}' ,True)
                 """
             )
             for command in self.commands:
@@ -66,6 +71,11 @@ class DatabaseConnection:
             print(f"connection successful on {dbname}")
         except (Exception, psycopg2.DatabaseError) as E:
             print(f"{E}")
+
+
+    def drop_relation(self, tablename):
+        q = f""" DROP TABLE IF EXISTS {tablename} """
+        return self.cursor.execute(q)
 
 
 
