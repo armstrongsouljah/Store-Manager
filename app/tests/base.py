@@ -10,6 +10,6 @@ class BaseTestCase(unittest.TestCase):
         self.client = self.app.test_client(self)
         self.user = dict(
             username='soultech',
-            password='testing2'
+            password='testing'
         )
 
