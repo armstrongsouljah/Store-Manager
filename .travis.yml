@@ -1,16 +1,21 @@
 language: python
 python:
   - "3.6"
+services:
+  - postgresql
 
 env:
   global:
-    - APP_SETTINGS=testing
+    - ENV='testing'
     - CODECOV_TOKEN="b2e366e8-f7b8-44df-b1e9-8370a167dbff"
     - CC_TEST_REPORTER_ID="9b49838d7c75a949b12f1ab00f10bb1c1385c1bb9f1074fa6a765ac257609017"
 
 install:
   - "pip install -r requirements.txt"
   - "pip install coveralls"
+
+before_script:
+  - "psql -c 'create database store_manager_test;' -U postgres"
 
 script:
   - python3 -m pytest -v --cov app/tests --cov-report term-missing

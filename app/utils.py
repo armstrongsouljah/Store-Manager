@@ -1,12 +1,13 @@
 import json
 import string
 from flask import  Blueprint, jsonify, request
+from app.database.server import DatabaseConnection
 
 from app.config import DevelopmentConfig
 
 dev = DevelopmentConfig()
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
- 
+db = DatabaseConnection() 
 
 def validate_id(id):
     if not isinstance(id, int):

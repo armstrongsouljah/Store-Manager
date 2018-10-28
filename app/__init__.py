@@ -20,15 +20,14 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_app_environment(config_name):
-    """ allows one to switch environments """
+    """ declares app environment """
     app = Flask(__name__, instance_relative_config=True)
-    with app.app_context():
-        app.config.from_object(env_config.get(config_name))
-        app.config.from_pyfile(os.path.join(BASE_DIR, 'config.py'))
+    app.config.from_object(config_name)
     return app
 
 
-app = create_app_environment('development')
+app = create_app_environment('app.config.DevelopmentConfig')
+
 jwt = JWTManager(app)
 # welcome route
 @app.route("/", methods=["GET"])
@@ -52,5 +51,6 @@ app.add_url_rule('/api/v1/products/<int:productId>', \
 # user registration and retrieval
 user_view = jwt_required(UserView.as_view('users'))
 app.add_url_rule('/api/v1/users',view_func=user_view, methods=['GET','POST'])
+app.add_url_rule('/api/v1/auth/login', view_func=UserLogin.as_view('login'), methods=['POST'])
 
 app.register_blueprint(bp, url_prefix='/api/v1')
