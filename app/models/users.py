@@ -1,4 +1,5 @@
 from databases.server import DatabaseConnection
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User:
@@ -9,12 +10,23 @@ class User:
         self.password = password
         self.cursor = DatabaseConnection().cursor
 
-    def get_all(self):
-        self.cursor.execute('SELECT * FROM users')
-        rows = self.cursor.fetchall()
-        if rows:
-            for row in rows:
-                print(row)
-            return "Found users"
+    def check_password(self, hash, password):
+        return check_password_hash(hash, password)
+
+    def authenticate(self, username, password=None):
+        
+        query = f""" SELECT username, password, admin FROM users
+               WHERE username='{username}'
+        """
+        message = None
+        # 1 query db
+        self.cursor.execute(query)
+        # 2 fetch result
+        user = self.cursor.fetchone()
+        if user is not None:
+            message = user
         else:
-            return "Database empty"
+            message = {"msg":"user does not exist"}
+        return message
+
+ 
