@@ -38,7 +38,7 @@ class DatabaseConnection:
                 """
                         CREATE TABLE IF NOT EXISTS  users(
                             user_id SERIAL PRIMARY KEY,
-                            user_name VARCHAR(35) NOT NULL UNIQUE,
+                            username VARCHAR(35) NOT NULL UNIQUE,
                             password VARCHAR(240) NOT NULL, 
                             admin BOOL DEFAULT False,
                             registered_at TIMESTAMP DEFAULT NOW()

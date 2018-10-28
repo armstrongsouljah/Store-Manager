@@ -22,7 +22,7 @@ def create_app_environment(config_name):
     return app
 
 
-app = create_app_environment('app.config.DevelopmentConfig')
+app = create_app_environment('app.config.TestingConfig')
 
 jwt = JWTManager(app)
 
