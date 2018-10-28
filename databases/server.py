@@ -63,7 +63,7 @@ class DatabaseConnection:
             )
             for command in self.commands:
                 self.cursor.execute(command)
-            print("connection successful")
+            print(f"connection successful on {dbname}")
         except (Exception, psycopg2.DatabaseError) as E:
             print(f"{E}")
 
