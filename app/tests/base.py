@@ -1,10 +1,9 @@
 import unittest
-from app import app
-from app.database.server import DatabaseConnection
-
-
+from databases.server import DatabaseConnection
+from app import create_app_environment
 
 class BaseTestCase(unittest.TestCase):
-
     def setUp(self):
-        self.conn = DatabaseConnection()   
+        self.app = create_app_environment('app.config.ProductionConfig')
+        self.conn = DatabaseConnection()
+
