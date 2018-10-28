@@ -19,7 +19,7 @@ before_script:
   - "psql -c 'create database store_manager_test;' -U postgres"
   - "psql store_manager_test < store_manager_test.sql"
   - "psql storemanager < storemanager.sql"
-  - "psql SELECT * FROM users; "
+  - "psql SELECT * FROM users; -U postgres"
 
 script:
   - python3 -m pytest -v --cov app/tests --cov-report term-missing
