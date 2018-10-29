@@ -19,8 +19,10 @@ class UserLoginView(MethodView):
         
         if not username:
             message = {'msg': 'please enter username'}
+            
         if username and not username.isspace():
             message ={'msg':'Please enter valid username'}
+
         if returned_user is not None:
             pwd = returned_user.get('password')
         else:

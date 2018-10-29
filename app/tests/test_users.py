@@ -51,4 +51,30 @@ class TestUsers(BaseTestCase):
             )
             response = json.loads(res2.data)
         self.assertEqual('Successfully registered', response.get('msg'))
+
+
+    def test_only_admin_can_add_user(self):
+        with self.app.app_context():
+            user_toregister = dict(
+            username='wonderland',
+            password='testing123'
+            )
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.non_admin),
+                content_type='application/json'
+            )
+            data = json.loads(res.data)
+            token=data.get('msg')
+            headers = {'Authorization': f'Bearer {token}'}
+            res2 = self.client.post(
+                '/api/v1/auth/signup',
+                data=json.dumps(user_toregister),
+                content_type='application/json',
+                headers=headers
+
+            )
+            response = json.loads(res2.data)
+        self.assertEqual('Access only for admins', response.get('msg'))
+
         

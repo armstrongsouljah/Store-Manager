@@ -64,11 +64,16 @@ class DatabaseConnection:
                 f"""
                 INSERT INTO users(username, password, admin)
                 VALUES('admin','{g("testing123")}' ,True)
+                """,
+                f"""
+                INSERT INTO users(username, password)
+                VALUES('nonadmin','{g("testing123")}')
+                
                 """
             )
             for command in self.commands:
                 self.cursor.execute(command)
-            print(f"connection successful on {dbname}")
+            # print(f"connection successful on {dbname}")
         except (Exception, psycopg2.DatabaseError) as E:
             print(f"{E}")
 
