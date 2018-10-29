@@ -11,7 +11,6 @@ class Product:
         query = f"""
             INSERT INTO products(product_name, quantity, unit_cost)
             VALUES('{productname}', '{quantity}', '{unit_cost}')
-            ON CONFLICT DO NOTHING; 
         """
 
         if not productname or not unit_cost or not quantity:
