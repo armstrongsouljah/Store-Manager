@@ -64,12 +64,11 @@ class DatabaseConnection:
                 f"""
                 INSERT INTO users(username, password, admin)
                 VALUES('admin','{g("testing123")}' ,True)
-                ON CONFLICT DO NOTHING;
                 """,
                 f"""
                 INSERT INTO users(username, password)
                 VALUES('nonadmin','{g("testing123")}')
-                ON CONFLICT DO NOTHING;
+                
                 """
             )
             for command in self.commands:
