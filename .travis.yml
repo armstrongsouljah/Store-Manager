@@ -4,14 +4,6 @@ python:
 services:
   - postgresql
 
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
-  
-
 env:
   global:
     - ENV='testing'
@@ -25,9 +17,6 @@ install:
   - "pip install coveralls"
 
 before_script:
-  - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
-  - sudo service postgresql restart
-  - sleep 1
   - "psql -c 'create database storemanager;' -U postgres"
   - "psql -c 'create database store_manager_test;' -U postgres"
   
