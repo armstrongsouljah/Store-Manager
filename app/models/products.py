@@ -1,4 +1,6 @@
+from flask import request
 from databases.server import DatabaseConnection
+from app.utils import validate_product_entries
 class Product:
     """ Class for handling product operations in the store """
 
@@ -13,21 +15,8 @@ class Product:
             VALUES('{productname}', '{quantity}', '{unit_cost}')
         """
 
-        if not productname or not unit_cost or not quantity:
-            message = {'msg': "productname/ unitcost or quantity can't be blank"}
+        message = validate_product_entries(productname, quantity, unit_cost)
 
-        if productname =="" or productname ==" ":
-            message = {'msg': 'Product cannot be an empty space'}
-
-        if not isinstance(productname, str):
-            message = {'msg':'Product name must be a string'}
-
-        if not isinstance(quantity, int) or not isinstance(unit_cost, int):
-            message = {'msg': 'quantity/unitcost must be intergers'}  
-
-        if isinstance(quantity, int) and quantity < 1 \
-        or isinstance(unit_cost, int) and unit_cost < 1:
-            message = {'msg':'quantity/unitcost must be above zero'}
         if message:
             return message
 
@@ -37,6 +26,39 @@ class Product:
         except Exception as  E:
             message = {'msg': f'Query failed due to: {E}'}
         return message
+
+    
+    def change_product_quantity(self, productId):
+        """ modifies product in the store """
+        data = request.get_json()
+        quantity = data.get('quantity')
+        message = None
+        updated_rows = 0
+        
+        update = f"""
+           UPDATE products SET quantity ='{quantity}'
+           WHERE product_id = '{productId}'
+        """
+        query = f"""
+           SELECT product_name, quantity FROM products
+                WHERE product_id ='{productId}'
+        """
+
+        self.db.execute(query)
+        row = self.db.fetchone()
+        
+        if row is not None:
+            try:
+                self.db.execute(update)
+                message = {'msg': 'product updated successfully'}
+            except Exception as E:
+                message = E
+        else:
+            message = {'msg':'product doesnot exist'}
+        return message
+
+        
+
 
         
 

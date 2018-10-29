@@ -123,3 +123,38 @@ class TestProducts(BaseTestCase):
             )
         self.assertIn(b'Only admins can add a product', res2.data)
 
+    
+    def test_admin_can_update_product_quantity(self):
+        with self.app.app_context():
+            update = {
+                'quantity':56
+            }
+            
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+            data = json.loads(res.data)
+            token=data.get('msg')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v1/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+
+            res2 = self.client.put(
+                '/api/v1/products/1',
+                data=json.dumps(update),
+                content_type='application/json',
+                headers=headers
+            )
+        self.assertIn(b'product updated successfully', res2.data)
+        
+
+
+
+
