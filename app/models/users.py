@@ -52,7 +52,7 @@ class User:
         password = generate_password_hash(password)
         
         query = f""" INSERT INTO users (username,password) VALUES('{username}', '{password}')
-
+                ON CONFLICT DO NOTHING;
              """
         
         try:

@@ -12,7 +12,13 @@ class BaseTestCase(unittest.TestCase):
             username='admin',
             password='testing123'
         )
+        self.non_admin = dict(
+            username='nonadmin',
+            password='testing123'
+        )
+        
     
     def tearDown(self):
         self.conn.drop_relation('users')
+        self.conn.drop_relation('products')
 
