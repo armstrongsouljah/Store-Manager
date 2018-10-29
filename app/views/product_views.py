@@ -25,4 +25,13 @@ class ProductOperationsView(MethodView):
         else:
             response = {'msg': 'Only admins can add a product'}
         return jsonify(response)
-        
+
+    def put(self, productId):
+        response = None
+        admin_status = get_jwt_identity()
+
+        if admin_status == True:
+            response = product_obj.change_product_quantity(productId)
+        else:
+            response = {'msg': 'Only admins can edit a product.'}
+        return jsonify(response)
