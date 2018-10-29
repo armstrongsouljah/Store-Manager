@@ -52,6 +52,7 @@ class TestUsers(BaseTestCase):
             response = json.loads(res2.data)
         self.assertEqual('Successfully registered', response.get('msg'))
 
+
     def test_only_admin_can_add_user(self):
         with self.app.app_context():
             user_toregister = dict(
