@@ -1,18 +1,11 @@
 import os
+
 from flask import Flask
+from flask_jwt_extended import (JWTManager, create_access_token,
+                                get_jwt_identity, jwt_required)
+
 from .config import env_config
-from .utils import bp,  welcome_message
-from flask_jwt_extended import (
-    JWTManager,
-    jwt_required,
-    create_access_token,
-    get_jwt_identity
-)
-
-
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-# bp = Blueprint('api', __name__)
+from .utils import bp, welcome_message
 
 
 def create_app_environment(config_name):
@@ -23,12 +16,12 @@ def create_app_environment(config_name):
 
 
 app = create_app_environment('app.config.TestingConfig')
+from app.views.product_views import ProductsView
+from app.views.auth import UserLoginView, UserRegisterView
 
 
 jwt = JWTManager(app)
 
-from app.views.auth import UserLoginView, UserRegisterView
-from app.views.product_views import ProductOperationsView
 # welcome route
 @app.route("/", methods=["GET"])
 @jwt_required
@@ -41,9 +34,14 @@ signup_view = jwt_required(UserRegisterView.as_view('register'))
 app.add_url_rule('/api/v1/auth/signup', \
                 view_func=signup_view, methods=['POST'])
 
-product_view = jwt_required(ProductOperationsView.as_view('products'))
-app.add_url_rule('/api/v1/products', view_func=product_view, methods=['POST'])
-app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_view, methods=['PUT', 'DELETE'])
+product_admin_view = jwt_required(ProductsView.as_view('products'))
+products_fetch = ProductsView.as_view('productlist')
+app.add_url_rule('/api/v1/products', view_func=products_fetch, methods=['GET'])
+app.add_url_rule('/api/v1/products/<int:productId>', view_func=products_fetch, methods=['GET'])
+app.add_url_rule('/api/v1/products', view_func=product_admin_view, methods=['POST'])
+app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_admin_view, methods=['PUT', 'DELETE'])
+
+
 
 # # sales views
 # sale_view = jwt_optional(Sales.as_view('sales'))
@@ -52,16 +50,6 @@ app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_view, met
 # app.add_url_rule('/api/v1/sales/<int:saleId>', \
 #                      view_func=sale_view, methods=['GET'])
 
-# # products views
-# product_view = jwt_optional(ProductsView.as_view('products'))
-# app.add_url_rule('/api/v1/products', view_func=product_view, methods=['GET'])
-# app.add_url_rule('/api/v1/products', view_func=product_view, methods=['POST'])
-# app.add_url_rule('/api/v1/products/<int:productId>', \
-#                      view_func=product_view, methods=['GET', 'PUT', 'DELETE'])
 
-# # user registration and retrieval
-# user_view = jwt_required(UserView.as_view('users'))
-# app.add_url_rule('/api/v1/users',view_func=user_view, methods=['GET','POST'])
-# app.add_url_rule('/api/v1/auth/login', view_func=UserLogin.as_view('login'), methods=['POST'])
 
 app.register_blueprint(bp, url_prefix='/api/v1')

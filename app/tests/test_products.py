@@ -183,6 +183,31 @@ class TestProducts(BaseTestCase):
                 headers=headers
             )
         self.assertIn(b'Product successfully deleted', res2.data)
+
+
+    def test_can_fetch_a_product(self):
+        res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+        data = json.loads(res.data)
+        token=data.get('msg')
+        headers = {'Authorization': f'Bearer {token}'}
+
+        self.client.post(
+            '/api/v1/products',
+            data=json.dumps(self.product),
+            content_type='application/json',
+            headers=headers
+        )
+        res2 = self.client.get(
+            '/api/v1/products/1',
+            content_type='application/json'
+        )
+        print(res.data)
+        self.assertIn(b'Soy sauce', res2.data)
+
         
 
 
