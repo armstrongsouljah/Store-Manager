@@ -43,7 +43,8 @@ app.add_url_rule('/api/v1/auth/signup', \
 
 product_view = jwt_required(ProductOperationsView.as_view('products'))
 app.add_url_rule('/api/v1/products', view_func=product_view, methods=['POST'])
-app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_view, methods=['PUT'])
+app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_view, methods=['PUT', 'DELETE'])
+
 # # sales views
 # sale_view = jwt_optional(Sales.as_view('sales'))
 # app.add_url_rule('/api/v1/sales', view_func=sale_view, methods=['GET'])
