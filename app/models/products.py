@@ -51,17 +51,26 @@ class Product:
             INSERT INTO products(product_name, quantity, unit_cost)
             VALUES('{productname}', '{quantity}', '{unit_cost}')
         """
+        existing_query = f"""
+            SELECT product_name FROM products
+            WHERE product_name='{productname}'
+        """
+        self.db.execute(existing_query)
+        row = self.db.fetchone()
 
         message = validate_product_entries(productname, quantity, unit_cost)
 
         if message:
             return message
 
-        try:
-            self.db.execute(query)
-            message = {'msg': 'Product successfully added'}
-        except Exception as  E:
-            message = {'msg': f'Query failed due to: {E}'}
+        if row is not None:
+            message = {'error': 'product already exists'}
+        else:
+            try:
+                self.db.execute(query)
+                message = {'msg': 'Product successfully added'}
+            except Exception as  E:
+                message = {'msg': f'Query failed due to: {E}'}
         return message
 
     

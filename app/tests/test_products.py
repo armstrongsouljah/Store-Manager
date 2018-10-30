@@ -42,7 +42,7 @@ class TestProducts(BaseTestCase):
         with self.app.app_context():
 
             res = self.client.post(
-                '/api/v1/auth/login',
+                'http://localhost:5400/api/v1/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
