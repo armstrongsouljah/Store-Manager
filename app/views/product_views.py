@@ -5,11 +5,16 @@ from app.models.products import Product
 
 product_obj = Product()
 
-class ProductsListView(MethodView):
-    pass
 
-class ProductOperationsView(MethodView):
+class ProductsView(MethodView):
     """ Enables the admin user to add a product to the store """
+
+    def get(self, productId=None):
+        if productId:
+            response = product_obj.fetch_product(productId)
+        else:
+            response = {'msg': 'Fetching all products'}
+        return jsonify(response)
 
     def post(self):
         data = request.get_json()

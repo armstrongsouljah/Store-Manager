@@ -38,8 +38,8 @@ class DatabaseConnection:
             for command in commands:
                 self.cursor.execute(command)
             # print(f"connection successful on {dbname}")
-        except (Exception, psycopg2.DatabaseError) as E:
-            print(f"{E}")
+        except Exception:
+            pass
 
 
     def drop_relation(self, tablename):

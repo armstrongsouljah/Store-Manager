@@ -183,6 +183,17 @@ class TestProducts(BaseTestCase):
                 headers=headers
             )
         self.assertIn(b'Product successfully deleted', res2.data)
+
+
+        def test_can_fetch_a_product(self):
+            res = self.client.get(
+                '/api/v1/products/1',
+                content_type='application/json',
+                headers=headers
+            )
+            print(res.data)
+            self.assertIn(b'Soy sauce', res.data)
+
         
 
 
