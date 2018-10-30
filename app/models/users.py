@@ -50,16 +50,23 @@ class User:
             return message
         
         password = generate_password_hash(password)
+        user_query = f"""
+            SELECT username from users WHERE username='{username}'
+        """
+        self.cursor.execute(user_query)
+        row = self.cursor.fetchone()
         
         query = f""" INSERT INTO users (username,password) VALUES('{username}', '{password}')
              """
-        
-        try:
-            self.cursor.execute(query)
-            message = {'msg':'Successfully registered'}
+        if row is not None:
+            message = {'msg': 'Username already taken'}
+        else:
+            try:
+                self.cursor.execute(query)
+                message = {'msg':'Successfully registered'}
 
-        except Exception as E:
-            message = {'msg':f'Query failed due to {E}'}
+            except Exception as E:
+                message = {'msg':f'Query failed due to {E}'}
         return message
             
 
