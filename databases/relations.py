@@ -29,7 +29,7 @@ commands = (
                 """,
                 
                 f"""
-                INSERT INTO users(username, password, admin)
+                INSERT INTO users(username, password, admin)      
                 VALUES('admin','{g("testing123")}' ,True)
                 """,
                 f"""

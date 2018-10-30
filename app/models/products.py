@@ -6,6 +6,43 @@ class Product:
 
     def __init__(self,):
         self.db = DatabaseConnection().cursor
+
+    def fetch_product(self, productId):
+        response = None
+        product_query = f"""
+             SELECT product_name, quantity, unit_cost FROM
+             products WHERE product_id='{productId}'
+        """
+        self.db.execute(product_query)
+        result = self.db.fetchone()
+
+        if not isinstance(productId, int):
+            response = {"error": "Product id must be an integer"}
+            return response
+        
+        
+        if result is not None:
+            response = {"msg": result}
+        else:
+            response =  {"msg":"product not found"}
+        return response
+
+    def fetchall_products(self):
+        response = None
+        products_query = """
+           SELECT product_name, quantity, unit_cost
+           FROM products
+        """
+        self.db.execute(products_query)
+        query_result = self.db.fetchall()
+        
+        if query_result is not None:
+            response = {'products': query_result}
+        else:
+            response = {'error': 'No products in store'}
+        return response
+
+        
              
     
     def add_product(self, productname, quantity, unit_cost):
