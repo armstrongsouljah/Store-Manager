@@ -14,7 +14,8 @@ class TestProducts(BaseTestCase):
         quantity=34,
         unit_cost=15000
     )
-    def test_products(self):
+
+    def test_admin_can_add_product(self):
         with self.app.app_context():
             
             res = self.client.post(
@@ -34,6 +35,8 @@ class TestProducts(BaseTestCase):
                 headers=headers
             )
         self.assertIn(b'Product successfully added', res2.data)
+
+    
 
     def test_invalid_product_name(self):
         with self.app.app_context():
@@ -123,6 +126,7 @@ class TestProducts(BaseTestCase):
             )
         self.assertIn(b'Only admins can add a product', res2.data)
 
+
     
     def test_admin_can_update_product_quantity(self):
         with self.app.app_context():
@@ -153,6 +157,32 @@ class TestProducts(BaseTestCase):
                 headers=headers
             )
         self.assertIn(b'product updated successfully', res2.data)
+
+    
+    def test_admin_can_delete_a_product(self):
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+            data = json.loads(res.data)
+            token=data.get('msg')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v1/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+
+            res2 = self.client.delete(
+                '/api/v1/products/1',
+                content_type='application/json',
+                headers=headers
+            )
+        self.assertIn(b'Product successfully deleted', res2.data)
         
 
 

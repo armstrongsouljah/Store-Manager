@@ -35,3 +35,14 @@ class ProductOperationsView(MethodView):
         else:
             response = {'msg': 'Only admins can edit a product.'}
         return jsonify(response)
+
+    def delete(self, productId):
+        message  = None
+        admin_role = get_jwt_identity()
+
+        if admin_role == True:
+            message = product_obj.delete_product(productId)
+        else:
+            message = {'msg':'Only admins can delete a product'}
+        return jsonify(message)
+

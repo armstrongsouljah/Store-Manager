@@ -33,8 +33,7 @@ class Product:
         data = request.get_json()
         quantity = data.get('quantity')
         message = None
-        updated_rows = 0
-        
+                
         update = f"""
            UPDATE products SET quantity ='{quantity}'
            WHERE product_id = '{productId}'
@@ -52,10 +51,34 @@ class Product:
                 self.db.execute(update)
                 message = {'msg': 'product updated successfully'}
             except Exception as E:
-                message = E
+                message = {'msg': E}
         else:
             message = {'msg':'product doesnot exist'}
         return message
+    
+    def delete_product(self, productId):
+        response = None
+        sql =  f"""
+           SELECT product_name, quantity FROM products
+                WHERE product_id ='{productId}'
+        """
+        del_sql = f"""
+                DELETE FROM products WHERE product_id='{productId}'
+        """
+        # get  an item the delete the fetched item
+        self.db.execute(sql)
+        result = self.db.fetchone()
+
+        if result is not None:
+            try:
+                self.db.execute(del_sql)
+                response = {'msg': 'Product successfully deleted'}
+            except Exception as E:
+                response = {'msg': E}
+        else:
+            response = {'msg': 'product does not exist'}
+        return response
+
 
         
 
