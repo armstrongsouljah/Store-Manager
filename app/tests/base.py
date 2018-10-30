@@ -1,7 +1,9 @@
 import unittest
 from databases.server import DatabaseConnection
+from app.utils import bp
 from app import app, create_app_environment
 
+app.config.from_object('app.config.TestingConfig')
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
