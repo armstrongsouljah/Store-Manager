@@ -1,7 +1,6 @@
 from .base import BaseTestCase
 
 
-class TestDatabaseOperations(BaseTestCase):
-
-    def test_database_connected(self):
-        self.assertTrue(self.conn)
+class TestDatbaseOperations(BaseTestCase):
+    def test_connection_working(self):
+        self.assertTrue('connection successful', self.conn)

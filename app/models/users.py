@@ -1,44 +1,74 @@
 import string
-from flask import request
-from app.utils import get_item_id, is_empty, validate_username
-users = []
+from databases.server import DatabaseConnection
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
 class User:
-    """ stores user details """
-    def __init__(self, **kwargs):
-        self.user_id = kwargs.get("user_id")
+    """ Class for creating and authenticating users in the database """
+    def __init__(self, admin=False, password=None, **kwargs):
         self.username = kwargs.get("username")
-        self.admin = False
-        self.password = kwargs.get("password")
+        self.admin = admin
+        self.password = password
+        self.cursor = DatabaseConnection().cursor
 
-    def register_user(self):
-        """ allows store owner to register new users """
+    def check_password(self, hash, password):
+        return check_password_hash(hash, password)
 
-        user_data = request.get_json()
-        user_name = user_data.get("username")
-        password = user_data.get("password")
-
-        new_user = User(user_id=get_item_id("user_id", users), username=user_name, admin=self.admin, password=password)
-        response = None
-
-        already_registered = [user for user in users if user['username']==user_name]
-        if is_empty(already_registered):
-            users.append(dict(new_user.__dict__))
-            response = {'msg': 'User created successfully'}
-            print(users)
+    def authenticate(self, username, password=None):
+        
+        query = f""" SELECT username, password, admin FROM users
+               WHERE username='{username}'
+        """
+        message = None
+        # 1 query db
+        self.cursor.execute(query)
+        # 2 fetch result
+        user = self.cursor.fetchone()
+        if user is not None:
+            message = user
         else:
-            response = {'error':'User with that username already exists'}
-        return response
-
-    def get_users(self):
-        if is_empty(users):
-            response = {'message': 'No registered users at the moment.'}
-        else:
-            response = users
-        return response
-            
-
+            message = {"msg":"user does not exist"}
+        return message
     
 
-    @property
-    def is_admin(self):
-        return self.admin
+    
+    def register_user(self, username, password):
+        message = None
+        if not username or not password:
+            message = {'msg':'username/password fields not allowed'}
+        if username == "" or username ==" " or password == "":
+            message = {'msg':'username/password cannot be spaces'}
+        if username and username[0] in string.digits:
+            message = {'msg':'Username/password cannot startwith a number'}
+
+        if not isinstance(username, str) or not isinstance(password, str):
+            message = {'msg': 'Username/password must be a word'}
+
+        if username and len(username) < 5 or password and len(password) < 5:
+            message = {'msg': 'Username/password must be 6 characters and above'}
+        if message:
+            return message
+        
+        password = generate_password_hash(password)
+        
+        query = f""" INSERT INTO users (username,password) VALUES('{username}', '{password}')
+             """
+        
+        try:
+            self.cursor.execute(query)
+            message = {'msg':'Successfully registered'}
+
+        except Exception as E:
+            message = {'msg':f'Query failed due to {E}'}
+        return message
+            
+
+
+
+        
+
+
+        
+
+
+ 

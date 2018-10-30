@@ -1,40 +1,80 @@
-import unittest
 import json
-
-from flask_jwt_extended import create_access_token
-from app import app
-from app.models.users import User
-
-class TestUsers(unittest.TestCase):
-    def setUp(self):
-        self.obj = User(user_id=1, username='soultech', admin=True, password='password')
-        self.client = app.test_client(self)
+from .base import BaseTestCase
 
 
-    def test_instantiation(self):
-        self.assertIsInstance(self.obj, User)
+class TestUsers(BaseTestCase):
 
-    def test_admin_registers_user(self):
-        with app.app_context():
-            token = create_access_token('admin')
-            headers = {'Authorization': f'Bearer {token}'}
+    def test_userlogin(self):
+
+        with self.app.app_context():
             res = self.client.post(
-                 '/api/v1/users',
-                 content_type='application/json',
-                 data=json.dumps(self.obj.__dict__),
-                 headers=headers
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
             )
-            data = json.loads(res.data)
-            self.assertEqual('User created successfully', data['msg'])
+        self.assertIn(b'Logged in successfully', res.data)
+    
+    def test_invalid_details(self):
+        self.user['username'] = ""
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+        self.assertIn(b'invalid username/password try again', res.data)
 
-    def test_only_admin_accesses_user_records(self):
-        with app.app_context():
-            token = create_access_token('attendant')
+    def test_user_signup(self):
+        # only admins can register users
+        
+        with self.app.app_context():
+            user_toregister = dict(
+            username='wonderland',
+            password='testing123'
+        )
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+
+            data = json.loads(res.data)
+            token=data.get('msg')
             headers = {'Authorization': f'Bearer {token}'}
-            res = self.client.get(
-                '/api/v1/users',
+
+            res2 = self.client.post(
+                '/api/v1/auth/signup',
+                data=json.dumps(user_toregister),
                 content_type='application/json',
                 headers=headers
+
+            )
+            response = json.loads(res2.data)
+        self.assertEqual('Successfully registered', response.get('msg'))
+
+
+    def test_only_admin_can_add_user(self):
+        with self.app.app_context():
+            user_toregister = dict(
+            username='wonderland',
+            password='testing123'
+            )
+            res = self.client.post(
+                '/api/v1/auth/login',
+                data=json.dumps(self.non_admin),
+                content_type='application/json'
             )
             data = json.loads(res.data)
-            self.assertEqual('Access for admins only', data['error'])
+            token=data.get('msg')
+            headers = {'Authorization': f'Bearer {token}'}
+            res2 = self.client.post(
+                '/api/v1/auth/signup',
+                data=json.dumps(user_toregister),
+                content_type='application/json',
+                headers=headers
+
+            )
+            response = json.loads(res2.data)
+        self.assertEqual('Access only for admins', response.get('msg'))
+
+        

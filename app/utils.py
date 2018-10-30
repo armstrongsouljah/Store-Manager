@@ -6,7 +6,7 @@ from app.config import DevelopmentConfig
 
 dev = DevelopmentConfig()
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
- 
+
 
 def validate_id(id):
     if not isinstance(id, int):
@@ -28,23 +28,27 @@ def validate_entry(item, item_type):
 
 
 
-def validate_product_entries(product_name, product_category, quantity, unit_cost):
+def validate_product_entries(product_name, quantity, unit_cost):
 
     message = None
 
-    if not product_name or not product_category or not quantity or not unit_cost:
-        message = {"message": "Empty records not allowed"}
-    
-    if not isinstance(product_name, str) or not isinstance(product_category, str):
-        message = {"message":"Product name  or category must be of type string"}
-        
+    if not product_name or not unit_cost or not quantity:
+            message = {'msg': "productname/ unitcost or quantity can't be blank"}
+
+    if product_name =="" or product_name ==" ":
+        message = {'msg': 'Product cannot be an empty space'}
+
+    if not isinstance(product_name, str):
+        message = {'msg':'Product name must be a string'}
 
     if not isinstance(quantity, int) or not isinstance(unit_cost, int):
-        message = {"message":"Quantity or unit cost must be of a number"}
-      
+        message = {'msg': 'quantity/unitcost must be intergers'}  
+
+    if isinstance(quantity, int) and quantity < 1 \
+    or isinstance(unit_cost, int) and unit_cost < 1:
+        message = {'msg':'quantity/unitcost must be above zero'}
     if message:
         return message
-    return None
 
 
 def validate_sales_data(products,amount, attendant):
