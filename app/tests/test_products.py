@@ -25,7 +25,7 @@ class TestProducts(BaseTestCase):
             )
 
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
@@ -48,7 +48,7 @@ class TestProducts(BaseTestCase):
             )
 
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
@@ -70,7 +70,7 @@ class TestProducts(BaseTestCase):
             )
 
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
@@ -94,7 +94,7 @@ class TestProducts(BaseTestCase):
             )
 
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
@@ -115,7 +115,7 @@ class TestProducts(BaseTestCase):
             )
 
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
@@ -140,7 +140,7 @@ class TestProducts(BaseTestCase):
                 content_type='application/json'
             )
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             self.client.post(
@@ -167,7 +167,7 @@ class TestProducts(BaseTestCase):
                 content_type='application/json'
             )
             data = json.loads(res.data)
-            token=data.get('msg')
+            token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
             self.client.post(
@@ -192,7 +192,7 @@ class TestProducts(BaseTestCase):
                 content_type='application/json'
             )
         data = json.loads(res.data)
-        token=data.get('msg')
+        token=data.get('token')
         headers = {'Authorization': f'Bearer {token}'}
 
         self.client.post(

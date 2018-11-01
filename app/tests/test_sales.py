@@ -5,16 +5,16 @@ from .base import BaseTestCase
 
 class TestSales(BaseTestCase):
     
-    def test_only_admin_can_get_all_sales(self):
+    def test__get_all_sales(self):
         with self.app.app_context():
             res = self.client.post(
                 '/api/v1/auth/login',
                 content_type='application/json',
-                data=json.dumps(self.non_admin)
+                data=json.dumps(self.user)
             )
             data = json.loads(res.data)
 
-            token = data['msg']
+            token = data['token']
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.get(
@@ -22,7 +22,8 @@ class TestSales(BaseTestCase):
                 headers = headers,
                 content_type='application/json'
             )
-        self.assertIn(b'You have no access to this resource', res2.data)
+            print(res2.data)
+        self.assertIn(b'No records in store', res2.data)
 
     def test_only_attendant_can_make_a_sale(self):
         with self.app.app_context():
@@ -34,7 +35,7 @@ class TestSales(BaseTestCase):
             )
             data = json.loads(res.data)
 
-            token = data['msg']
+            token = data['token']
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.post(
@@ -55,7 +56,7 @@ class TestSales(BaseTestCase):
             )
             data = json.loads(res.data)
 
-            token = data['msg']
+            token = data['token']
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.get(

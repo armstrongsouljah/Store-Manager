@@ -4,7 +4,6 @@ from flask_jwt_extended import get_jwt_identity
 from app.models.sales import SalesRecord
 
 
-
 sale_obj = SalesRecord()
 
 
@@ -18,7 +17,7 @@ class SalesView(MethodView):
         quantity = sale_data.get("quantity")
 
         if user_identity['user_role'] != 'attendant' :
-            response = {'msg':'Only attendants can make a sale'}
+            response = {'message':'Only attendants can make a sale'}
         else:
             response = sale_obj.make_sale_record(attendant, product_sold, quantity)
         return jsonify(response)
@@ -27,16 +26,20 @@ class SalesView(MethodView):
         """ Collects sales for all attendants or a single attendant """
         response = None
 
-        logged_in_user = get_jwt_identity()
+        user_identity = get_jwt_identity()
 
-        if logged_in_user['user_role']=='admin':
-            response = sale_obj.get_all_sales()
+        if user_identity['user_role']=='admin':
+            sales  = sale_obj.get_all_sales()
+            response = {' all_sales': sales}
 
-        if logged_in_user['user_role']=='admin' and attendant_id:
-            response = sale_obj.get_sales_by_attendant(attendant_id)
+        if user_identity['user_role']=='admin' and attendant_id:
+            sales = sale_obj.get_sales_by_attendant(attendant_id)
+            response = {'individual_sales': sales}
 
-        if logged_in_user['user_role'] == 'attendant':
-            response = {'message': 'You have no access to this resource'}
+        if user_identity['user_role'] == 'attendant':
+            attendant_id = user_identity['user_id']
+            my_sales = sale_obj.get_sales_by_attendant(attendant_id)
+            response = {'your_sales': my_sales}
         return jsonify(response)
         
         

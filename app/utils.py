@@ -136,7 +136,7 @@ def fetch_all(relation, db_cursor):
     result = db_cursor.fetchall()
     if result:
         return result    
-    return  {'msg': 'No records in store'}
+    return  {'message': 'No records in store'}
     
 
 
