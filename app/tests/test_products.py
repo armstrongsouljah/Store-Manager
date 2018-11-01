@@ -207,9 +207,3 @@ class TestProducts(BaseTestCase):
         )
         print(res.data)
         self.assertIn(b'Soy sauce', res2.data)
-
-        
-
-
-
-

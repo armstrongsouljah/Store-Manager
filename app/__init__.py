@@ -18,6 +18,7 @@ def create_app_environment(config_name):
 app = create_app_environment('app.config.TestingConfig')
 from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserRegisterView
+from app.views.sales_views import SalesView
 
 
 jwt = JWTManager(app)
@@ -41,15 +42,11 @@ app.add_url_rule('/api/v1/products/<int:productId>', view_func=products_fetch, m
 app.add_url_rule('/api/v1/products', view_func=product_admin_view, methods=['POST'])
 app.add_url_rule('/api/v1/products/<int:productId>', view_func=product_admin_view, methods=['PUT', 'DELETE'])
 
-
-
-# # sales views
-# sale_view = jwt_optional(Sales.as_view('sales'))
-# app.add_url_rule('/api/v1/sales', view_func=sale_view, methods=['GET'])
-# app.add_url_rule('/api/v1/sales', view_func=sale_view, methods=['POST'])
-# app.add_url_rule('/api/v1/sales/<int:saleId>', \
-#                      view_func=sale_view, methods=['GET'])
-
-
+make_sale = jwt_required(SalesView.as_view('sale_add'))
+get_all_sales = jwt_required(SalesView.as_view('records'))
+filter_by_attendant = jwt_required(SalesView.as_view('filtered_list'))
+app.add_url_rule('/api/v1/sales', view_func=make_sale, methods=['POST'])
+app.add_url_rule('/api/v1/sales', view_func=get_all_sales, methods=['GET'] )
+app.add_url_rule('/api/v1/sales/<int:attendant_id>', view_func=filter_by_attendant, methods=['GET'] )
 
 app.register_blueprint(bp, url_prefix='/api/v1')

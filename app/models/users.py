@@ -16,7 +16,7 @@ class User:
 
     def authenticate(self, username, password=None):
         
-        query = f""" SELECT username, password, admin FROM users
+        query = f""" SELECT user_id, username, password, role FROM users
                WHERE username='{username}'
         """
         message = None
@@ -32,9 +32,9 @@ class User:
     
 
     
-    def register_user(self, username, password):
+    def register_user(self, username, password, role):
         message = None
-        if not username or not password:
+        if not username or not password or not role:
             message = {'msg':'username/password fields not allowed'}
         if username == "" or username ==" " or password == "":
             message = {'msg':'username/password cannot be spaces'}
@@ -43,6 +43,8 @@ class User:
 
         if not isinstance(username, str) or not isinstance(password, str):
             message = {'msg': 'Username/password must be a word'}
+        if not isinstance(role, str):
+            message = {'msg': 'User role must be a string'}
 
         if username and len(username) < 5 or password and len(password) < 5:
             message = {'msg': 'Username/password must be 6 characters and above'}
@@ -56,7 +58,8 @@ class User:
         self.cursor.execute(user_query)
         row = self.cursor.fetchone()
         
-        query = f""" INSERT INTO users (username,password) VALUES('{username}', '{password}')
+        query = f""" INSERT INTO users (username, password, role) 
+        VALUES('{username}', '{password}', '{role}')
              """
         if row is not None:
             message = {'msg': 'Username already taken'}

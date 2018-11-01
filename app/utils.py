@@ -128,14 +128,16 @@ def check_exists(entry_name, item_list):
         message = True
     return message
 
-# returns a collection of items
-def get_collection(item_list):
-    """ Returns items to the user based on the list supplied """
-    if is_empty(item_list):
-        response = {"msg":"No records yet."}
-    else:
-        response = item_list
-    return response
+def fetch_all(relation, db_cursor):
+    q = f"""
+      SELECT * FROM {relation}
+      """
+    db_cursor.execute(q)
+    result = db_cursor.fetchall()
+    if result:
+        return result    
+    return  {'msg': 'No records in store'}
+    
 
 
 

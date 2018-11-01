@@ -13,18 +13,18 @@ class ProductsView(MethodView):
         if productId:
             response = product_obj.fetch_product(productId)
         else:
-            response = {'msg': 'Fetching all products'}
+            response =  product_obj.fetchall_products()
         return jsonify(response)
 
     def post(self):
         data = request.get_json()
-        admin_status = get_jwt_identity()
+        user_role = get_jwt_identity()
         product_name = data.get("product_name")
         quantity = data.get("quantity")
         unit_cost = data.get("unit_cost")
         response = ""
 
-        if admin_status == True:
+        if user_role['user_role'] == 'admin':
             response = product_obj.add_product(product_name, quantity, unit_cost)
             
         else:
@@ -33,9 +33,9 @@ class ProductsView(MethodView):
 
     def put(self, productId):
         response = None
-        admin_status = get_jwt_identity()
+        user_role = get_jwt_identity()
 
-        if admin_status == True:
+        if user_role['user_role'] == 'admin':
             response = product_obj.change_product_quantity(productId)
         else:
             response = {'msg': 'Only admins can edit a product.'}
@@ -45,7 +45,8 @@ class ProductsView(MethodView):
         message  = None
         admin_role = get_jwt_identity()
 
-        if admin_role == True:
+
+        if admin_role['user_role'] == 'admin':
             message = product_obj.delete_product(productId)
         else:
             message = {'msg':'Only admins can delete a product'}

@@ -19,9 +19,15 @@ class BaseTestCase(unittest.TestCase):
             username='nonadmin',
             password='testing123'
         )
+        self.sale_data = dict(
+            user_id=2,
+            product_id=1,
+            quantity=4
+        )
         
     
     def tearDown(self):
         self.conn.drop_relation('users')
         self.conn.drop_relation('products')
+        self.conn.drop_relation('sales')
 

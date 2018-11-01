@@ -30,7 +30,8 @@ class TestUsers(BaseTestCase):
         with self.app.app_context():
             user_toregister = dict(
             username='wonderland',
-            password='testing123'
+            password='testing123',
+            role='admin'
         )
             res = self.client.post(
                 '/api/v1/auth/login',
@@ -56,8 +57,9 @@ class TestUsers(BaseTestCase):
     def test_only_admin_can_add_user(self):
         with self.app.app_context():
             user_toregister = dict(
-            username='wonderland',
-            password='testing123'
+            username='livingstone',
+            password='testing123',
+
             )
             res = self.client.post(
                 '/api/v1/auth/login',

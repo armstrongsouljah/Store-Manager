@@ -30,21 +30,17 @@ class Product:
     def fetchall_products(self):
         response = None
         products_query = """
-           SELECT product_name, quantity, unit_cost
-           FROM products
+           SELECT * FROM products
         """
         self.db.execute(products_query)
         query_result = self.db.fetchall()
-        
-        if query_result is not None:
-            response = {'products': query_result}
+        if query_result:
+            response =  query_result
         else:
-            response = {'error': 'No products in store'}
+            response = {'message': 'No products in store'}
         return response
-
-        
+              
              
-    
     def add_product(self, productname, quantity, unit_cost):
         message = None
         query = f"""
