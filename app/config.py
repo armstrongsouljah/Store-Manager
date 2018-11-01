@@ -35,10 +35,10 @@ class ProductionConfig(BaseConfig):
     ENV = 'production'
     DEBUG = False
     TESTING = False
-    HOST = 'ec2-184-73-169-151.compute-1.amazonaws.com'
-    DATABASE = 'dec9gdnj02hff8'
-    USER = 'xtyhcyxhshwipn'
-    PASSWORD = '40750512ca9a1bb9de7b8793fc4d2494caca32c156efc895cf529aa69111b39e'
+    HOST = os.getenv('DB_HOST') #'ec2-184-73-169-151.compute-1.amazonaws.com'
+    DATABASE = os.getenv('DB_NAME')  # 'dec9gdnj02hff8'
+    USER =  os.getenv('DB_USER')  #'xtyhcyxhshwipn'
+    PASSWORD =  os.getenv('DB_PASSWORD') #'40750512ca9a1bb9de7b8793fc4d2494caca32c156efc895cf529aa69111b39e'
 
 
 env_config = dict(

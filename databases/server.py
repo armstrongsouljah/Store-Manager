@@ -43,8 +43,8 @@ class DatabaseConnection:
 
 
     def drop_relation(self, tablename):
-        q = f""" DROP TABLE IF EXISTS {tablename} CASCADE """
-        return self.cursor.execute(q)
+        delete_relation_query = f""" DROP TABLE IF EXISTS {tablename} CASCADE """
+        return self.cursor.execute(delete_relation_query)
 
 
 
