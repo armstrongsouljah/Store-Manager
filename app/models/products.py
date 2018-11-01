@@ -5,7 +5,7 @@ class Product:
     """ Class for handling product operations in the store """
 
     def __init__(self,):
-        self.db = DatabaseConnection().cursor
+        self.database_cursor = DatabaseConnection().cursor
 
     def fetch_product(self, productId):
         response = None
@@ -13,116 +13,112 @@ class Product:
              SELECT product_name, quantity, unit_cost FROM
              products WHERE product_id='{productId}'
         """
-        self.db.execute(product_query)
-        result = self.db.fetchone()
+        self.database_cursor.execute(product_query)
+        returned_product = self.database_cursor.fetchone()
 
         if not isinstance(productId, int):
             response = {"error": "Product id must be an integer"}
             return response
         
         
-        if result is not None:
-            response = {"msg": result}
+        if returned_product is not None:
+            response = {"returned_product": returned_product}
         else:
-            response =  {"msg":"product not found"}
+            response =  {"message":"product not found"}
         return response
 
     def fetchall_products(self):
         response = None
         products_query = """
-           SELECT product_name, quantity, unit_cost
-           FROM products
+           SELECT * FROM products
         """
-        self.db.execute(products_query)
-        query_result = self.db.fetchall()
-        
-        if query_result is not None:
-            response = {'products': query_result}
+        self.database_cursor.execute(products_query)
+        query_result = self.database_cursor.fetchall()
+        if query_result:
+            response =  query_result
         else:
-            response = {'error': 'No products in store'}
+            response = {'message': 'No products in store'}
         return response
-
-        
+              
              
-    
     def add_product(self, productname, quantity, unit_cost):
         message = None
-        query = f"""
+        insert_product_query = f"""
             INSERT INTO products(product_name, quantity, unit_cost)
             VALUES('{productname}', '{quantity}', '{unit_cost}')
         """
-        existing_query = f"""
+        existing_product_query = f"""
             SELECT product_name FROM products
             WHERE product_name='{productname}'
         """
-        self.db.execute(existing_query)
-        row = self.db.fetchone()
+        self.database_cursor.execute(existing_product_query)
+        existing_product = self.database_cursor.fetchone()
 
-        message = validate_product_entries(productname, quantity, unit_cost)
+        valid_product = validate_product_entries(productname, quantity, unit_cost)
 
-        if message:
-            return message
+        if valid_product:
+            return valid_product
 
-        if row is not None:
-            message = {'error': 'product already exists'}
+        if existing_product is not None:
+            message = {'message': 'product already exists'}
         else:
             try:
-                self.db.execute(query)
-                message = {'msg': 'Product successfully added'}
+                self.database_cursor.execute(insert_product_query)
+                message = {'message': 'Product successfully added'}
             except Exception as  E:
-                message = {'msg': f'Query failed due to: {E}'}
+                message = {'message': f'Query failed due to: {E}'}
         return message
 
     
     def change_product_quantity(self, productId):
         """ modifies product in the store """
-        data = request.get_json()
-        quantity = data.get('quantity')
+        change_product_data = request.get_json()
+        quantity = change_product_data.get('quantity')
         message = None
                 
-        update = f"""
+        product_update_query = f"""
            UPDATE products SET quantity ='{quantity}'
            WHERE product_id = '{productId}'
         """
-        query = f"""
+        check_product_exists_query = f"""
            SELECT product_name, quantity FROM products
                 WHERE product_id ='{productId}'
         """
 
-        self.db.execute(query)
-        row = self.db.fetchone()
+        self.database_cursor.execute(check_product_exists_query)
+        product_exists = self.database_cursor.fetchone()
         
-        if row is not None:
+        if product_exists:
             try:
-                self.db.execute(update)
-                message = {'msg': 'product updated successfully'}
-            except Exception as E:
-                message = {'msg': E}
+                self.database_cursor.execute(product_update_query)
+                message = {'message': 'product updated successfully'}
+            except Exception as error:
+                message = {'message': error}
         else:
-            message = {'msg':'product doesnot exist'}
+            message = {'message':'product doesnot exist'}
         return message
     
     def delete_product(self, productId):
         response = None
-        sql =  f"""
+        product_to_delete_query =  f"""
            SELECT product_name, quantity FROM products
                 WHERE product_id ='{productId}'
         """
-        del_sql = f"""
+        delete_existing_product_query = f"""
                 DELETE FROM products WHERE product_id='{productId}'
         """
         # get  an item the delete the fetched item
-        self.db.execute(sql)
-        result = self.db.fetchone()
+        self.database_cursor.execute(product_to_delete_query)
+        product_to_delete = self.database_cursor.fetchone()
 
-        if result is not None:
+        if product_to_delete is not None:
             try:
-                self.db.execute(del_sql)
-                response = {'msg': 'Product successfully deleted'}
-            except Exception as E:
-                response = {'msg': E}
+                self.database_cursor.execute(delete_existing_product_query)
+                response = {'message': 'Product successfully deleted'}
+            except Exception as error:
+                response = {'message': error}
         else:
-            response = {'msg': 'product does not exist'}
+            response = {'message': 'product does not exist'}
         return response
 
 
