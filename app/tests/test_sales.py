@@ -2,13 +2,12 @@ import json
 from .base import BaseTestCase
 
 
-
 class TestSales(BaseTestCase):
     
     def test__get_all_sales(self):
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 content_type='application/json',
                 data=json.dumps(self.user)
             )
@@ -18,7 +17,7 @@ class TestSales(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.get(
-                '/api/v1/sales',
+                '/api/v2/sales',
                 headers = headers,
                 content_type='application/json'
             )
@@ -28,7 +27,7 @@ class TestSales(BaseTestCase):
     def test_only_attendant_can_make_a_sale(self):
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 content_type='application/json',
                 data=json.dumps(self.user)
 
@@ -39,7 +38,7 @@ class TestSales(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.post(
-                '/api/v1/sales',
+                '/api/v2/sales',
                 headers = headers,
                 content_type='application/json',
                 data = json.dumps(self.sale_data)
@@ -50,7 +49,7 @@ class TestSales(BaseTestCase):
     def test_only_can_filter_sales_by_existing_only_existing_attendants(self):
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 content_type='application/json',
                 data=json.dumps(self.user)
             )
@@ -60,7 +59,7 @@ class TestSales(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.get(
-                '/api/v1/sales/12',
+                '/api/v2/sales/12',
                 headers = headers,
                 content_type='application/json'
             )
