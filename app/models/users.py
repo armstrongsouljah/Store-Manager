@@ -14,59 +14,65 @@ class User:
     def check_password(self, hash, password):
         return check_password_hash(hash, password)
 
-    def authenticate(self, username, password=None):
+    def fetch_user(self, username, password=None):
         
-        query = f""" SELECT username, password, admin FROM users
+        fetch_user_query = f""" SELECT user_id, username, password, role FROM users
                WHERE username='{username}'
         """
-        message = None
+        response = None
         # 1 query db
-        self.cursor.execute(query)
+        self.cursor.execute(fetch_user_query)
         # 2 fetch result
-        user = self.cursor.fetchone()
-        if user is not None:
-            message = user
+        fetched_user = self.cursor.fetchone()
+        if fetched_user:
+            response = fetched_user
         else:
-            message = {"msg":"user does not exist"}
-        return message
+            response = {"error":"user does not exist"}
+        return response
     
-
-    
-    def register_user(self, username, password):
+    def validate_registration_data(self, username, password,role):
         message = None
-        if not username or not password:
-            message = {'msg':'username/password fields not allowed'}
+        if not username or not password or not role:
+            message = {'mesage':'username/password fields not allowed'}
         if username == "" or username ==" " or password == "":
-            message = {'msg':'username/password cannot be spaces'}
+            message = {'message':'username/password cannot be spaces'}
         if username and username[0] in string.digits:
-            message = {'msg':'Username/password cannot startwith a number'}
+            message = {'message':'Username/password cannot startwith a number'}
 
         if not isinstance(username, str) or not isinstance(password, str):
-            message = {'msg': 'Username/password must be a word'}
+            message = {'message': 'Username/password must be a word'}
+        if not isinstance(role, str):
+            message = {'message': 'User role must be a string'}
 
         if username and len(username) < 5 or password and len(password) < 5:
-            message = {'msg': 'Username/password must be 6 characters and above'}
+            message = {'message': 'Username/password must be 6 characters and above'}
+        return message
+
+    
+    def register_user(self, username, password, role):
+        message = self.validate_registration_data(username, password, role)        
         if message:
             return message
         
         password = generate_password_hash(password)
-        user_query = f"""
+        user_exists_query = f"""
             SELECT username from users WHERE username='{username}'
         """
-        self.cursor.execute(user_query)
-        row = self.cursor.fetchone()
+        self.cursor.execute(user_exists_query)
+        returned_user = self.cursor.fetchone()
         
-        query = f""" INSERT INTO users (username,password) VALUES('{username}', '{password}')
+        reqister_user_query = f""" INSERT INTO users (username, password, role) 
+        VALUES('{username}', '{password}', '{role}')
              """
-        if row is not None:
-            message = {'msg': 'Username already taken'}
+        if returned_user is not None:
+            message = {'message': 'Username already taken'}
         else:
             try:
-                self.cursor.execute(query)
-                message = {'msg':'Successfully registered'}
+                self.cursor.execute(reqister_user_query)
+                message = {'message':'Successfully registered'}
 
-            except Exception as E:
-                message = {'msg':f'Query failed due to {E}'}
+            except Exception as error:
+                message = {'message':f'Query failed due to {error}'}
         return message
             
 

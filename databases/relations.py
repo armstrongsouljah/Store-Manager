@@ -7,16 +7,9 @@ commands = (
                             user_id SERIAL PRIMARY KEY,
                             username VARCHAR(35) NOT NULL UNIQUE,
                             password VARCHAR(240) NOT NULL, 
-                            admin BOOL DEFAULT False,
+                            role VARCHAR(23),
                             registered_at TIMESTAMP DEFAULT NOW()
                     )
-                """,
-                """
-                CREATE TABLE IF NOT EXISTS categories(
-                    category_id SERIAL PRIMARY KEY,
-                    category_name VARCHAR(56) UNIQUE NOT NULL,
-                    created_at TIMESTAMPTZ DEFAULT NOW()
-                )
                 """,
                 """
                 CREATE TABLE IF NOT EXISTS  products(
@@ -27,14 +20,27 @@ commands = (
                     created_at TIMESTAMP DEFAULT NOW()
                 )
                 """,
+
+                """
+                CREATE TABLE IF NOT EXISTS sales(
+                    sale_id SERIAL PRIMARY KEY,
+                    attendant INT references users(user_id)
+                    ON DELETE CASCADE,
+                    product_sold INT references products(product_id)
+                    ON DELETE CASCADE,
+                    quantity INT,
+                    total_cost INT,
+                    timestamp TIMESTAMPTZ DEFAULT NOW()
+                )
+                """,
                 
                 f"""
-                INSERT INTO users(username, password, admin)      
-                VALUES('admin','{g("testing123")}' ,True)
+                INSERT INTO users(username, password, role)      
+                VALUES('admin','{g("testing123")}' ,'admin')
                 """,
                 f"""
-                INSERT INTO users(username, password)
-                VALUES('nonadmin','{g("testing123")}')
+                INSERT INTO users(username, password, role)
+                VALUES('nonadmin','{g("testing123")}', 'attendant')
                 
                 """
 )
