@@ -1,4 +1,4 @@
-# Store-Manager [![Build Status](https://travis-ci.org/armstrongsouljah/Store-Manager.svg?branch=feature)](https://travis-ci.org/armstrongsouljah/Store-Manager) [![Maintainability](https://api.codeclimate.com/v1/badges/de3d25a8dafaada7833c/maintainability)](https://codeclimate.com/github/armstrongsouljah/Store-Manager/maintainability) [![Coverage Status](https://coveralls.io/repos/github/armstrongsouljah/Store-Manager/badge.svg?branch=feature)](https://coveralls.io/github/armstrongsouljah/Store-Manager?branch=feature)
+# Store-Manager [![Build Status](https://travis-ci.org/armstrongsouljah/Store-Manager.svg?branch=develop)](https://travis-ci.org/armstrongsouljah/Store-Manager) [![Maintainability](https://api.codeclimate.com/v1/badges/de3d25a8dafaada7833c/maintainability)](https://codeclimate.com/github/armstrongsouljah/Store-Manager/maintainability) [![Coverage Status](https://coveralls.io/repos/github/armstrongsouljah/Store-Manager/badge.svg?branch=develop)](https://coveralls.io/github/armstrongsouljah/Store-Manager?branch=develop)
 
 
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store. [github pages](https://armstrongsouljah.github.io/Store-Manager/ui/)
@@ -7,13 +7,14 @@ Store Manager is a web application that helps store owners manage sales and prod
 |Endpoint|Link|
 |:---:|:---|
 |Index Route|[/](https://soultech-store.herokuapp.com)|
-|`Products`*POST*|[/api/v1/login](https://soultech-store.herokuapp.com/api/v1/login)|
-|`Products`*GET*|[/api/v1/products](https://soultech-store.herokuapp.com/api/v1/products)|
-|`Products`*GET* Item|[/api/v1/products/product_id](https://soultech-store.herokuapp.com/api/v1/products/1)|
-|`Products` *POST*|[/api/v1/products](https://soultech-store.herokuapp.com/api/v1/products)|
-|`Sales` *GET* Only Admin|[/api/v1/sales](https://soultech-store.herokuapp.com/api/v1/sales)|
-|`Sales` *GET* Admin/Attendant|[/api/v1/sales/sale_id](https://soultech-store.herokuapp.com/api/v1/sales/1)|
-|`Sales` *POST* Only Attendant|[/api/v1/sales](https://soultech-store.herokuapp.com/api/v1/sales)|
+|Users *POST*|[/api/v2/auth/signup](https://soultech-store.herokuapp.com/api/v2/auth/login)|
+|Users *POST*|[/api/v2/auth/signup](https://soultech-store.herokuapp.com/api/v2/auth/login)|
+|Products *GET*|[/api/v2/products](https://soultech-store.herokuapp.com/api/v2/products)|
+|Products*GET* Item|[/api/v2/products/<int:product_id>](https://soultech-store.herokuapp.com/api/v2/products/1)|
+|Products *POST*|[/api/v2/products](https://soultech-store.herokuapp.com/api/v2/products)|
+|Sales *GET* Only Admin|[/api/v2/sales](https://soultech-store.herokuapp.com/api/v2/sales)|
+|Sales *GET* Admin/Attendant|[/api/v2/sales/<int:sale_id>](https://soultech-store.herokuapp.com/api/v2/sales/1)|
+|Sales *POST* Only Attendant|[/api/v2/sales](https://soultech-store.herokuapp.com/api/v2/sales)|
 
 
 ## UI Features
@@ -57,8 +58,6 @@ Store Manager is a web application that helps store owners manage sales and prod
 
 `$ python3 run.py`
 
-### Documentation
-[view it here](https://documenter.getpostman.com/view/5140285/RWguwbvV)
 
 ### CREDITS
 - Much appreciation goes to my fellow bootcamp candidates for your tireless efforts in helping me where I got stuck
