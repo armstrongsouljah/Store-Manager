@@ -152,7 +152,7 @@ class TestProducts(BaseTestCase):
             )
 
             res2 = self.client.put(
-                '/api/v2/products/1',
+                '/api/v2/products/2',
                 data=json.dumps(update),
                 content_type='application/json',
                 headers=headers
@@ -203,7 +203,7 @@ class TestProducts(BaseTestCase):
             headers=headers
         )
         res2 = self.client.get(
-            '/api/v2/products/1',
+            '/api/v2/products/2',
             content_type='application/json'
         )
         print(res.data)
