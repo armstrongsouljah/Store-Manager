@@ -65,10 +65,10 @@ def validate_product_entries(product_name, quantity, unit_cost):
 
 
 def fetch_all(relation, db_cursor):
-    q = f"""
+    query = f"""
       SELECT * FROM {relation}
       """
-    db_cursor.execute(q)
+    db_cursor.execute(query)
     result = db_cursor.fetchall()
     if result:
         return result    

@@ -30,7 +30,7 @@ class ProductsView(MethodView):
         if user_role['user_role'] == 'admin':
             response = product_obj.add_product(product_name, quantity, unit_cost)            
         else:
-            response = {'msg': 'Only admins can add a product'}
+            response = {'error': 'Only admins can add a product'}
         return jsonify(response)
 
     def put(self, productId):
