@@ -53,6 +53,45 @@ class TestUsers(BaseTestCase):
             response = json.loads(res2.data)
         self.assertEqual('Successfully registered', response.get('message'))
 
+   
+    def test_user_prevent_user_signs_up_more_than_one(self):
+        # only admins can register users
+        
+        with self.app.app_context():
+            user_toregister = dict(
+            username='wonderland',
+            password='testing123',
+            role='admin'
+        )
+            res = self.client.post(
+                '/api/v2/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+
+            data = json.loads(res.data)
+            token=data.get('token')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/auth/signup',
+                data=json.dumps(user_toregister),
+                content_type='application/json',
+                headers=headers
+
+            )
+            res3 = self.client.post(
+                '/api/v2/auth/signup',
+                data=json.dumps(user_toregister),
+                content_type='application/json',
+                headers=headers
+
+            )
+            response = json.loads(res3.data)
+        self.assertEqual('Username already taken', response.get('message'))
+
+
+
 
     def test_only_admin_can_add_user(self):
         with self.app.app_context():

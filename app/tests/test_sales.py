@@ -58,6 +58,67 @@ class TestSales(BaseTestCase):
         self.assertIn(b'Only attendants can make a sale', res2.data)
 
     
+    def test_for_invalid_sale_quantity(self):
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v2/auth/login',
+                content_type='application/json',
+                data=json.dumps(self.non_admin)
+
+            )
+            data = json.loads(res.data)
+
+            token = data['token']
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+
+            self.sale_data['quantity'] = '#234'
+        
+            res2  = self.client.post(
+                '/api/v2/sales',
+                headers = headers,
+                content_type='application/json',
+                data = json.dumps(self.sale_data)
+            )
+        self.assertIn(b'quantity must be a number', res2.data)
+
+    def test_for_negative_sale_stock(self):
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v2/auth/login',
+                content_type='application/json',
+                data=json.dumps(self.non_admin)
+
+            )
+            data = json.loads(res.data)
+
+            token = data['token']
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+
+            self.sale_data['quantity'] = 0
+        
+            res2  = self.client.post(
+                '/api/v2/sales',
+                headers = headers,
+                content_type='application/json',
+                data = json.dumps(self.sale_data)
+            )
+        self.assertIn(b'Invalid for product or quantity', res2.data)
+
+    
     def test_only_can_filter_sales_by_existing_only_existing_attendants(self):
         with self.app.app_context():
             res = self.client.post(

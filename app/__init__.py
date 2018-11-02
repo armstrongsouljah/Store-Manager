@@ -15,8 +15,8 @@ def create_app_environment(config_name):
     return app
 
 
-app = create_app_environment('app.config.ProductionConfig')
-# app = create_app_environment('app.config.TestingConfig')
+# app = create_app_environment('app.config.ProductionConfig')
+app = create_app_environment('app.config.TestingConfig')
 
 from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserRegisterView

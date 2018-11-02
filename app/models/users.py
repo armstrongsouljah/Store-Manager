@@ -59,14 +59,3 @@ class User:
             except Exception as error:
                 message = {'message':f'Query failed due to {error}'}
         return message
-            
-
-
-
-        
-
-
-        
-
-
- 

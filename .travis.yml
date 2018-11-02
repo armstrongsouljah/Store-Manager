@@ -20,7 +20,7 @@ before_script:
   
 
 script:
-  - python3 -m pytest -v --cov app/tests --cov-report term-missing
+  - python3 -m pytest -v --cov app/ --cov-report term-missing
   - "coverage report"
 
   
