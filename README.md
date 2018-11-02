@@ -10,10 +10,10 @@ Store Manager is a web application that helps store owners manage sales and prod
 |Users *POST*|[/api/v2/auth/signup](https://soultech-store.herokuapp.com/api/v2/auth/login)|
 |Users *POST*|[/api/v2/auth/signup](https://soultech-store.herokuapp.com/api/v2/auth/login)|
 |Products *GET*|[/api/v2/products](https://soultech-store.herokuapp.com/api/v2/products)|
-|Products*GET* Item|[/api/v2/products/<int:product_id>](https://soultech-store.herokuapp.com/api/v2/products/1)|
+|Products*GET* Item|[/api/v2/products/1](https://soultech-store.herokuapp.com/api/v2/products/1)|
 |Products *POST*|[/api/v2/products](https://soultech-store.herokuapp.com/api/v2/products)|
 |Sales *GET* Only Admin|[/api/v2/sales](https://soultech-store.herokuapp.com/api/v2/sales)|
-|Sales *GET* Admin/Attendant|[/api/v2/sales/<int:sale_id>](https://soultech-store.herokuapp.com/api/v2/sales/1)|
+|Sales *GET* Admin/Attendant|[/api/v2/sales/1](https://soultech-store.herokuapp.com/api/v2/sales/1)|
 |Sales *POST* Only Attendant|[/api/v2/sales](https://soultech-store.herokuapp.com/api/v2/sales)|
 
 
