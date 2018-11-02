@@ -19,7 +19,7 @@ class TestProducts(BaseTestCase):
         with self.app.app_context():
             
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -29,7 +29,7 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.product),
                 content_type='application/json',
                 headers=headers
@@ -42,7 +42,7 @@ class TestProducts(BaseTestCase):
         with self.app.app_context():
 
             res = self.client.post(
-                'http://localhost:5400/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -52,7 +52,7 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.invalid_product),
                 content_type='application/json',
                 headers=headers
@@ -64,7 +64,7 @@ class TestProducts(BaseTestCase):
             self.invalid_product['product_name'] = 'Foil paper'
             self.invalid_product['quantity'] = 'Kampala'
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -74,7 +74,7 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.invalid_product),
                 content_type='application/json',
                 headers=headers
@@ -88,7 +88,7 @@ class TestProducts(BaseTestCase):
             self.invalid_product['quantity'] = 0
             self.invalid_product['unit_cost'] = 0
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -98,7 +98,7 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.invalid_product),
                 content_type='application/json',
                 headers=headers
@@ -109,7 +109,7 @@ class TestProducts(BaseTestCase):
         with self.app.app_context():
             
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.non_admin),
                 content_type='application/json'
             )
@@ -119,7 +119,7 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.product),
                 content_type='application/json',
                 headers=headers
@@ -131,11 +131,12 @@ class TestProducts(BaseTestCase):
     def test_admin_can_update_product_quantity(self):
         with self.app.app_context():
             update = {
-                'quantity':56
+                'quantity':56,
+                'unit_cost':360000
             }
             
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -144,14 +145,14 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.product),
                 content_type='application/json',
                 headers=headers
             )
 
             res2 = self.client.put(
-                '/api/v1/products/1',
+                '/api/v2/products/1',
                 data=json.dumps(update),
                 content_type='application/json',
                 headers=headers
@@ -162,7 +163,7 @@ class TestProducts(BaseTestCase):
     def test_admin_can_delete_a_product(self):
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -171,14 +172,14 @@ class TestProducts(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             self.client.post(
-                '/api/v1/products',
+                '/api/v2/products',
                 data=json.dumps(self.product),
                 content_type='application/json',
                 headers=headers
             )
 
             res2 = self.client.delete(
-                '/api/v1/products/1',
+                '/api/v2/products/1',
                 content_type='application/json',
                 headers=headers
             )
@@ -187,7 +188,7 @@ class TestProducts(BaseTestCase):
 
     def test_can_fetch_a_product(self):
         res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -196,13 +197,13 @@ class TestProducts(BaseTestCase):
         headers = {'Authorization': f'Bearer {token}'}
 
         self.client.post(
-            '/api/v1/products',
+            '/api/v2/products',
             data=json.dumps(self.product),
             content_type='application/json',
             headers=headers
         )
         res2 = self.client.get(
-            '/api/v1/products/1',
+            '/api/v2/products/1',
             content_type='application/json'
         )
         print(res.data)

@@ -8,7 +8,7 @@ class TestUsers(BaseTestCase):
 
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -18,7 +18,7 @@ class TestUsers(BaseTestCase):
         self.user['username'] = ""
         with self.app.app_context():
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -34,7 +34,7 @@ class TestUsers(BaseTestCase):
             role='admin'
         )
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.user),
                 content_type='application/json'
             )
@@ -44,7 +44,7 @@ class TestUsers(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
 
             res2 = self.client.post(
-                '/api/v1/auth/signup',
+                '/api/v2/auth/signup',
                 data=json.dumps(user_toregister),
                 content_type='application/json',
                 headers=headers
@@ -62,7 +62,7 @@ class TestUsers(BaseTestCase):
 
             )
             res = self.client.post(
-                '/api/v1/auth/login',
+                '/api/v2/auth/login',
                 data=json.dumps(self.non_admin),
                 content_type='application/json'
             )
@@ -70,7 +70,7 @@ class TestUsers(BaseTestCase):
             token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
             res2 = self.client.post(
-                '/api/v1/auth/signup',
+                '/api/v2/auth/signup',
                 data=json.dumps(user_toregister),
                 content_type='application/json',
                 headers=headers

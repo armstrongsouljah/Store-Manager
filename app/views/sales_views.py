@@ -2,12 +2,14 @@ from flask import request, jsonify
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity
 from app.models.sales import SalesRecord
+from app.utils import validate_sale_record
 
 
 sale_obj = SalesRecord()
 
 
 class SalesView(MethodView):
+    
     def post(self):
         response = None
         sale_data = request.get_json()
@@ -16,8 +18,13 @@ class SalesView(MethodView):
         product_sold = sale_data.get("product_sold")
         quantity = sale_data.get("quantity")
 
+        validation_response = validate_sale_record(product_sold, quantity) 
+
         if user_identity['user_role'] != 'attendant' :
-            response = {'message':'Only attendants can make a sale'}
+            return jsonify({'message':'Only attendants can make a sale'})
+
+        if validation_response:
+            return jsonify(validation_response)
         else:
             response = sale_obj.make_sale_record(attendant, product_sold, quantity)
         return jsonify(response)

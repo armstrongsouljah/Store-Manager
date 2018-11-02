@@ -38,7 +38,7 @@ class ProductsView(MethodView):
         user_role = get_jwt_identity()
 
         if user_role['user_role'] == 'admin':
-            response = product_obj.change_product_quantity(productId)
+            response = product_obj.change_product_details(productId)
         else:
             response = {'mesage': 'Only admins can edit a product.'}
         return jsonify(response)

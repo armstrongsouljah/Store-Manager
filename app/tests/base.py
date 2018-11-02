@@ -20,8 +20,7 @@ class BaseTestCase(unittest.TestCase):
             password='testing123'
         )
         self.sale_data = dict(
-            user_id=2,
-            product_id=1,
+            product_sold=1,
             quantity=4
         )
         
