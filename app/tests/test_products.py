@@ -159,34 +159,8 @@ class TestProducts(BaseTestCase):
             )
         self.assertIn(b'product updated successfully', res2.data)
 
-    
-    def test_admin_can_delete_a_product(self):
-        with self.app.app_context():
-            res = self.client.post(
-                '/api/v2/auth/login',
-                data=json.dumps(self.user),
-                content_type='application/json'
-            )
-            data = json.loads(res.data)
-            token=data.get('token')
-            headers = {'Authorization': f'Bearer {token}'}
 
-            self.client.post(
-                '/api/v2/products',
-                data=json.dumps(self.product),
-                content_type='application/json',
-                headers=headers
-            )
-
-            res2 = self.client.delete(
-                '/api/v2/products/1',
-                content_type='application/json',
-                headers=headers
-            )
-        self.assertIn(b'Product successfully deleted', res2.data)
-
-
-    def test_can_fetch_a_product(self):
+def test_can_fetch_a_product(self):
         res = self.client.post(
                 '/api/v2/auth/login',
                 data=json.dumps(self.user),
@@ -208,3 +182,32 @@ class TestProducts(BaseTestCase):
         )
         print(res.data)
         self.assertIn(b'Soy sauce', res2.data)
+
+    
+def test_admin_can_delete_a_product(self):
+    with self.app.app_context():
+        res = self.client.post(
+            '/api/v2/auth/login',
+            data=json.dumps(self.user),
+            content_type='application/json'
+        )
+        data = json.loads(res.data)
+        token=data.get('token')
+        headers = {'Authorization': f'Bearer {token}'}
+
+        self.client.post(
+            '/api/v2/products',
+            data=json.dumps(self.product),
+            content_type='application/json',
+            headers=headers
+        )
+
+        res2 = self.client.delete(
+            '/api/v2/products/1',
+            content_type='application/json',
+            headers=headers
+        )
+    self.assertIn(b'Product successfully deleted', res2.data)
+
+
+    
