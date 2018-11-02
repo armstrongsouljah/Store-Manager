@@ -3,6 +3,11 @@ from .base import BaseTestCase
 
 
 class TestSales(BaseTestCase):
+    product=dict(
+        product_name='Soy sauce',
+        quantity=34,
+        unit_cost=15000
+    )
     
     def test__get_all_sales(self):
         with self.app.app_context():
@@ -36,6 +41,13 @@ class TestSales(BaseTestCase):
 
             token = data['token']
             headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
         
             res2  = self.client.post(
                 '/api/v2/sales',

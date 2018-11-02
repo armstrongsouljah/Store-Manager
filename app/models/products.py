@@ -1,6 +1,9 @@
 from flask import request
+
+from app.utils import validate_product_change_details, validate_product_entries
 from databases.server import DatabaseConnection
-from app.utils import validate_product_entries
+
+
 class Product:
     """ Class for handling product operations in the store """
 
@@ -70,20 +73,24 @@ class Product:
         return message
 
     
-    def change_product_quantity(self, productId):
+    def change_product_details(self, productId):
         """ modifies product in the store """
         change_product_data = request.get_json()
         quantity = change_product_data.get('quantity')
+        unit_cost = change_product_data.get('unit_cost')
         message = None
-                
+        validate_product_detail = validate_product_change_details(quantity, unit_cost)        
         product_update_query = f"""
-           UPDATE products SET quantity ='{quantity}'
+           UPDATE products SET quantity ='{quantity}',
+           unit_cost='{unit_cost}'
            WHERE product_id = '{productId}'
         """
         check_product_exists_query = f"""
            SELECT product_name, quantity FROM products
                 WHERE product_id ='{productId}'
         """
+        if validate_product_detail:
+            return validate_product_detail
 
         self.database_cursor.execute(check_product_exists_query)
         product_exists = self.database_cursor.fetchone()
@@ -120,14 +127,3 @@ class Product:
         else:
             response = {'message': 'product does not exist'}
         return response
-
-
-        
-
-
-        
-
-        
-
-
-

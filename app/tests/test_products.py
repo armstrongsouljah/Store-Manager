@@ -131,7 +131,8 @@ class TestProducts(BaseTestCase):
     def test_admin_can_update_product_quantity(self):
         with self.app.app_context():
             update = {
-                'quantity':56
+                'quantity':56,
+                'unit_cost':360000
             }
             
             res = self.client.post(

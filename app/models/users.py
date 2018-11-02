@@ -1,6 +1,7 @@
 import string
 from databases.server import DatabaseConnection
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.utils import validate_registration_data
 
 
 class User:
@@ -30,27 +31,11 @@ class User:
             response = {"error":"user does not exist"}
         return response
     
-    def validate_registration_data(self, username, password,role):
-        message = None
-        if not username or not password or not role:
-            message = {'mesage':'username/password fields not allowed'}
-        if username == "" or username ==" " or password == "":
-            message = {'message':'username/password cannot be spaces'}
-        if username and username[0] in string.digits:
-            message = {'message':'Username/password cannot startwith a number'}
-
-        if not isinstance(username, str) or not isinstance(password, str):
-            message = {'message': 'Username/password must be a word'}
-        if not isinstance(role, str):
-            message = {'message': 'User role must be a string'}
-
-        if username and len(username) < 5 or password and len(password) < 5:
-            message = {'message': 'Username/password must be 6 characters and above'}
-        return message
+    
 
     
     def register_user(self, username, password, role):
-        message = self.validate_registration_data(username, password, role)        
+        message = validate_registration_data(username, password, role)        
         if message:
             return message
         
