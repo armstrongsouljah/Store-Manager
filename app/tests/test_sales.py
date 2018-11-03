@@ -86,7 +86,7 @@ class TestSales(BaseTestCase):
                 content_type='application/json',
                 data = json.dumps(self.sale_data)
             )
-        self.assertIn(b'quantity must be a number', res2.data)
+        self.assertIn(b'Invalid input for stock or product', res2.data)
 
     def test_for_negative_sale_stock(self):
         with self.app.app_context():
@@ -116,10 +116,10 @@ class TestSales(BaseTestCase):
                 content_type='application/json',
                 data = json.dumps(self.sale_data)
             )
-        self.assertIn(b'Invalid for product or quantity', res2.data)
+        self.assertIn(b'Product or quantity cannot be empty', res2.data)
 
     
-    def test_only_can_filter_sales_by_existing_only_existing_attendants(self):
+    def test_only_admin_can_filter_sales_by_existing_only_existing_attendants(self):
         with self.app.app_context():
             res = self.client.post(
                 '/api/v2/auth/login',
@@ -132,7 +132,7 @@ class TestSales(BaseTestCase):
             headers = {'Authorization': f'Bearer {token}'}
         
             res2  = self.client.get(
-                '/api/v2/sales/12',
+                '/api/v2/sales/5',
                 headers = headers,
                 content_type='application/json'
             )

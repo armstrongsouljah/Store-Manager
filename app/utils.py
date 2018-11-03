@@ -33,10 +33,10 @@ def validate_sale_record(productid, quantity):
         error_message = {'error': 'Product  must be a number.'}
     if not isinstance(quantity, int):
         error_message = {'error': 'quantity must be a number'}
-    if quantity == 0 or productid == 0:
-        error_message = {'error': 'Invalid for product or quantity'}
+    if quantity and isinstance(quantity, int) <= 0 or productid == 0:
+        error_message = {'error': 'Invalid input for stock or product'}
     if error_message:
-        return error_message
+        return jsonify(error_message), 400
     return None
 
 
@@ -61,7 +61,7 @@ def validate_product_entries(product_name, quantity, unit_cost):
     or isinstance(unit_cost, int) and unit_cost < 1:
         message = {'message':'quantity/unitcost must be above zero'}
     if message:
-        return message
+        return jsonify(message), 400
 
 
 def fetch_all(relation, db_cursor):
@@ -71,13 +71,13 @@ def fetch_all(relation, db_cursor):
     db_cursor.execute(query)
     result = db_cursor.fetchall()
     if result:
-        return result    
-    return  {'message': 'No records in store'}
+        return jsonify(result), 200    
+    return  jsonify({'message': 'No records in store'}), 400
 
 def validate_registration_data(username, password,role):
     message = None
     if not username or not password or not role:
-        message = {'mesage':'username/password fields not allowed'}
+        message = {'mesage':'empty username/password and role fields not allowed'}
     if username == "" or username ==" " or password == "":
         message = {'message':'username/password cannot be spaces'}
     if username and not username.isalpha():

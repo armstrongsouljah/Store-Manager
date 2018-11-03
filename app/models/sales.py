@@ -1,3 +1,4 @@
+from flask import jsonify
 from databases.server import DatabaseConnection
 from  app.utils import fetch_all
 
@@ -36,7 +37,7 @@ class SalesRecord:
             response = {'error': 'Product is out of stock'}
         
         if response:
-            return response
+            return jsonify(response), 400
 
         else:
             total_cost = (quantity * returned_product['unit_cost'])
@@ -53,7 +54,7 @@ class SalesRecord:
             self.db.execute(update_stock)
             self.db.execute(sale_query)
 
-            response = {'message':'Sales record saved successfully'}
+            response = jsonify({'message':'Sales record saved successfully'}), 201
         return response
     
     def get_sales_by_attendant(self, attendant_id):
@@ -66,9 +67,9 @@ class SalesRecord:
         attendant_sales = self.db.fetchall()
 
         if attendant_sales:
-            response = attendant_sales
+            response = jsonify(attendant_sales), 200
         else:
-            response = {'message': 'Could not find the sales for that attendant'}
+            response = jsonify({'message': 'Could not find the sales for that attendant'}), 400
         return response
 
     def get_all_sales(self):

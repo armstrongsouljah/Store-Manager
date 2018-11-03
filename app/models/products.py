@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 
 from app.utils import validate_product_change_details, validate_product_entries
 from databases.server import DatabaseConnection
@@ -20,14 +20,14 @@ class Product:
         returned_product = self.database_cursor.fetchone()
 
         if not isinstance(productId, int):
-            response = {"error": "Product id must be an integer"}
+            response = jsonify({"error": "Product id must be an integer"}), 400
             return response
         
         
         if returned_product is not None:
-            response = {"returned_product": returned_product}
+            response = jsonify({"returned_product": returned_product}), 200
         else:
-            response =  {"message":"product not found"}
+            response =  jsonify({"message":"product not found"}), 400
         return response
 
     def fetchall_products(self):
@@ -38,9 +38,9 @@ class Product:
         self.database_cursor.execute(products_query)
         query_result = self.database_cursor.fetchall()
         if query_result:
-            response =  query_result
+            response =  jsonify({"products":query_result}), 200
         else:
-            response = {'message': 'No products in store'}
+            response = jsonify({'message': 'No products in store'}), 400
         return response
               
              
@@ -63,13 +63,13 @@ class Product:
             return valid_product
 
         if existing_product is not None:
-            message = {'message': 'product already exists'}
+            message = jsonify({'message': 'product already exists'}), 400
         else:
             try:
                 self.database_cursor.execute(insert_product_query)
-                message = {'message': 'Product successfully added'}
+                message = jsonify({'message': 'Product successfully added'}), 201
             except Exception as  E:
-                message = {'message': f'Query failed due to: {E}'}
+                message = jsonify({'message': f'Query failed due to: {E}'}), 500
         return message
 
     
@@ -90,7 +90,7 @@ class Product:
                 WHERE product_id ='{productId}'
         """
         if validate_product_detail:
-            return validate_product_detail
+            return jsonify(validate_product_detail), 400
 
         self.database_cursor.execute(check_product_exists_query)
         product_exists = self.database_cursor.fetchone()
@@ -98,11 +98,11 @@ class Product:
         if product_exists:
             try:
                 self.database_cursor.execute(product_update_query)
-                message = {'message': 'product updated successfully'}
+                message = jsonify({'message': 'product updated successfully'}), 200
             except Exception as error:
                 message = {'message': error}
         else:
-            message = {'message':'product doesnot exist'}
+            message = jsonify({'message':'product doesnot exist'}), 400
         return message
     
     def delete_product(self, productId):
@@ -121,9 +121,9 @@ class Product:
         if product_to_delete is not None:
             try:
                 self.database_cursor.execute(delete_existing_product_query)
-                response = {'message': 'Product successfully deleted'}
+                response = jsonify({'message': 'Product successfully deleted'}), 202
             except Exception as error:
                 response = {'message': error}
         else:
-            response = {'message': 'product does not exist'}
+            response = jsonify({'message': 'product does not exist'}), 400
         return response

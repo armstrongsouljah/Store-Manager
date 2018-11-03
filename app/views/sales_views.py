@@ -21,13 +21,13 @@ class SalesView(MethodView):
         validation_response = validate_sale_record(product_sold, quantity) 
 
         if user_identity['user_role'] != 'attendant' :
-            return jsonify({'message':'Only attendants can make a sale'})
+            return jsonify({'message':'Only attendants can make a sale'}), 401
 
         if validation_response:
-            return jsonify(validation_response)
+            return validation_response
         else:
             response = sale_obj.make_sale_record(attendant, product_sold, quantity)
-        return jsonify(response)
+        return response
 
     def get(self, attendant_id=None):
         """ Collects sales for all attendants or a single attendant """
@@ -37,16 +37,16 @@ class SalesView(MethodView):
 
         if user_identity['user_role']=='admin':
             sales  = sale_obj.get_all_sales()
-            response = {' all_sales': sales}
+            response = sales
 
         if user_identity['user_role']=='admin' and attendant_id:
             sales = sale_obj.get_sales_by_attendant(attendant_id)
-            response = {'individual_sales': sales}
+            response = sales
 
         if user_identity['user_role'] == 'attendant':
             attendant_id = user_identity['user_id']
             my_sales = sale_obj.get_sales_by_attendant(attendant_id)
-            response = {'your_sales': my_sales}
-        return jsonify(response)
+            response = jsonify({'your_sales': my_sales})
+        return response
         
         
