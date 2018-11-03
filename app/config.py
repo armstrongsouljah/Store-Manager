@@ -34,7 +34,7 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     ENV = 'production'
     DEBUG = False
-    TESTING = True
+    TESTING = False
     HOST = 'ec2-184-73-169-151.compute-1.amazonaws.com'
     DATABASE = 'dec9gdnj02hff8'
     USER = 'xtyhcyxhshwipn'
