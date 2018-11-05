@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_jwt_extended import (JWTManager, create_access_token,
                                 get_jwt_identity, jwt_required)
 
@@ -17,6 +18,9 @@ def create_app_environment(config_name):
 
 # app = create_app_environment('app.config.ProductionConfig')
 app = create_app_environment('app.config.TestingConfig')
+
+# allow ajax requests.
+CORS(app)
 
 from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserRegisterView

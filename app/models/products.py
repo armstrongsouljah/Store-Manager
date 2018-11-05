@@ -27,7 +27,7 @@ class Product:
         if returned_product is not None:
             response = jsonify({"returned_product": returned_product}), 200
         else:
-            response =  jsonify({"message":"product not found"}), 400
+            response =  jsonify({"message":"product not found"}), 404
         return response
 
     def fetchall_products(self):
@@ -40,7 +40,7 @@ class Product:
         if query_result:
             response =  jsonify({"products":query_result}), 200
         else:
-            response = jsonify({'message': 'No products in store'}), 400
+            response = jsonify({'message': 'No products in store'}), 404
         return response
               
              
@@ -125,5 +125,5 @@ class Product:
             except Exception as error:
                 response = {'message': error}
         else:
-            response = jsonify({'message': 'product does not exist'}), 400
+            response = jsonify({'message': 'product does not exist'}), 404
         return response
