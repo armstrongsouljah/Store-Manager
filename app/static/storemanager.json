@@ -1,0 +1,399 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Soultech Store Manager",
+    "description": "Store manager is a web application that allows store owners and attendants, to perform daily tasks such as adding products, modifying products, making sale records and registering users.",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5400/api/v2",
+      "description": "Local testing server"
+    },
+    {
+      "url": "https://soultech-store.herokuapp.com",
+      "description": "Production API server"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logs in a user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid login"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Allows admin user to create store attendants",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegister"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully registered"
+          },
+          "400": {
+            "description": "Username already taken"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns a list of products in json format",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "No products in store"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Add a new product to the store",
+        "description": "Allows the admin user to create a new product and add it to the store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product successfully created"
+          },
+          "401": {
+            "description": "Only admin users can add a product"
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns details about a single product.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "Fetch a single product",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned a product"
+          },
+          "404": {
+            "description": "product not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Changes the user detail",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductChange"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Changes the user detail",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully deleted"
+          },
+          "401": {
+            "description": "Un authorized to delete"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/sales": {
+      "post": {
+        "summary": "Allows attendant to make a sales record",
+        "description": "Takes in the attendant id collected from the token, quantity of the product being sold, and the reference to the product iteself",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaleRecord"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sales"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created successfully"
+          },
+          "400": {
+            "description": "Invalid entry"
+          },
+          "401": {
+            "description": "Unauthorized to make a sale"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Returns all sales records by several attendants or single attendant",
+        "description": "If an admin is logged in, a list of sales from several attendants will be displayed, while if an attendant is logged in, then only a list of their sales is displayed",
+        "operationId": "fetchAllSales",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "No sales records"
+          }
+        }
+      }
+    },
+    "/sales/{attendantId}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Allows admin to filter sales by a single attendant",
+        "operationId": "filterByAttendant",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "attendantId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The user ID"
+          }
+        ],
+        "tags": [
+          "Sales"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "No sales for such an attendant"
+          },
+          "404": {
+            "description": "Attendant deosnot exist"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "properties": {
+          "product_name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "unit_cost": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "product_name",
+          "quantity",
+          "unit_cost"
+        ]
+      },
+      "UserRegister": {
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "UserLogin": {
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "SaleRecord": {
+        "properties": {
+          "product_sold": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProductChange": {
+        "properties": {
+          "quantity": {
+            "type": "integer"
+          },
+          "unit_cost": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "quantity",
+          "unit_cost"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
