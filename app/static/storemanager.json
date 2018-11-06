@@ -11,7 +11,7 @@
       "description": "Local testing server"
     },
     {
-      "url": "https://soultech-store.herokuapp.com",
+      "url": "https://soultech-store.herokuapp.com/api/v2",
       "description": "Production API server"
     }
   ],
