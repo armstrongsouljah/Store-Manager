@@ -10,6 +10,16 @@ class ProductsView(MethodView):
     """ Enables the admin user to add a product to the store """
 
     def get(self, productId=None):
+        """
+        tags:
+           - Products
+        summary: Returns a list of products in json format
+        responses:
+          '200':
+             description: Success
+          '404':
+             description: No products in store
+        """
         if productId:
             product = product_obj.fetch_product(productId)
             response = product
