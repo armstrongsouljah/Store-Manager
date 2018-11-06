@@ -45,8 +45,7 @@ class SalesView(MethodView):
 
         if user_identity['user_role'] == 'attendant':
             attendant_id = user_identity['user_id']
-            my_sales = sale_obj.get_sales_by_attendant(attendant_id)
-            response = jsonify({'your_sales': my_sales})
+            response = sale_obj.get_sales_by_attendant(attendant_id)
         return response
         
         

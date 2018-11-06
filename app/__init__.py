@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
+from flask_cors import CORS
 from flask_jwt_extended import (JWTManager, create_access_token,
                                 get_jwt_identity, jwt_required)
 
@@ -19,6 +20,9 @@ app = create_app_environment('app.config.ProductionConfig')
 # app = create_app_environment('app.config.TestingConfig')
 
 
+# allow ajax requests.
+CORS(app)
+
 from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserRegisterView
 from app.views.sales_views import SalesView
@@ -28,9 +32,11 @@ jwt = JWTManager(app)
 
 # welcome route
 @app.route("/", methods=["GET"])
-@jwt_required
-def index():
-    return welcome_message
+def home():
+    return render_template('index.html')
+
+
+    
 
 app.add_url_rule('/api/v2/auth/login', view_func=UserLoginView.as_view('login'),\
                               methods=['POST'] )

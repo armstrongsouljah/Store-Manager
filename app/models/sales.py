@@ -73,4 +73,10 @@ class SalesRecord:
         return response
 
     def get_all_sales(self):
-        return fetch_all('sales', self.db)
+        sales_records = fetch_all('sales', self.db)
+        if sales_records:
+            response = sales_records
+        else:
+             response = jsonify({'error': 'No sales records have been made yet'}), 404
+        return response
+        
