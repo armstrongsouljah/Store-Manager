@@ -6,7 +6,7 @@ from flask_jwt_extended import (JWTManager, create_access_token,
                                 get_jwt_identity, jwt_required)
 
 from .config import env_config
-from .utils import bp, welcome_message
+from .utils import bp
 
 
 def create_app_environment(config_name):
