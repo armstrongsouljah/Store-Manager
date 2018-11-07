@@ -1,6 +1,6 @@
 from flask import jsonify
 from databases.server import DatabaseConnection
-from  app.utils import fetch_all
+from  app.utils import fetch_all, fetch_details_by_id
 
 class SalesRecord:
     """ Class that provides for manipluation of sales data """

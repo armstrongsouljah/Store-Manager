@@ -12,9 +12,18 @@ commands = (
                     )
                 """,
                 """
+                CREATE TABLE IF NOT exists categories(
+                    category_id SERIAL PRIMARY KEY,
+                    category_name VARCHAR(49) UNIQUE,
+                    date_added TIMESTAMPTZ DEFAULT NOW()
+                )
+                """,
+                """
                 CREATE TABLE IF NOT EXISTS  products(
                     product_id SERIAL PRIMARY KEY,
                     product_name VARCHAR(38) NOT NULL UNIQUE,
+                    category INTEGER references categories(category_id)
+                    ON DELETE CASCADE,
                     quantity INTEGER NOT NULL,
                     unit_cost INTEGER NOT NULL,
                     created_at TIMESTAMP DEFAULT NOW()
@@ -42,5 +51,13 @@ commands = (
                 INSERT INTO users(username, password, role)
                 VALUES('nonadmin','{g("testing123")}', 'attendant')
                 
+                """,
+                """
+                INSERT INTO categories(category_name)
+                VALUES('electronics')
+                """,
+                """
+                INSERT INTO products(product_name, category, quantity, unit_cost)
+                VALUES('samsung galaxy tab', 1, 34, 450000)
                 """
 )

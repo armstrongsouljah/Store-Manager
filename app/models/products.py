@@ -1,6 +1,6 @@
 from flask import request, jsonify
 
-from app.utils import validate_product_change_details, validate_product_entries
+from app.utils import validate_product_change_details, validate_product_entries, check_item_exists
 from databases.server import DatabaseConnection
 
 
@@ -44,26 +44,25 @@ class Product:
         return response
               
              
-    def add_product(self, productname, quantity, unit_cost):
+    def add_product(self, productname, category,  quantity, unit_cost):
         message = None
         insert_product_query = f"""
-            INSERT INTO products(product_name, quantity, unit_cost)
-            VALUES('{productname}', '{quantity}', '{unit_cost}')
+            INSERT INTO products(product_name, category, quantity, unit_cost)
+            VALUES('{productname}', '{category}', '{quantity}', '{unit_cost}')
         """
-        existing_product_query = f"""
-            SELECT product_name FROM products
-            WHERE product_name='{productname}'
-        """
-        self.database_cursor.execute(existing_product_query)
-        existing_product = self.database_cursor.fetchone()
+        existing_product = check_item_exists('product_name', 'products', productname, self.database_cursor)
 
-        valid_product = validate_product_entries(productname, quantity, unit_cost)
+        product_errors = validate_product_entries(productname, category, quantity, unit_cost)
 
-        if valid_product:
-            return valid_product
+        if product_errors:
+            message = product_errors
 
-        if existing_product is not None:
+        if existing_product:
             message = jsonify({'message': 'product already exists'}), 400
+
+        if message:
+           return message
+
         else:
             try:
                 self.database_cursor.execute(insert_product_query)

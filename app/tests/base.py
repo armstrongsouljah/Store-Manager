@@ -27,6 +27,7 @@ class BaseTestCase(unittest.TestCase):
     
     def tearDown(self):
         self.conn.drop_relation('users')
+        self.conn.drop_relation('categories')
         self.conn.drop_relation('products')
         self.conn.drop_relation('sales')
 
