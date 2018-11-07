@@ -11,7 +11,7 @@
       "description": "Local testing server"
     },
     {
-      "url": "https://soultech-store.herokuapp.com",
+      "url": "https://soultech-store.herokuapp.com/api/v2",
       "description": "Production API server"
     }
   ],
@@ -314,6 +314,149 @@
           }
         }
       }
+    },
+    "/categories": {
+      "post": {
+        "summary": "Adds product category",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      },
+      "get": {
+        "summary": "Returns a list of product categories",
+        "responses": {
+          "200": {
+            "description": "operation successful"
+          },
+          "404": {
+            "description": "categories not added yet"
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      }
+    },
+    "/categories/{categoryId}": {
+      "get": {
+        "summary": "fetches a single product category",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful"
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      },
+      "put": {
+        "summary": "modifies a single product category",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation successful"
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      },
+      "delete": {
+        "summary": "deletes a product category.",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful"
+          },
+          "404": {
+            "description": "Category doesnot exist."
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      }
     }
   },
   "components": {
@@ -322,6 +465,9 @@
         "properties": {
           "product_name": {
             "type": "string"
+          },
+          "category": {
+            "type": "integer"
           },
           "quantity": {
             "type": "integer"
@@ -335,6 +481,13 @@
           "quantity",
           "unit_cost"
         ]
+      },
+      "Category": {
+        "properties": {
+          "category_name": {
+            "type": "string"
+          }
+        }
       },
       "UserRegister": {
         "properties": {
