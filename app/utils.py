@@ -127,9 +127,6 @@ def check_item_exists(column_name, relation, column_value, db_cursor):
     """
 
     db_cursor.execute(check_existence_query)
-
-<<<<<<< HEAD
-=======
     returned_row = db_cursor.fetchone()
     if returned_row:
         return returned_row
@@ -150,4 +147,3 @@ def validate_category_name(categoryname):
     else:
         return None
 
->>>>>>> a644ab0e67bab4d0ef2d076d6cd85b5a4e3e34d9
