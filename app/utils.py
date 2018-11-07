@@ -41,12 +41,12 @@ def validate_sale_record(productid, quantity):
 
 
 
-def validate_product_entries(product_name, quantity, unit_cost):
+def validate_product_entries(product_name, category, quantity, unit_cost):
 
     message = None
 
-    if not product_name or not unit_cost or not quantity:
-            message = {'message': "productname/ unitcost or quantity can't be blank"}
+    if not product_name or not unit_cost or not quantity or not category:
+            message = {'message': "productname/ unitcost or quantity or category can't be blank"}
 
     if product_name =="" or product_name ==" ":
         message = {'message': 'Product cannot be empty'}
@@ -54,8 +54,8 @@ def validate_product_entries(product_name, quantity, unit_cost):
     if not isinstance(product_name, str):
         message = {'message':'Product name must be a string'}
 
-    if not isinstance(quantity, int) or not isinstance(unit_cost, int):
-        message = {'message': 'quantity/unitcost must be intergers'}  
+    if not isinstance(quantity, int) or not isinstance(unit_cost, int) or not isinstance(category, int):
+        message = {'message': 'quantity/unitcost/category must be intergers'}  
 
     if isinstance(quantity, int) and quantity < 1 \
     or isinstance(unit_cost, int) and unit_cost < 1:
@@ -73,6 +73,30 @@ def fetch_all(relation, db_cursor):
     if result:
         return jsonify(result), 200    
     return  jsonify({'message': 'No records in store'}), 400
+
+def fetch_details_by_id(column_name, column_value, relation, db_cursor):
+    fetch_item_query = f"""
+       SELECT * FROM {relation} WHERE {column_name}='{column_value}'
+    """
+    db_cursor.execute(fetch_item_query)
+    returned_item = db_cursor.fetchone()
+    if returned_item:
+        response = jsonify(returned_item), 200
+    else:
+        response = jsonify({'message':f'{relation} item not found'}), 404
+    return response
+
+def remove_entry_by_id(column_name, relation, entry_id, db_cursor):
+    delete_entry_query = f"""
+    DELETE FROM {relation} WHERE {column_name}='{entry_id}'
+    """
+
+    try:
+        db_cursor.execute(delete_entry_query)
+        response = jsonify({'message': 'Item successfully deleted.'}), 202
+    except Exception as error:
+        response = jsonify({'message': f'query failed due {error}'}), 400
+    return response
 
 def validate_registration_data(username, password,role):
     message = None
@@ -97,44 +121,30 @@ def validate_registration_data(username, password,role):
     return message
 
 
+def check_item_exists(column_name, relation, column_value, db_cursor):
+    check_existence_query = f"""
+       SELECT {column_name} FROM {relation} WHERE {column_name}='{column_value}'
+    """
 
+    db_cursor.execute(check_existence_query)
 
+    returned_row = db_cursor.fetchone()
+    if returned_row:
+        return returned_row
+    else:
+        return None
 
-welcome_message = """
-   <!DOCTYPE html>
-     <html>
-       <head>
-         <title>Store Manager API</title>
-         <style type='text/css'>
-           *{
-               margin:0;
-               padding:0;
-           }
-           body{
-               width:80%;
-               margin:0 auto;
-           }
-           .main-container{
-               margin-top:45px;
-           }
-           h2{
-               font-size:16pt;
-               color:orange;
-               text-align:center;
-           }
-           a{
-               text-decoration:none;
-           }
-         </style>
-       </head>
-       <body>
-         <div class='main-content'>
-           <h2>Store Manager</h2>
-              Currently supported endpoints <br>
-              <a href='https://soultech-store.herokuapp.com/api/v1/products'>Products</a> <br/>
-              <a href='https://soultech-store.herokuapp.com/api/v1/sales'>Sales</a>
-         </div>
-       </body>
-     </html>
-"""
+def validate_category_name(categoryname):
+    error_message = None
+    if not categoryname:
+        error_message = {'message': 'Category cannot be blank'}
+    if categoryname and not isinstance(categoryname, str):
+        error_message = {'message': 'Category name accepts string characters'}
+    if categoryname and isinstance(categoryname, str) and not categoryname.isalpha():
+        error_message = {'message': 'Category should only contain alphabetical characters.'}
+    
+    if error_message:
+        return error_message
+    else:
+        return None
 

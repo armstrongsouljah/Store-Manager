@@ -35,10 +35,11 @@ class ProductsView(MethodView):
         product_name = data.get("product_name")
         quantity = data.get("quantity")
         unit_cost = data.get("unit_cost")
+        category = data.get("category")
         response = ""
 
         if user_role['user_role'] == 'admin':
-            response = product_obj.add_product(product_name, quantity, unit_cost) 
+            response = product_obj.add_product(product_name, category, quantity, unit_cost) 
             response = response           
         else:
             response = {'error': 'Only admins can add a product'}

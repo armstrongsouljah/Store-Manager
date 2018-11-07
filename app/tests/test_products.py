@@ -6,6 +6,7 @@ class TestProducts(BaseTestCase):
 
     product=dict(
         product_name='Soy sauce',
+        category=1,
         quantity=34,
         unit_cost=15000
     )
@@ -59,6 +60,16 @@ class TestProducts(BaseTestCase):
             )
         self.assertIn(b'Product cannot be empty', res2.data)
 
+    def test_can_fetch_all_products(self):
+        with self.app.app_context():
+
+            response = self.client.get(
+                '/api/v2/products',
+                content_type='application/json'
+            )
+        self.assertTrue(response.data)
+
+
     
 
     def test_invalid_product_name(self):
@@ -73,16 +84,17 @@ class TestProducts(BaseTestCase):
             data = json.loads(res.data)
             token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
+            self.product['product_name'] = 232323
 
             res2 = self.client.post(
                 '/api/v2/products',
-                data=json.dumps(self.invalid_product),
+                data=json.dumps(self.product),
                 content_type='application/json',
                 headers=headers
             )
         self.assertIn(b'Product name must be a string', res2.data)
 
-    def test_invalid_product_quantity_or_unitcost(self):
+    def test_invalid_product_quantity_or_unitcost_or_category(self):
         with self.app.app_context():
             self.invalid_product['product_name'] = 'Foil paper'
             self.invalid_product['quantity'] = 'Kampala'
@@ -102,7 +114,7 @@ class TestProducts(BaseTestCase):
                 content_type='application/json',
                 headers=headers
             )
-        self.assertIn(b'quantity/unitcost must be intergers', res2.data)
+        self.assertIn(b'quantity/unitcost/category must be intergers', res2.data)
 
     
     def test_product_quantity_or_unitcost_is_zero(self):
@@ -181,6 +193,37 @@ class TestProducts(BaseTestCase):
                 headers=headers
             )
         self.assertIn(b'product updated successfully', res2.data)
+
+    def test_attendant_cannot_update_product_details(self):
+        with self.app.app_context():
+            update = {
+                'quantity':56,
+                'unit_cost':360000
+            }
+            
+            res = self.client.post(
+                '/api/v2/auth/login',
+                data=json.dumps(self.non_admin),
+                content_type='application/json'
+            )
+            data = json.loads(res.data)
+            token=data.get('token')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+
+            res2 = self.client.put(
+                '/api/v2/products/1',
+                data=json.dumps(update),
+                content_type='application/json',
+                headers=headers
+            )
+        self.assertIn(b'Only admins can edit a product.', res2.data)
 
     
     def test_admin_can_delete_a_product(self):
@@ -277,7 +320,7 @@ class TestProducts(BaseTestCase):
             headers=headers
         )
         res2 = self.client.get(
-            '/api/v2/products/1',
+            '/api/v2/products/2',
             content_type='application/json'
         )
         print(res.data)

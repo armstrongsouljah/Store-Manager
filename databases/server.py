@@ -38,8 +38,8 @@ class DatabaseConnection:
             for command in commands:
                 self.cursor.execute(command)
             # print(f"connection successful on {dbname}")
-        except Exception:
-            pass
+        except Exception as error:
+            print(f"error: {error}")
 
 
     def drop_relation(self, tablename):

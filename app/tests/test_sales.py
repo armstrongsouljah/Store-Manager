@@ -9,7 +9,7 @@ class TestSales(BaseTestCase):
         unit_cost=15000
     )
     
-    def test__get_all_sales(self):
+    def test_get_all_sales(self):
         with self.app.app_context():
             res = self.client.post(
                 '/api/v2/auth/login',
@@ -57,7 +57,36 @@ class TestSales(BaseTestCase):
             )
         self.assertIn(b'Only attendants can make a sale', res2.data)
 
+    def test_can_make_a_sale(self):
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v2/auth/login',
+                content_type='application/json',
+                data=json.dumps(self.non_admin)
+
+            )
+            data = json.loads(res.data)
+
+            token = data['token']
+            headers = {'Authorization': f'Bearer {token}'}
+
+            self.client.post(
+                '/api/v2/products',
+                data=json.dumps(self.product),
+                content_type='application/json',
+                headers=headers
+            )
+        
+            res2  = self.client.post(
+                '/api/v2/sales',
+                headers = headers,
+                content_type='application/json',
+                data = json.dumps(self.sale_data)
+            )
+        self.assertIn(b'Sales record saved successfully', res2.data)
     
+
+
     def test_for_invalid_sale_quantity(self):
         with self.app.app_context():
             res = self.client.post(
@@ -137,4 +166,23 @@ class TestSales(BaseTestCase):
                 content_type='application/json'
             )
         self.assertIn(b'Could not find the sales for that attendant', res2.data)
+    
+    def test_only_admin_can_fetch_all_sales(self):
+        with self.app.app_context():
+            res = self.client.post(
+                '/api/v2/auth/login',
+                content_type='application/json',
+                data=json.dumps(self.non_admin)
+            )
+            data = json.loads(res.data)
+
+            token = data['token']
+            headers = {'Authorization': f'Bearer {token}'}
+        
+            res2  = self.client.get(
+                '/api/v2/sales',
+                headers = headers,
+                content_type='application/json'
+            )
+        self.assertTrue(res2.data)
            
