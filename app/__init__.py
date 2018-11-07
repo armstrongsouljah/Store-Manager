@@ -3,10 +3,10 @@ import os
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_jwt_extended import (JWTManager, create_access_token,
-                                get_jwt_identity, jwt_required)
+                                get_jwt_identity, jwt_required, jwt_optional)
 
 from .config import env_config
-from .utils import bp, welcome_message
+from .utils import bp
 
 
 def create_app_environment(config_name):
@@ -22,6 +22,7 @@ app = create_app_environment('app.config.TestingConfig')
 # allow ajax requests.
 CORS(app)
 
+from app.views.category_views import CategoryViews
 from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserRegisterView
 from app.views.sales_views import SalesView
@@ -42,6 +43,13 @@ app.add_url_rule('/api/v2/auth/login', view_func=UserLoginView.as_view('login'),
 signup_view = jwt_required(UserRegisterView.as_view('register'))
 app.add_url_rule('/api/v2/auth/signup', \
                 view_func=signup_view, methods=['POST'])
+
+categoryaddview = jwt_required(CategoryViews.as_view('categoryadd'))
+categorylistview = CategoryViews.as_view('categorylist')
+categoryfetchview = jwt_optional(CategoryViews.as_view('categories'))
+app.add_url_rule('/api/v2/categories', view_func=categoryaddview, methods=['POST'])
+app.add_url_rule('/api/v2/categories', view_func=categorylistview, methods=['GET'])
+app.add_url_rule('/api/v2/categories/<int:categoryId>', view_func=categoryfetchview, methods=['GET', 'PUT', 'DELETE'])
 
 product_admin_view = jwt_required(ProductsView.as_view('products'))
 products_fetch = ProductsView.as_view('productlist')
