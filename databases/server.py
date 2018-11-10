@@ -5,7 +5,7 @@ from app import app as ap
 from .relations import commands
 from urllib.parse import urlparse
 
-result = urlparse(env_config['production'].DATABASE_URI)
+# result = urlparse(env_config['production'].DATABASE_URI)
 
 class DatabaseConnection:
 
@@ -27,10 +27,10 @@ class DatabaseConnection:
             self.credentials['dbname'] = dbname
             
         if ap.config.get('ENV') == 'production':
-            dbname = result.path[1:]
-            self.credentials['host'] = result.hostname
-            self.credentials['user'] = result.username
-            self.credentials['password'] = result.password
+            dbname = env_config['production'].DATABASE
+            self.credentials['host'] = env_config['production'].HOST
+            self.credentials['user'] = env_config['production'].USER
+            self.credentials['password'] = env_config['production'].PASSWORD
             self.credentials['dbname'] = dbname
 
         try:
