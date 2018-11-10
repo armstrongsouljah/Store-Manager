@@ -2,10 +2,8 @@ import json
 import string
 from flask import  Blueprint, jsonify, request
 
-from app.config import DevelopmentConfig
-
-dev = DevelopmentConfig()
 bp = Blueprint('api', __name__)  # needed to enable versioning of my api
+
 
 def validate_product_change_details(quantity, unit_cost):
     error_message = None
@@ -73,6 +71,7 @@ def fetch_all(relation, db_cursor):
     if result:
         return jsonify(result), 200    
     return  jsonify({'message': 'No records in store'}), 400
+
 
 def fetch_details_by_id(column_name, column_value, relation, db_cursor):
     fetch_item_query = f"""
@@ -146,4 +145,6 @@ def validate_category_name(categoryname):
         return error_message
     else:
         return None
+
+
 
