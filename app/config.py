@@ -38,10 +38,11 @@ class ProductionConfig(BaseConfig):
     ENV = 'production'
     DEBUG = False
     TESTING = False
-    HOST = 'ec2-184-73-169-151.compute-1.amazonaws.com'
-    DATABASE = 'dec9gdnj02hff8'
-    USER = 'xtyhcyxhshwipn'
-    PASSWORD = '40750512ca9a1bb9de7b8793fc4d2494caca32c156efc895cf529aa69111b39e'
+    # HOST = 'ec2-184-73-169-151.compute-1.amazonaws.com'
+    # DATABASE = 'dec9gdnj02hff8'
+    # USER = 'xtyhcyxhshwipn'
+    # PASSWORD = '40750512ca9a1bb9de7b8793fc4d2494caca32c156efc895cf529aa69111b39e'
+    DATABASE_URI = 'postgres://xtyhcyxhshwipn:40750512ca9a1bb9de7b8793fc4d2494caca32c156efc895cf529aa69111b39e@ec2-184-73-169-151.compute-1.amazonaws.com:5432/dec9gdnj02hff8?sslmode=require'
 
 
 env_config = dict(
