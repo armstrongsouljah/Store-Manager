@@ -1,6 +1,7 @@
 from flask import request, jsonify
 
-from app.utils import validate_product_change_details, validate_product_entries, check_item_exists
+
+from app.utils import validate_product_change_details, validate_product_entries, check_item_exists, fetch_all
 from databases.server import DatabaseConnection
 
 
@@ -9,6 +10,7 @@ class Product:
 
     def __init__(self,):
         self.database_cursor = DatabaseConnection().cursor
+        # self.revoked_tokens = fetch_all('blacklisted', self.database_cursor)
 
     def fetch_product(self, productId):
         response = None
@@ -126,3 +128,11 @@ class Product:
         else:
             response = jsonify({'message': 'product does not exist'}), 404
         return response
+
+    def check_revoked(self):
+        token_fetch_query = """
+            SELECT token_jti FROM blacklisted
+            """
+        self.database_cursor.execute(token_fetch_query)
+        revoked_tokens = self.database_cursor.fetchall()
+        return revoked_tokens

@@ -1,11 +1,15 @@
 import datetime
 from flask import request, jsonify
 from flask.views import MethodView
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, get_raw_jwt
 from werkzeug.security import check_password_hash
 from app.models.users import User
+from app.utils import check_item_exists
+from databases.server import DatabaseConnection
 
+db_cursor = DatabaseConnection().cursor
 user_object = User()
+
 
 class UserLoginView(MethodView):
     def post(self):
@@ -48,9 +52,14 @@ class UserRegisterView(MethodView):
         username = data.get('username')
         password = data.get('password')
         user_role = data.get('role')
+        token_jti = get_raw_jwt()['jti']
         response = None
 
         user_identity = get_jwt_identity()
+        is_revoked = check_item_exists('token_jti', 'blacklisted', token_jti, db_cursor )
+
+        if is_revoked:
+            return jsonify({'msg': 'token already revoked'}), 401
         if user_identity['user_role'] == 'admin':
             response = user_object.register_user(username, password, user_role)
             response = jsonify(response), 201
@@ -58,3 +67,11 @@ class UserRegisterView(MethodView):
             response = {'message': 'Access only for admins'}
             response = jsonify(response), 401
         return response
+
+class UserLogoutView(MethodView):
+    @jwt_required
+    def delete(self):
+        token_jti = get_raw_jwt()['jti']
+        response = user_object.do_the_logout(token_jti)
+        return response
+

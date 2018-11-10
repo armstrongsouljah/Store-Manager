@@ -8,11 +8,14 @@ class BaseConfig:
     """ Project environment configurations """
     DEBUG = False
     TESTING = False
-    SECRET_KEY = '2573472ee1d9542f8bcfead459b237746e6ff5c890afa7f566d744c4570ed959cbc3'
+    # SECRET_KEY = '2573472ee1d9542f8bcfead459b237746e6ff5c890afa7f566d744c4570ed959cbc3'
+    JWT_SECRET_KEY = '2573472ee1d9542f8bcfead459b237746e6ff5c890afa7f566d744c4570ed959cbc3'
     JWT_ACCESS_TOKEN_EXPIRES = False
     JWT_TOKEN_LOCATION = ['headers']
     JWT_HEADER_NAME = 'Authorization'
     JWT_HEADER_TYPE = 'Bearer'
+    JWT_BLACKLIST_ENABLED = True
+    JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 
 
 class DevelopmentConfig(BaseConfig):

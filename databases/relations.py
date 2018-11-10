@@ -42,6 +42,12 @@ commands = (
                     timestamp TIMESTAMPTZ DEFAULT NOW()
                 )
                 """,
+                """
+                CREATE TABLE IF NOT EXISTS blacklisted(
+                    token_id SERIAL PRIMARY KEY,
+                    token_jti VARCHAR(90) UNIQUE
+                )
+                """,
                 
                 f"""
                 INSERT INTO users(username, password, role)      
