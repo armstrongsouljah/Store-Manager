@@ -6,7 +6,8 @@ from app.utils import check_item_exists
 from databases.server import DatabaseConnection
 
 category_obj = Category()
-db_cursor = DatabaseConnection().cursor
+
+
 
 class CategoryViews(MethodView):
     """ handles all operations regarding """
@@ -17,7 +18,7 @@ class CategoryViews(MethodView):
         categoryname = category_data.get("category_name")
         jti = get_raw_jwt()['jti']
 
-        token_already_revoked = check_item_exists('token_jti', 'blacklisted', jti, db_cursor )
+        token_already_revoked = category_obj.was_token_revoked(jti)
 
         if token_already_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
@@ -42,7 +43,7 @@ class CategoryViews(MethodView):
 
         jti = get_raw_jwt()['jti']
 
-        token_already_revoked = check_item_exists('token_jti', 'blacklisted', jti, db_cursor )
+        token_already_revoked = category_obj.was_token_revoked(jti)
 
         if token_already_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
@@ -58,7 +59,7 @@ class CategoryViews(MethodView):
 
         jti = get_raw_jwt()['jti']
 
-        token_already_revoked = check_item_exists('token_jti', 'blacklisted', jti, db_cursor )
+        token_already_revoked = category_obj.was_token_revoked(jti)
 
         if token_already_revoked:
             return jsonify({'msg': 'token already revoked'}), 401

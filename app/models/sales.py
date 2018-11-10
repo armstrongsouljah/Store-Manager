@@ -79,4 +79,16 @@ class SalesRecord:
         else:
              response = jsonify({'error': 'No sales records have been made yet'}), 404
         return response
+
+    def is_token_revoked(self, token_jti):
+        revoked_token_query = f"""
+        SELECT token_jti FROM blacklisted 
+        WHERE token_jti='{token_jti}'
+        """
+        self.db.execute(revoked_token_query)
+        returned_token = self.db.fetchone()
+
+        if returned_token:
+            return True
+        return False
         

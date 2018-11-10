@@ -79,3 +79,15 @@ class Category:
         else:
             response = remove_entry_by_id('category_id', 'categories', categoryId, self.db_cursor)
         return response
+
+    def was_token_revoked(self, token_jti):
+        token_revoked_query = f"""
+        SELECT token_jti FROM blacklisted 
+        WHERE token_jti='{token_jti}'
+        """
+        self.db_cursor.execute(token_revoked_query)
+        returned_token = self.db_cursor.fetchone()
+
+        if returned_token:
+            return True
+        return False

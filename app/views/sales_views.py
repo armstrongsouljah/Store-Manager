@@ -4,11 +4,9 @@ from flask_jwt_extended import get_jwt_identity, get_raw_jwt
 from app.models.sales import SalesRecord
 from app.utils import validate_sale_record
 from app.utils import check_item_exists
-from databases.server import DatabaseConnection
 
 
 sale_obj = SalesRecord()
-cursor = DatabaseConnection().cursor
 
 
 class SalesView(MethodView):
@@ -25,7 +23,7 @@ class SalesView(MethodView):
 
         jti_value = get_raw_jwt()['jti']
 
-        token_revoked = check_item_exists('token_jti', 'blacklisted', jti_value, cursor )
+        token_revoked = sale_obj.is_token_revoked(jti_value)
 
         if token_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
@@ -46,7 +44,7 @@ class SalesView(MethodView):
         user_identity = get_jwt_identity()
         jti_value = get_raw_jwt()['jti']
 
-        token_revoked = check_item_exists('token_jti', 'blacklisted', jti_value, cursor )
+        token_revoked = sale_obj.is_token_revoked(jti_value)
 
         if token_revoked:
             return jsonify({'msg': 'token already revoked'}), 401

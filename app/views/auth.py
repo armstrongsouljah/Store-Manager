@@ -5,9 +5,8 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from werkzeug.security import check_password_hash
 from app.models.users import User
 from app.utils import check_item_exists
-from databases.server import DatabaseConnection
 
-db_cursor = DatabaseConnection().cursor
+
 user_object = User()
 
 
@@ -56,7 +55,7 @@ class UserRegisterView(MethodView):
         response = None
 
         user_identity = get_jwt_identity()
-        is_revoked = check_item_exists('token_jti', 'blacklisted', token_jti, db_cursor )
+        is_revoked = user_object.is_token_revoked(token_jti)
 
         if is_revoked:
             return jsonify({'msg': 'token already revoked'}), 401

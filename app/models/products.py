@@ -129,10 +129,15 @@ class Product:
             response = jsonify({'message': 'product does not exist'}), 404
         return response
 
-    def check_revoked(self):
-        token_fetch_query = """
-            SELECT token_jti FROM blacklisted
-            """
-        self.database_cursor.execute(token_fetch_query)
-        revoked_tokens = self.database_cursor.fetchall()
-        return revoked_tokens
+
+    def is_token_revoked(self, token_jti):
+        token_query = f"""
+        SELECT token_jti FROM blacklisted 
+        WHERE token_jti='{token_jti}'
+        """
+        self.database_cursor.execute(token_query)
+        returned_token = self.database_cursor.fetchone()
+
+        if returned_token:
+            return True
+        return False

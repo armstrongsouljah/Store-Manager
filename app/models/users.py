@@ -81,5 +81,17 @@ class User:
 
     def all_revoked(self):
         return fetch_all('blacklisted', self.cursor)
+
+    def is_token_revoked(self, token_jti):
+        revoked_token_query = f"""
+        SELECT token_jti FROM blacklisted 
+        WHERE token_jti='{token_jti}'
+        """
+        self.cursor.execute(revoked_token_query)
+        returned_token = self.cursor.fetchone()
+
+        if returned_token:
+            return True
+        return False
         
 

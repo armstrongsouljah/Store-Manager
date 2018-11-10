@@ -2,10 +2,10 @@ from flask import request, jsonify
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, get_raw_jwt
 from app.models.products import Product
-from app.utils import fetch_all, check_item_exists
+from app.utils import fetch_all
 from databases.server import DatabaseConnection
 product_obj = Product()
-cursor = DatabaseConnection().cursor
+
 
 class ProductsView(MethodView):
     """ Enables the admin user to add a product to the store """
@@ -41,7 +41,7 @@ class ProductsView(MethodView):
         category = data.get("category")
         response = ""
 
-        is_revoked = check_item_exists('token_jti', 'blacklisted', jti, cursor )
+        is_revoked = product_obj.is_token_revoked(jti)
 
         if is_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
@@ -59,7 +59,7 @@ class ProductsView(MethodView):
         user_role = get_jwt_identity()
         jti_value = get_raw_jwt()['jti']
 
-        token_revoked = check_item_exists('token_jti', 'blacklisted', jti_value, cursor )
+        token_revoked = product_obj.is_token_revoked(jti_value)
 
         if token_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
@@ -79,7 +79,7 @@ class ProductsView(MethodView):
         user_identity = get_jwt_identity()
         jti = get_raw_jwt()['jti']
 
-        token_was_revoked = check_item_exists('token_jti', 'blacklisted', jti, cursor )
+        token_was_revoked = product_obj.is_token_revoked(jti)
 
         if token_was_revoked:
             return jsonify({'msg': 'token already revoked'}), 401
