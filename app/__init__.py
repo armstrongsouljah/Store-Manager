@@ -1,12 +1,12 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import (JWTManager, create_access_token,
-                                get_jwt_identity, jwt_required, jwt_optional)
+                                get_jwt_identity, get_raw_jwt, jwt_required, jwt_optional)
 
 from .config import env_config
-from .utils import bp
+from .utils import bp, fetch_all, check_item_exists
 
 
 def create_app_environment(config_name):
@@ -22,27 +22,39 @@ app = create_app_environment('app.config.TestingConfig')
 # allow ajax requests.
 CORS(app)
 
+from app.models.users import User
 from app.views.category_views import CategoryViews
 from app.views.product_views import ProductsView
-from app.views.auth import UserLoginView, UserRegisterView
+from app.views.auth import UserLoginView, UserLogoutView, UserRegisterView
 from app.views.sales_views import SalesView
+
+user_obj = User()
+from databases.server import DatabaseConnection
+db_cursor = DatabaseConnection().cursor
+
 
 
 jwt = JWTManager(app)
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    blacklisted = fetch_all('blacklisted', db_cursor)
+    return jti in blacklisted
 
 # welcome route
 @app.route("/", methods=["GET"])
 def home():
     return render_template('index.html')
 
-
-    
-
 app.add_url_rule('/api/v2/auth/login', view_func=UserLoginView.as_view('login'),\
                               methods=['POST'] )
 signup_view = jwt_required(UserRegisterView.as_view('register'))
 app.add_url_rule('/api/v2/auth/signup', \
                 view_func=signup_view, methods=['POST'])
+app.add_url_rule('/api/v2/auth/logout', view_func=UserLogoutView.as_view('logout'), \
+                               methods=['DELETE'])
+    
 
 categoryaddview = jwt_required(CategoryViews.as_view('categoryadd'))
 categorylistview = CategoryViews.as_view('categorylist')

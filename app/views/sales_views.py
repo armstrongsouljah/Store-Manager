@@ -1,11 +1,14 @@
 from flask import request, jsonify
 from flask.views import MethodView
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, get_raw_jwt
 from app.models.sales import SalesRecord
 from app.utils import validate_sale_record
+from app.utils import check_item_exists
+from databases.server import DatabaseConnection
 
 
 sale_obj = SalesRecord()
+cursor = DatabaseConnection().cursor
 
 
 class SalesView(MethodView):
@@ -19,6 +22,13 @@ class SalesView(MethodView):
         quantity = sale_data.get("quantity")
 
         validation_response = validate_sale_record(product_sold, quantity) 
+
+        jti_value = get_raw_jwt()['jti']
+
+        token_revoked = check_item_exists('token_jti', 'blacklisted', jti_value, cursor )
+
+        if token_revoked:
+            return jsonify({'msg': 'token already revoked'}), 401
 
         if user_identity['user_role'] != 'attendant' :
             return jsonify({'message':'Only attendants can make a sale'}), 401
@@ -34,6 +44,12 @@ class SalesView(MethodView):
         response = None
 
         user_identity = get_jwt_identity()
+        jti_value = get_raw_jwt()['jti']
+
+        token_revoked = check_item_exists('token_jti', 'blacklisted', jti_value, cursor )
+
+        if token_revoked:
+            return jsonify({'msg': 'token already revoked'}), 401
 
         if user_identity['user_role']=='admin':
             sales  = sale_obj.get_all_sales()

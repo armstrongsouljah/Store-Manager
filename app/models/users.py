@@ -1,7 +1,8 @@
 import string
+from flask import jsonify
 from databases.server import DatabaseConnection
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.utils import validate_registration_data
+from app.utils import validate_registration_data, check_item_exists, fetch_all
 
 
 class User:
@@ -59,3 +60,26 @@ class User:
             except Exception as error:
                 message = {'message':f'Query failed due to {error}'}
         return message
+
+    def do_the_logout(self, token_jti):
+        response = None
+        token_already_revoked = check_item_exists('token_jti', 'blacklisted', token_jti, self.cursor)
+        token_blacklist_query = f"""
+        INSERT INTO blacklisted(token_jti)
+        VALUES('{token_jti}')
+        """
+
+        if token_already_revoked:
+            response = jsonify({'message':'You have already logged out'}), 400
+        else:
+            try:
+                self.cursor.execute(token_blacklist_query)
+                response = jsonify({'message': 'You have successfully logged out'}), 200
+            except Exception as error:
+                response =jsonify({'message':f'{error}'}), 401
+        return response
+
+    def all_revoked(self):
+        return fetch_all('blacklisted', self.cursor)
+        
+

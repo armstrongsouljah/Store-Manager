@@ -30,4 +30,5 @@ class BaseTestCase(unittest.TestCase):
         self.conn.drop_relation('categories')
         self.conn.drop_relation('products')
         self.conn.drop_relation('sales')
+        self.conn.drop_relation('blacklisted')
 

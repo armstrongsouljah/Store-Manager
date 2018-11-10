@@ -118,4 +118,62 @@ class TestUsers(BaseTestCase):
             response = json.loads(res2.data)
         self.assertEqual('Access only for admins', response.get('message'))
 
+    def test_prevent_revoked_token_from_accessing_protected_resource(self):
+        with self.app.app_context():
+            user_toregister = dict(
+            username='livingstone',
+            password='testing123',
+
+            )
+            
+            res = self.client.post(
+                '/api/v2/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+
+            data = json.loads(res.data)
+            token=data.get('token')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            res2 = self.client.delete(
+                '/api/v2/auth/logout',
+                content_type='application/json',
+                headers=headers
+
+            )
+            res3 = self.client.post(
+                '/api/v2/auth/signup',
+                data=json.dumps(user_toregister),
+                content_type='application/json',
+                headers=headers
+
+            )
+
+            response = json.loads(res3.data)
+        self.assertEqual('token already revoked', response.get('msg'))
+
+
+    def test_user_logout(self):                    
+        with self.app.app_context():
+            
+            res = self.client.post(
+                '/api/v2/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+
+            data = json.loads(res.data)
+            token=data.get('token')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            res2 = self.client.delete(
+                '/api/v2/auth/logout',
+                content_type='application/json',
+                headers=headers
+
+            )
+            response = json.loads(res2.data)
+        self.assertEqual('You have successfully logged out', response.get('message'))
+
         
