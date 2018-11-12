@@ -30,8 +30,8 @@ from app.views.auth import UserLoginView, UserLogoutView, UserRegisterView
 from app.views.sales_views import SalesView
 
 user_obj = User()
-from databases.server import DatabaseConnection
-db_cursor = DatabaseConnection().cursor
+
+# db_cursor = DatabaseConnection().cursor
 
 
 
@@ -40,8 +40,8 @@ jwt = JWTManager(app)
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
-    blacklisted = fetch_all('blacklisted', db_cursor)
-    return jti in blacklisted
+    # blacklisted = fetch_all('blacklisted', db_cursor)
+    return jti
 
 # welcome route
 @app.route("/", methods=["GET"])

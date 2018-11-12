@@ -2,8 +2,8 @@ from flask import request, jsonify
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, get_raw_jwt
 from app.models.products import Product
-from app.utils import fetch_all
-from databases.server import DatabaseConnection
+# from app.utils import fetch_all
+# from databases.server import DatabaseConnection
 product_obj = Product()
 
 

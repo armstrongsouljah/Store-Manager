@@ -3,7 +3,7 @@ from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, get_raw_jwt
 from app.models.categories import Category
 from app.utils import check_item_exists
-from databases.server import DatabaseConnection
+# from databases.server import DatabaseConnection
 
 category_obj = Category()
 
