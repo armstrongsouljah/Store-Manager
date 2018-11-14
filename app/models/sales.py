@@ -2,13 +2,11 @@ from flask import jsonify
 from databases.server import DatabaseConnection
 from  app.utils import fetch_all, fetch_details_by_id
 
+
+db = DatabaseConnection().cursor
+
 class SalesRecord:
     """ Class that provides for manipluation of sales data """
-
-    def __init__(self):
-
-        self.db = DatabaseConnection().cursor
-    
 
     def make_sale_record(self, userId, productId, quantity):
 
@@ -17,8 +15,8 @@ class SalesRecord:
         product_query = f"""
             SELECT quantity, unit_cost from products
             WHERE product_id = {productId} """
-        self.db.execute(product_query)
-        returned_product = self.db.fetchone()
+        db.execute(product_query)
+        returned_product = db.fetchone()
 
         if not userId or not productId or not quantity:
             response = {'error': 'Product, attendant, and quantity cannot be blank'}
@@ -51,8 +49,8 @@ class SalesRecord:
             UPDATE products SET quantity={new_stock}
             WHERE product_id={productId}
             """
-            self.db.execute(update_stock)
-            self.db.execute(sale_query)
+            db.execute(update_stock)
+            db.execute(sale_query)
 
             response = jsonify({'message':'Sales record saved successfully'}), 201
         return response
@@ -63,8 +61,8 @@ class SalesRecord:
             SELECT * FROM sales WHERE attendant='{attendant_id}'
         """
         response = None
-        self.db.execute(attendant_check)
-        attendant_sales = self.db.fetchall()
+        db.execute(attendant_check)
+        attendant_sales = db.fetchall()
 
         if attendant_sales:
             response = jsonify(attendant_sales), 200
@@ -73,7 +71,7 @@ class SalesRecord:
         return response
 
     def get_all_sales(self):
-        sales_records = fetch_all('sales', self.db)
+        sales_records = fetch_all('sales', db)
         if sales_records:
             response = sales_records
         else:
@@ -85,8 +83,8 @@ class SalesRecord:
         SELECT token_jti FROM blacklisted 
         WHERE token_jti='{token_jti}'
         """
-        self.db.execute(revoked_token_query)
-        returned_token = self.db.fetchone()
+        db.execute(revoked_token_query)
+        returned_token = db.fetchone()
 
         if returned_token:
             return True

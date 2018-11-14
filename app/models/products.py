@@ -4,13 +4,11 @@ from flask import request, jsonify
 from app.utils import validate_product_change_details, validate_product_entries, check_item_exists, fetch_all
 from databases.server import DatabaseConnection
 
+database_cursor = DatabaseConnection().cursor
+
 
 class Product:
     """ Class for handling product operations in the store """
-
-    def __init__(self,):
-        self.database_cursor = DatabaseConnection().cursor
-        # self.revoked_tokens = fetch_all('blacklisted', self.database_cursor)
 
     def fetch_product(self, productId):
         response = None
@@ -18,8 +16,8 @@ class Product:
              SELECT product_name, quantity, unit_cost FROM
              products WHERE product_id='{productId}'
         """
-        self.database_cursor.execute(product_query)
-        returned_product = self.database_cursor.fetchone()
+        database_cursor.execute(product_query)
+        returned_product = database_cursor.fetchone()
 
         if not isinstance(productId, int):
             response = jsonify({"error": "Product id must be an integer"}), 400
@@ -37,8 +35,8 @@ class Product:
         products_query = """
            SELECT * FROM products
         """
-        self.database_cursor.execute(products_query)
-        query_result = self.database_cursor.fetchall()
+        database_cursor.execute(products_query)
+        query_result = database_cursor.fetchall()
         if query_result:
             response =  jsonify({"products":query_result}), 200
         else:
@@ -52,7 +50,7 @@ class Product:
             INSERT INTO products(product_name, category, quantity, unit_cost)
             VALUES('{productname}', '{category}', '{quantity}', '{unit_cost}')
         """
-        existing_product = check_item_exists('product_name', 'products', productname, self.database_cursor)
+        existing_product = check_item_exists('product_name', 'products', productname, database_cursor)
 
         product_errors = validate_product_entries(productname, category, quantity, unit_cost)
 
@@ -67,7 +65,7 @@ class Product:
 
         else:
             try:
-                self.database_cursor.execute(insert_product_query)
+                database_cursor.execute(insert_product_query)
                 message = jsonify({'message': 'Product successfully added'}), 201
             except Exception as  E:
                 message = jsonify({'message': f'Query failed due to: {E}'}), 500
@@ -93,12 +91,12 @@ class Product:
         if validate_product_detail:
             return jsonify(validate_product_detail), 400
 
-        self.database_cursor.execute(check_product_exists_query)
-        product_exists = self.database_cursor.fetchone()
+        database_cursor.execute(check_product_exists_query)
+        product_exists = database_cursor.fetchone()
         
         if product_exists:
             try:
-                self.database_cursor.execute(product_update_query)
+                database_cursor.execute(product_update_query)
                 message = jsonify({'message': 'product updated successfully'}), 200
             except Exception as error:
                 message = {'message': error}
@@ -116,12 +114,12 @@ class Product:
                 DELETE FROM products WHERE product_id='{productId}'
         """
         # get  an item the delete the fetched item
-        self.database_cursor.execute(product_to_delete_query)
-        product_to_delete = self.database_cursor.fetchone()
+        database_cursor.execute(product_to_delete_query)
+        product_to_delete = database_cursor.fetchone()
 
         if product_to_delete is not None:
             try:
-                self.database_cursor.execute(delete_existing_product_query)
+                database_cursor.execute(delete_existing_product_query)
                 response = jsonify({'message': 'Product successfully deleted'}), 202
             except Exception as error:
                 response = {'message': error}
@@ -135,8 +133,8 @@ class Product:
         SELECT token_jti FROM blacklisted 
         WHERE token_jti='{token_jti}'
         """
-        self.database_cursor.execute(token_query)
-        returned_token = self.database_cursor.fetchone()
+        database_cursor.execute(token_query)
+        returned_token = database_cursor.fetchone()
 
         if returned_token:
             return True

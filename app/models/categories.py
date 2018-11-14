@@ -2,12 +2,13 @@ from flask import jsonify
 from databases.server import DatabaseConnection
 from app.utils import check_item_exists, validate_category_name, fetch_all, fetch_details_by_id, remove_entry_by_id
 
+db_cursor = DatabaseConnection().cursor
+
 
 
 class Category:
     """ model for product categories """
-    def __init__(self):
-        self.db_cursor = DatabaseConnection().cursor
+    
 
     def add_category(self, category_name):
         response = None
@@ -15,7 +16,7 @@ class Category:
         INSERT INTO categories(category_name)
         VALUES ('{category_name}')
         """
-        check_category_already_exists = check_item_exists('category_name', 'categories', category_name, self.db_cursor)
+        check_category_already_exists = check_item_exists('category_name', 'categories', category_name, db_cursor)
 
         category_has_errors = validate_category_name(category_name)
 
@@ -30,18 +31,18 @@ class Category:
 
         if not category_has_errors:
             try:
-                self.db_cursor.execute(insert_category_query)
+                db_cursor.execute(insert_category_query)
                 response = jsonify({'message': 'Category has been successfully addded'}), 201
             except Exception as error:
                 response = jsonify({'message': f'query failed due to {error}'}), 400
         return response
 
     def retrieve_all_categories(self):
-        response  = fetch_all('categories', self.db_cursor)
+        response  = fetch_all('categories', db_cursor)
         return response
 
     def retrieve_category_by_id(self, categoryId):
-        response = fetch_details_by_id('category_id',categoryId,'categories', self.db_cursor)
+        response = fetch_details_by_id('category_id',categoryId,'categories', db_cursor)
         return response
 
     def change_category_name(self, categoryId, categoryname):
@@ -50,7 +51,7 @@ class Category:
         UPDATE categories SET category_name='{categoryname}'
         """
         category_errors = validate_category_name(categoryname)
-        category_exists = check_item_exists('category_id', 'categories', categoryId, self.db_cursor)
+        category_exists = check_item_exists('category_id', 'categories', categoryId, db_cursor)
         if category_errors:
             response = category_errors        
 
@@ -61,7 +62,7 @@ class Category:
             return response        
 
         try:
-            self.db_cursor.execute(category_change_query)
+            db_cursor.execute(category_change_query)
             response = jsonify({'message': 'Category updated successfully'}), 202
         except Exception as error:
             response = jsonify({'message': f'Query failed due to {error}'}), 400
@@ -71,13 +72,13 @@ class Category:
     def remove_category(self, categoryId):
         response = None
         
-        category_exists = check_item_exists('category_id', 'categories', categoryId, self.db_cursor)
+        category_exists = check_item_exists('category_id', 'categories', categoryId, db_cursor)
 
         if not category_exists:
             response = jsonify({'message': 'Category doesnot exist'}), 404
             return response
         else:
-            response = remove_entry_by_id('category_id', 'categories', categoryId, self.db_cursor)
+            response = remove_entry_by_id('category_id', 'categories', categoryId, db_cursor)
         return response
 
     def was_token_revoked(self, token_jti):
@@ -85,8 +86,8 @@ class Category:
         SELECT token_jti FROM blacklisted 
         WHERE token_jti='{token_jti}'
         """
-        self.db_cursor.execute(token_revoked_query)
-        returned_token = self.db_cursor.fetchone()
+        db_cursor.execute(token_revoked_query)
+        returned_token = db_cursor.fetchone()
 
         if returned_token:
             return True
