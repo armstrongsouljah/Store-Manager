@@ -36,7 +36,7 @@ class UserLoginView(MethodView):
                 user_id=returned_user.get('user_id'),
                 user_role=returned_user.get('role')
             )
-            response = {'token' : create_access_token(identity=my_identity, expires_delta=token_expiry), 'message':'Logged in successfully'}
+            response = {'token' : create_access_token(identity=my_identity, expires_delta=token_expiry), 'message':'Logged in successfully', 'user_role':returned_user['role']}
             response = jsonify(response), 200
         else:
             response = { 'token': None, 'message': 'invalid username/password try again'}
