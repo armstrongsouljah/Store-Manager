@@ -1,9 +1,9 @@
 const form = document.querySelector("form");
 const username = document.querySelector("input#username");
-const password = document.querySelector("input#password")
-const error_msg = document.querySelector("span.errors")
+const password = document.querySelector("input#password");
+const error_msg = document.querySelector("span.errors");
 
-const loginEndpoint = "https://soultech-store.herokuapp.com/api/v2/auth/login"
+const loginEndpoint = "https://soultech-store.herokuapp.com/api/v2/auth/login";
 
 
 const validateEntries = (username, password) => {
@@ -13,13 +13,16 @@ const validateEntries = (username, password) => {
     else if (username === "" || password === "") {
         error_msg.innerText = "username/password cannot be empty!";
     }
-}
+};
+
+// custom error in case user enters wrong credentials
 const handleErrors = (response)=>{
     if(!response.ok){
-        error_msg.innerText = `${response.statusText}, invalid username/password`.toLowerCase()
+        error_msg.innerText = `${response.statusText}, invalid username/password`.toLowerCase();
     }
-    return response
-}
+    return response;
+};
+
 let dotheLogin = () => {
     fetch(loginEndpoint, {
         method: 'POST',
@@ -43,14 +46,12 @@ let dotheLogin = () => {
                 localStorage.setItem("attendant_loggedin", true)
                 window.location = "/ui/attendant/";
             }
-        })
-        
+        })        
         .catch(error => console.log(error))
 }
 
 form.addEventListener("submit", (e) => {
     e.preventDefault()
-
     error_msg.style.color = "red";
 
     validateEntries(username.value, password.value);
