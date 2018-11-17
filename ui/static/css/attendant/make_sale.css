@@ -52,11 +52,11 @@ table{
     table-layout: fixed;
     width:100%;
     border-collapse: collapse;
-    white-space:nowrap;
+    white-space: space wr;
 }
-thead tr{
+/* thead tr{
     background: #f2f2f2;
-}
+} */
 tbody tr:nth-child(even){
     background: #fff;
 }
@@ -65,6 +65,7 @@ tbody tr:nth-child(odd){
 }
 td{
     text-align: center;
+    width:34px;
 }
 #cart-header{
    margin-top: 5px;
