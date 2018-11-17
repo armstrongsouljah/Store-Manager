@@ -14,3 +14,10 @@ form.addEventListener("submit", (e)=>{
         alert("Product details can't be empty!")
     }
 })
+
+// ensure access by admin logged in
+
+if( typeof localStorage.getItem("admin_loggedin") === "object"){
+    window.location = "/ui/"
+}
+

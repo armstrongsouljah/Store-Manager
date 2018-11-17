@@ -14,3 +14,10 @@ form.addEventListener("submit", (e)=>{
     }
     
 })
+
+// ensure access by admin logged in
+
+if( typeof localStorage.getItem("admin_loggedin") === "object"){
+    window.location = "/ui/"
+}
+

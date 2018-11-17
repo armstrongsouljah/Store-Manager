@@ -1,38 +1,60 @@
 const form = document.querySelector("form");
 const username = document.querySelector("input#username");
-const password = document.querySelector("input#password")
-const error_msg = document.querySelector("span.errors")
+const password = document.querySelector("input#password");
+const error_msg = document.querySelector("span.errors");
 
-users = {
-    "admin":{
-        "username":"admin",
-        "password":"password"
-    }
-}
+const loginEndpoint = "https://soultech-store.herokuapp.com/api/v2/auth/login";
 
-form.addEventListener("submit", (e)=>{
-    e.preventDefault()
-    error_msg.style.color = "red";
-    
-    if(username.value ==="" && password.value ===""){
+
+const validateEntries = (username, password) => {
+    if (username === "" && password === "") {
         error_msg.innerText = "empty credentials not allowed";
     }
-    else if(username.value ===" " && password.value ===" "){
-        error_msg.innerText = "Spaces can't be credentials!";
+    else if (username === "" || password === "") {
+        error_msg.innerText = "username/password cannot be empty!";
     }
-    else if(username.value ===users["admin"].username && password.value ===""){
-        error_msg.innerText = "Password can't be empty!"
+};
+
+// custom error in case user enters wrong credentials
+const handleErrors = (response)=>{
+    if(!response.ok){
+        error_msg.innerText = `${response.statusText}, invalid username/password`.toLowerCase();
     }
-    else if(username.value ===users["admin"].username && password.value !==users["admin"].password){
-        error_msg.innerText = "Invalid username/password."
-    }    
-    else if(username.value ===users["admin"].username && password.value ===users["admin"].password){
-        window.location = "./admin/";
-    }
-    else if(username.value !==users["admin"].username && password.value ===""){
-        error_msg.innerText = "Password can't be empty!";
-    }
-    else{
-        window.location = "./attendant/";
-    }
+    return response;
+};
+
+let dotheLogin = () => {
+    fetch(loginEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        body: JSON.stringify({ username: username.value, password: password.value })
+
+    })     
+        .then(handleErrors)  
+        .then(response => response.json())
+        .then(data => {
+            if (data["user_role"] === "admin" && typeof data["token"] !== null) {
+                localStorage.setItem("admin_token", data["token"])
+                localStorage.setItem("admin_loggedin", true)
+                window.location = "/ui/admin/";
+            }
+            else if (data["user_role"] === "attendant" && typeof data["token"] !== null) {
+                localStorage.setItem("attendant_token", data["token"])
+                localStorage.setItem("attendant_loggedin", true)
+                window.location = "/ui/attendant/";
+            }
+        })        
+        .catch(error => console.log(error))
+}
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault()
+    error_msg.style.color = "red";
+
+    validateEntries(username.value, password.value);
+    dotheLogin()
+
 });
