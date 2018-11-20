@@ -48,15 +48,15 @@ let dotheLogin = () => {
         .then(handleErrors)  
         .then(response => response.json())
         .then(data => {
-            if (data["user_role"] === "admin" && typeof data["token"] !== null) {
+            if (data["user_role"] === "admin" && typeof data["token"] !== "object") {
                 localStorage.setItem("admin_token", data["token"])
                 localStorage.setItem("admin_loggedin", true)
-                window.location = "/ui/admin/";
+                window.location = "/ui/admin/index.html";
             }
-            else if (data["user_role"] === "attendant" && typeof data["token"] !== null) {
+            else if (data["user_role"] === "attendant" && data["token"] !== null) {
                 localStorage.setItem("attendant_token", data["token"])
                 localStorage.setItem("attendant_loggedin", true)
-                window.location = "/ui/attendant/";
+                window.location = "/ui/attendant/index.html";
             }
         })        
         .catch(error => console.log(error))

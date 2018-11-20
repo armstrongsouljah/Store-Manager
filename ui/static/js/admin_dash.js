@@ -5,10 +5,13 @@ const lastName = document.querySelector("#last_name");
 const password = document.querySelector("#password");
 const confirm = document.querySelector("#confirm");
 
-let is_admin = localStorage.getItem("admin_loggedin");
- if (is_admin !== true){
-     window.location = "/ui/"
- }
+is_admin = localStorage.getItem("admin_loggedin");
+
+// check if admin is loggedin
+if(!is_admin){
+    console.log("go away attendant")
+}
+// console.log(is_admin)
 
 
 
