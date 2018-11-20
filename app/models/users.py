@@ -95,5 +95,17 @@ class User:
         if returned_token:
             return True
         return False
-        
+    
+    def list_attendants(self):
+        attendant_list_query = """
+        SELECT user_id, username, role FROM users WHERE role='attendant'
+        """
+        try:
+            cursor.execute(attendant_list_query)
+            returned_attendants = cursor.fetchall()
+            message = jsonify({"attendants": returned_attendants}), 200
+
+        except Exception as error:
+            message = jsonify({"error": f" query failed due to {error}"}), 400
+        return message
 

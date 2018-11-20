@@ -3,7 +3,7 @@ from databases.server import DatabaseConnection
 from app.utils import bp
 from app import app, create_app_environment
 
-app.config.from_object('app.config.TestingConfig')
+app.config.from_object('app.config.ProductionConfig')
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):

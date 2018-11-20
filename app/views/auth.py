@@ -74,3 +74,13 @@ class UserLogoutView(MethodView):
         response = user_object.do_the_logout(token_jti)
         return response
 
+class UserListView(MethodView):
+    @jwt_required
+    def get(self):
+        user_identity = get_jwt_identity()
+        role = user_identity.get("user_role")
+        if role == "admin":
+            response = user_object.list_attendants()
+        else:
+            response = jsonify({"message": "Only admins can see users"}), 401 # pragma no cover
+        return response
