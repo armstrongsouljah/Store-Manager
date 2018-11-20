@@ -6,6 +6,12 @@ const login_message = document.querySelector("span.status");
 
 const loginEndpoint = "https://soultech-store.herokuapp.com/api/v2/auth/login";
 
+//prevent default un authorised access
+localStorage.setItem("admin_loggedin", false)
+localStorage.setItem("attendant_loggedin", false)
+localStorage.setItem("admin_token", null)
+localStorage.setItem("attendant_token", null)
+
 
 // clear error message when user tries again
 username.addEventListener("focus", (e)=>{

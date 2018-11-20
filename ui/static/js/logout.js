@@ -9,11 +9,11 @@ logoutLink.addEventListener("click", (e)=>{
     if (is_admin){
         localStorage.setItem("admin_token", null)
         localStorage.setItem("admin_loggedin", false)
-        window.location = "/ui/"
+        window.location = "../"
     }
     if(is_attendant){
         localStorage.setItem("attendant_token", null)
         localStorage.setItem("attendant_loggedin", false)
-        window.location = "/ui/"
+        window.location = "../"
     }
 })
