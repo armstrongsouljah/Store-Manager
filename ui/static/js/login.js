@@ -51,12 +51,12 @@ let dotheLogin = () => {
             if (data["user_role"] === "admin" && typeof data["token"] !== "object") {
                 localStorage.setItem("admin_token", data["token"])
                 localStorage.setItem("admin_loggedin", true)
-                window.location = "/ui/admin/index.html";
+                window.location = "./admin/";
             }
             else if (data["user_role"] === "attendant" && data["token"] !== null) {
                 localStorage.setItem("attendant_token", data["token"])
                 localStorage.setItem("attendant_loggedin", true)
-                window.location = "/ui/attendant/index.html";
+                window.location = "./attendant/";
             }
         })        
         .catch(error => console.log(error))
