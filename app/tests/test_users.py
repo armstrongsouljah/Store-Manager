@@ -136,7 +136,7 @@ class TestUsers(BaseTestCase):
             token=data.get('token')
             headers = {'Authorization': f'Bearer {token}'}
 
-            res2 = self.client.delete(
+            self.client.delete(
                 '/api/v2/auth/logout',
                 content_type='application/json',
                 headers=headers
@@ -175,5 +175,27 @@ class TestUsers(BaseTestCase):
             )
             response = json.loads(res2.data)
         self.assertEqual('You have successfully logged out', response.get('message'))
+    
+    def test_admin_view_users(self):
+        with self.app.app_context():
+            
+            res = self.client.post(
+                '/api/v2/auth/login',
+                data=json.dumps(self.user),
+                content_type='application/json'
+            )
+
+            data = json.loads(res.data)
+            token=data.get('token')
+            headers = {'Authorization': f'Bearer {token}'}
+
+            res2 = self.client.get(
+                '/api/v2/auth/users',
+                content_type='application/json',
+                headers=headers
+
+            )
+            # response = json.loads(res2.data)
+        self.assertIn(b'attendants', res2.data)
 
         

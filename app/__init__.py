@@ -26,28 +26,26 @@ CORS(app)
 from app.models.users import User
 from app.views.category_views import CategoryViews
 from app.views.product_views import ProductsView
-from app.views.auth import UserLoginView, UserLogoutView, UserRegisterView
+from app.views.auth import UserLoginView, UserLogoutView, UserRegisterView, \
+                    UserListView
 from app.views.sales_views import SalesView
 from databases.server import DatabaseConnection
 
 user_obj = User()
 
-db_cursor = DatabaseConnection().cursor
-
-
+blacklist = set()
 
 jwt = JWTManager(app)
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
-    blacklisted = fetch_all('blacklisted', db_cursor)
-    return jti in blacklisted
+    return jti in blacklist
 
 # welcome route
 @app.route("/", methods=["GET"])
 def home():
-    return render_template('index.html')
+    return render_template('index.html') # pragma no cover
 
 app.add_url_rule('/api/v2/auth/login', view_func=UserLoginView.as_view('login'),\
                               methods=['POST'] )
@@ -56,6 +54,7 @@ app.add_url_rule('/api/v2/auth/signup', \
                 view_func=signup_view, methods=['POST'])
 app.add_url_rule('/api/v2/auth/logout', view_func=UserLogoutView.as_view('logout'), \
                                methods=['DELETE'])
+app.add_url_rule('/api/v2/auth/users', view_func=UserListView.as_view('users'), methods=['GET'])
     
 
 categoryaddview = jwt_required(CategoryViews.as_view('categoryadd'))
