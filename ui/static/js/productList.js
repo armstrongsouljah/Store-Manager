@@ -1,7 +1,3 @@
-if(typeof localStorage.getItem("admin_loggedin")==="object"){
-    window.location("../ui/")
-}
-
 const productListEndpoint = "https://soultech-store.herokuapp.com/api/v2/products"
 let productsTable = document.querySelector("table#products")
 let tableBody = document.querySelector("tbody");

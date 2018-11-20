@@ -6,12 +6,11 @@ const password = document.querySelector("#password");
 const confirm = document.querySelector("#confirm");
 
 is_admin = localStorage.getItem("admin_loggedin");
+admin_token = localStorage.getItem("admin_token");
 
-// check if admin is loggedin
-if(!is_admin){
-    console.log("go away attendant")
+if(admin_token === "null" && is_admin === "false"){
+    window.location = "/ui/"
 }
-// console.log(is_admin)
 
 
 
