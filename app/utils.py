@@ -28,7 +28,7 @@ def validate_sale_record(productid, quantity):
     if not productid or not quantity:
         error_message = {'error': 'Product or quantity cannot be empty'}
     if not isinstance(productid, int): 
-        error_message = {'error': 'Product  must be a number.'}
+        error_message = {'error': 'Product  must be a number.'} # pragma no cover
     if not isinstance(quantity, int):
         error_message = {'error': 'quantity must be a number'}
     if quantity and isinstance(quantity, int) <= 0 or productid == 0:
@@ -82,7 +82,7 @@ def fetch_details_by_id(column_name, column_value, relation, db_cursor):
     if returned_item:
         response = jsonify(returned_item), 200
     else:
-        response = jsonify({'message':f'{relation} item not found'}), 404
+        response = jsonify({'message':f'{relation} item not found'}), 404 # pragma no cover
     return response
 
 def remove_entry_by_id(column_name, relation, entry_id, db_cursor):
@@ -100,7 +100,7 @@ def remove_entry_by_id(column_name, relation, entry_id, db_cursor):
 def validate_registration_data(username, password,role):
     message = None
     if not username or not password or not role:
-        message = {'mesage':'empty username/password and role fields not allowed'}
+        message = {'mesage':'empty username/password and role fields not allowed'} # pragma no cover
     if username == "" or username ==" " or password == "":
         message = {'message':'username/password cannot be spaces'}
     if username and not username.isalpha():
