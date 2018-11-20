@@ -29,6 +29,7 @@ from app.views.product_views import ProductsView
 from app.views.auth import UserLoginView, UserLogoutView, UserRegisterView, \
                     UserListView
 from app.views.sales_views import SalesView
+from databases.server import DatabaseConnection
 
 user_obj = User()
 
