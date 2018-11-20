@@ -23,14 +23,9 @@ const loadProducts = (() => {
     fetch(productListEndpoint)
         .then(response => response.json())
         .then(data => {
-            productList = data["products"];
-
+            productList = data["products"];           
             
-            
-
             for (let product of productList) {
-
-                
 
                 productRow = createNode("tr")
                 productRow.setAttribute("scope", "row")
@@ -66,9 +61,6 @@ const loadProducts = (() => {
                 productRow.append(productAddedon)
                 productRow.append(productPrice)
                 tableBody.append(productRow)
-
-
-
             }
         })
         .catch(error => console.log(error))
