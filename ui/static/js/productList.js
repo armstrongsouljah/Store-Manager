@@ -11,7 +11,7 @@ const append = (parent, element) => {
     return parent.appendChild(element)
 }
 
-link = createNode("a", "href", "./product_detail.html")
+
 
 
 //load the products each time a request is made for product
@@ -24,11 +24,15 @@ const loadProducts = (() => {
             for (let product of productList) {
 
                 productRow = createNode("tr")
+                productRow.style.padding ="8px";
                 productRow.setAttribute("scope", "row")
                 productId = createNode("th")
                 productId.setAttribute("scope", "column")
                 productId.innerText = product["product_id"];
-
+                link = createNode("a")
+                link.setAttribute("href", "./product_detail.html")
+                link.innerText = "Details";
+                link.className ="details"
                 productName = createNode("td")
                 productName.innerText = product["product_name"];
 
@@ -45,7 +49,7 @@ const loadProducts = (() => {
                 // productCategory.innerText = product["category"];
 
                 productAddedon = createNode("td")
-                productAddedon.innerText = product["created_at"];
+                productAddedon.append(link)
 
                 productPrice= createNode("td")
                 productPrice.innerText = `${product["unit_cost"]} UGX`;                
@@ -58,7 +62,21 @@ const loadProducts = (() => {
                 productRow.append(productPrice)
                 tableBody.append(productRow)
             }
+        
+            // enable viewing of product details
+            detailLinks = document.querySelectorAll("a.details")
+            for(let linkItem of detailLinks){
+                linkItem.addEventListener("click", (e)=>{
+                    e.preventDefault()
+                    selectedProduct = e.target.parentNode.parentNode.firstChild.innerText;
+                    localStorage.setItem("selectedProduct", selectedProduct)
+                    window.location = e.target.getAttribute("href");
+                })
+            }
         })
         .catch(error => console.log(error))
 })()
+
+
+
 
