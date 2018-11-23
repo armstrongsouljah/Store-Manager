@@ -2,6 +2,7 @@ let selectedProduct = localStorage.getItem("selectedProduct");
 let adminToken = localStorage.getItem("admin_token");
 let detailRow = document.querySelector("tr.product-detail");
 const deleteButton  = document.querySelector("a.deleteBtn");
+const editButton =  document.querySelector("a.editButton");
 
 productURI = `https://soultech-store.herokuapp.com/api/v2/products/${selectedProduct}`;
 
@@ -34,7 +35,7 @@ renderSelectedProduct = (()=>{
 // delete selected product
 deleteButton.addEventListener("click", (event)=>{
     event.preventDefault()
-    if(window.confirm("Are you sure you wnat to delete?")){
+    if(window.confirm("Are you sure you want to delete?")){
         fetch(productURI, {
             method:'DELETE',
             mode:'cors',
@@ -53,3 +54,4 @@ deleteButton.addEventListener("click", (event)=>{
         console.log("Request cancelled.")
     }
 })
+

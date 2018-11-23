@@ -22,29 +22,23 @@
         </div>
         <div id="main-content">
             <h3 id="header">Product Modify Details Form</h3>
-            <form action="." class="category" method="POST">
-                    <div class="input-field">
-                            <label for="product_name">Product Name</label>
-                            <input type="text" name="product_name" id="product_name" value="Baking Flour" >
+            <span class="errors"></span>
+            <span class="message"></span>
+            <form action="." class="category productEditForm" method="POST">
+                   <div class="input-field">
+                            <label for="quantitiy">Product Name</label>
+                            <input type="text" name="productName" id="productName">
                     </div>
+                    
                     <div class="input-field">
                             <label for="quantitiy">Quantity</label>
-                            <input type="text" name="quantity" id="quantity" value="1800kg" >
+                            <input type="number" name="quantity" id="quantity" >
                     </div>
                     <div class="input-field">
-                            <label for="min-qty">Min Quantity</label>
-                            <input type="text" name="min-qty" id="min-qty" value="76kg" >
+                            <label for="unitCost">Unit Cost</label>
+                            <input type="number" name="unitCost" id="unitCost">
                     </div>
-                <div class="input-field">
-                        <select name="category_name" id="category_name">
-                            <option value="Confectionery">Confectionery</option>
-                        </select>
-                </div>
-
-                <div class="input-field">
-                        <label for="first_name">Added on</label>
-                        <input type="date" name="added_on" id="added_on" value="09/29/2018" >
-                </div>
+            
                 
                 <span id="signup-btn"><input id="category_add" type="submit" value="Save"></span>
             </form>
