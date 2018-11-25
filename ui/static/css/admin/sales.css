@@ -48,7 +48,7 @@ table{
     table-layout: fixed;
     width:100%;
     border-collapse: collapse;
-    white-space:nowrap;
+    white-space:space wrap;
 }
 
 tbody tr:nth-child(even){
@@ -64,7 +64,6 @@ td a{
     color:#fff;
 }
 tbody tr:last-child a{
-    background: #0d47a1;
     color:#fff;
     width:100%;
     padding: 8px;
