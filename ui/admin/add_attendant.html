@@ -22,20 +22,20 @@
         </div>
         <div id="main-content">
             <h3 id="header">Sales Attendant Creation Form</h3>
-            <form action="." class="attendant-form" method="POST">
+            <span id="error"></span>
+            <span id="message"></span>
+            <form action="." class="attendant-form adduser" method="POST">
                 <div class="input-field">
                         <label for="username">Username</label>
                         <input type="text" name="username" id="username" >
                 </div>
 
                 <div class="input-field">
-                        <label for="first_name">First name</label>
-                        <input type="text" name="first_name" id="first_name" >
-                </div>
-
-                <div class="input-field">
-                        <label for="last_name">Last Name</label>
-                        <input type="text" name="last_name" id="last_name" >
+                        <label for="role">Role</label>
+                        <select id="role">
+                        <option value="attendant">attendant</option>
+                        <option value="admin">admin</option>
+                        </select>
                 </div>
 
                 <div class="input-field">
@@ -52,7 +52,8 @@
             </form>
         </div>
     </div>
-    <script src="./static/js/admin_dash.js"></script>
+    <script src="../static/js/admin_dash.js"></script>
+    <script src="../static/js/register.js"></script>
     <script src="../static/js/logout.js"></script>
 </body>
 </html>
