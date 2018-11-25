@@ -2,6 +2,23 @@ salesListEndPoint = "https://soultech-store.herokuapp.com/api/v2/sales"
 adminToken = localStorage.getItem("admin_token")
 tableBody = document.querySelector("tbody");
 
+async function fetchAttendants(){
+    let response =  await fetch('https://soultech-store.herokuapp.com/api/v2/auth/users', {
+        headers: {
+            'Authorization': `Bearer ${adminToken}`
+        }
+    })
+    let data = await response.json()
+    return data
+}
+
+async function retrieveProduct(record){
+    let response = await fetch(`https://soultech-store.herokuapp.com/api/v2/products/${record["product_sold"]}`)
+    let data = await response.json()
+    return data
+    
+}
+
 loadSales = (() => {
 
     fetch(salesListEndPoint, {
@@ -12,16 +29,10 @@ loadSales = (() => {
         .then(response => response.json())
         .then(data => {
 
-            fetch('https://soultech-store.herokuapp.com/api/v2/auth/users', {
-                headers: {
-                    'Authorization': `Bearer ${adminToken}`
-                }
-            })
-                .then(userResponse => userResponse.json())
+            fetchAttendants()
                 .then(userData => {
                     for (let record of data){
-                        fetch(`https://soultech-store.herokuapp.com/api/v2/products/${record["product_sold"]}`)
-                        .then(res => res.json())
+                        retrieveProduct(record)
                         .then(productData => {
                             for(let user of userData["attendants"]){
                                 if( user["user_id"] === record["attendant"]){
