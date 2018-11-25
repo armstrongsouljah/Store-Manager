@@ -62,19 +62,7 @@ tbody tr:nth-child(odd){
 tbody td{
     text-align: center;
 }
-tbody tr:last-child a{
-    background: #0d47a1;
-    color:#777;
-    width:100%;
-    padding: 8px;
-    text-decoration: none;
-}
-tbody tr:last-child{
-    background: transparent;
-    height:38px;
-    color:#fff;
-    margin-top: 9px;
-}
+
 caption{
     font-weight:bold;
     margin-bottom: 19px;
