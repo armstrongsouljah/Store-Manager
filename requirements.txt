@@ -30,7 +30,7 @@ PyJWT==1.6.4
 pylint==2.1.1
 pytest==3.8.2
 pytest-cov==2.6.0
-PyYAML==3.13
+PyYAML==5.1
 requests==2.19.1
 six==1.11.0
 typed-ast==1.1.0
