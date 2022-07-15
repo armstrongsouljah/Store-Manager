@@ -5,7 +5,7 @@ autopep8==1.4
 certifi==2018.8.24
 chardet==3.0.4
 Click==7.0
-codecov==2.0.15
+codecov==2.0.16
 coverage==4.5.1
 coveralls==1.5.1
 docopt==0.6.2
